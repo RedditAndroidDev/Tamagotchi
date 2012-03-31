@@ -12,6 +12,8 @@ public class TamagotchiActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        creatureDao = new CreatureDao(getApplicationContext());
+        creatureDao = new CreatureDao(getBaseContext());
+//        Creature creature = creatureDao.findById(1l);
+//        System.out.println(creature.name);
     }
 }

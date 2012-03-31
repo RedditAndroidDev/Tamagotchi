@@ -1,44 +1,26 @@
 package your.redditandroiddevelopers.model;
 
+import android.content.ContentValues;
+
+/**
+ * Model object for the SICKNESS database table.
+ * 
+ * Objects are public with no getters/setters for performance
+ * 
+ * @author Jeffrey Selk
+ *
+ */
 public class Sickness {
 
-	private int id;
-	private Medicine medicine;
-	private String name;
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
-	/**
-	 * @return the medicine
-	 */
-	public Medicine getMedicine() {
-		return medicine;
-	}
-	/**
-	 * @param medicine the medicine to set
-	 */
-	public void setMedicine(Medicine medicine) {
-		this.medicine = medicine;
-	}
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
+	public long id;
+	public Medicine medicine;
+	public String name;
+	
+	public ContentValues buildContentValues() {
+		ContentValues toReturn = new ContentValues();
+		toReturn.put("S_ID", id);
+		toReturn.put("M_ID", medicine.id);
+		toReturn.put("M_NAME", name);
+		return toReturn;
 	}
 }

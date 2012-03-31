@@ -1,21 +1,21 @@
 package your.redditandroiddevelopers.model;
 
 public enum Gender {
-	MALE('M'), FEMALE('F');
+	MALE("M"), FEMALE("F");
 	
-	private char dbValue;
+	private String dbValue;
 	
-	Gender(char dbChar) {
+	Gender(String dbChar) {
 		dbValue = dbChar;
 	}
 	
-	public char getDbValue() {
+	public String getDbValue() {
 		return dbValue;
 	}
 	
-	public Gender fromDbValue(char dbValue) {
+	public static Gender fromDbValue(String dbValue) {
 		for (Gender g : Gender.values()) {
-			if (dbValue == g.getDbValue()) {
+			if (dbValue.equals(g.getDbValue())) {
 				return g;
 			}
 		}
