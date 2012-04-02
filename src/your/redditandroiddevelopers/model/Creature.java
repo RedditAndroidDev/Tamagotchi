@@ -2,97 +2,62 @@ package your.redditandroiddevelopers.model;
 
 import java.util.Date;
 
+import android.content.ContentValues;
+
+/**
+ * Model object for the CREATURE_INFO database table.
+ * 
+ * Objects are public with no getters/setters for performance
+ * 
+ * @author Jeffrey Selk
+ * 
+ */
 public class Creature {
 
-	private int id;
-	private String name;
-	private CreatureType type;
-	private Date birthDate;
-	private Date deathDate;
-	private boolean alive;
-	private Gender gender;
+	public long id;
+	public String name;
+	public CreatureType type;
+	public Date birthDate;
+	public Date deathDate;
+	public boolean alive;
+	public Gender gender;
+
 	/**
-	 * @return the id
+	 * Used to return an array of mapped columns and their values
+	 * 
+	 * @return Mapped SQL Column with their value
 	 */
-	public int getId() {
-		return id;
+	public ContentValues buildContentValues() {
+		ContentValues toReturn = new ContentValues();
+		toReturn.put("CI_ID", id);
+		toReturn.put("CI_NAME", name);
+		toReturn.put("CT_ID", type.id);
+		toReturn.put("CI_BIRTH_DATE", (birthDate != null) ? birthDate.getTime()
+				: null);
+		toReturn.put("CI_DEATH_DATE", (deathDate != null) ? deathDate.getTime()
+				: null);
+		toReturn.put("CI_ALIVE", alive);
+		toReturn.put("CI_GENDER", gender.getDbValue());
+		return toReturn;
 	}
+	
 	/**
-	 * @param id the id to set
+	 * A convenience method for testing
+	 * @return A basic creature object
 	 */
-	public void setId(int id) {
-		this.id = id;
-	}
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-	/**
-	 * @return the birthDate
-	 */
-	public Date getBirthDate() {
-		return birthDate;
-	}
-	/**
-	 * @param birthDate the birthDate to set
-	 */
-	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
-	}
-	/**
-	 * @return the deathDate
-	 */
-	public Date getDeathDate() {
-		return deathDate;
-	}
-	/**
-	 * @param deathDate the deathDate to set
-	 */
-	public void setDeathDate(Date deathDate) {
-		this.deathDate = deathDate;
-	}
-	/**
-	 * @return the alive
-	 */
-	public boolean isAlive() {
-		return alive;
-	}
-	/**
-	 * @param alive the alive to set
-	 */
-	public void setAlive(boolean alive) {
-		this.alive = alive;
-	}
-	/**
-	 * @return the gender
-	 */
-	public Gender getGender() {
-		return gender;
-	}
-	/**
-	 * @param gender the gender to set
-	 */
-	public void setGender(Gender gender) {
-		this.gender = gender;
-	}
-	/**
-	 * @return the type
-	 */
-	public CreatureType getType() {
-		return type;
-	}
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(CreatureType type) {
-		this.type = type;
-	}
+	public static Creature getDefaultCreature() {
+    	CreatureType type = new CreatureType();
+    	type.id = 1;
+    	type.name = "Default";
+    	
+    	Creature c = new Creature();
+    	c.name = "Default Creature";
+    	c.type = type;
+    	c.birthDate = new Date();
+    	c.alive = true;
+    	c.gender = Gender.FEMALE;
+    	return c;
+    }
+	
+
 }

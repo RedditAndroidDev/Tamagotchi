@@ -1,44 +1,26 @@
 package your.redditandroiddevelopers.model;
 
+import android.content.ContentValues;
+
+/**
+ * Model object for the CREATURE_RAISE_TYPE database table.
+ * 
+ * Objects are public with no getter/setters for performance
+ * 
+ * @author Jeffrey Selk
+ *
+ */
 public class CreatureRaiseType {
 
-	private int id;
-	private String name;
-	private double multiplier;
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-	/**
-	 * @return the multiplier
-	 */
-	public double getMultiplier() {
-		return multiplier;
-	}
-	/**
-	 * @param multiplier the multiplier to set
-	 */
-	public void setMultiplier(double multiplier) {
-		this.multiplier = multiplier;
+	public int id;
+	public String name;
+	public double multiplier;
+	
+	public ContentValues buildContentValues() {
+		ContentValues toReturn = new ContentValues();
+		toReturn.put("CRT_ID", id);
+		toReturn.put("CRT_NAME", name);
+		toReturn.put("CRT_MULTIPLIER", multiplier);
+		return toReturn;
 	}
 }
