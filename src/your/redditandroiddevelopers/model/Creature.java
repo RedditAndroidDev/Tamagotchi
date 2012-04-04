@@ -59,5 +59,21 @@ public class Creature {
     	return c;
     }
 	
+	/**
+     * Create A Creature
+     * Simple function to call when a person leaves the creature-creation screen, and gets used to save the creature.
+     * @author Hannes Vermeire
+     * @return The creature.
+     */
+    public static Creature createACreature(String name, Gender gender, CreatureType type) {
+    	Creature c = new Creature();
+    	c.name = name;
+    	c.type = type;
+    	c.birthDate = new Date();
+    	c.gender = gender;
+    	c.alive = true;
+    	c.gender = gender;
+    	return c;
+    }
 
 }
