@@ -19,9 +19,9 @@ public class TamagotchiActivity extends Activity {
 //        Creature creature = creatureDao.findById(1l);
 //        System.out.println(creature.name);
         
-    	CreatureType type = new CreatureType();
-    	type.id = 1;
-    	type.name = "Default";
+//    	CreatureType type = new CreatureType();
+//    	type.id = 1;
+//    	type.name = "Default";
     	
 //        Creature submitted = Creature.createACreature("TestName", Gender.MALE, type);
 //        creatureDao.create(submitted);
