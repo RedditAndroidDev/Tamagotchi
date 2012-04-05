@@ -1,0 +1,3 @@
+[submodule "lib/AndEngine"]
+	path = lib/AndEngine
+	url = https://github.com/nicolasgramlich/AndEngine.git
