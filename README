@@ -1,0 +1,28 @@
+The project is set up with a git-submodule for AndEngine pulling from
+https://github.com/nicolasgramlich/AndEngine.git.
+
+When you clone/update this repository, make sure that the submodule is
+likewise cloned/updated (Eclipse usually does this for you automatically).
+
+To build this on Eclipse, it must first be able to refer to the AndEngine
+library project. The source code, once you check out our repository,
+is all there under /lib/AndEngine/ directory, but you must first import
+it into Eclipse:
+
+1. File > Import > Existing Projects into Workspace.
+2. Select root directory: /lib/AndEngine/ and follow instruction.
+3. That's it! The Tamagotchi Eclipse project itself knows to link against
+   AndEngine in /lib/AndEngine so you won't need to set that up.
+4. When you build the project, the AndEngine library project will be
+   automatically built for you as a dependency.
+   
+To build this with the ant build script:
+
+1. Make sure you have generated a local.properties file first. This can
+   be done by executing:
+   > android update project --path .
+   from the project's root directory.
+2. Make sure you have also done the same with the AndEngine library project:
+   lib\AndEngine> android update lib-project --path .
+3. Build! When you build from the project's root, the ant built script will
+   also take care of building the library project automatically.
