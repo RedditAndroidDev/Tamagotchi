@@ -1,14 +1,15 @@
 
 package your.redditandroiddevelopers;
 
-import org.andengine.AndEngine;
-
-import your.redditandroiddevelopers.dao.CreatureDao;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+
+import org.andengine.AndEngine;
+
+import your.redditandroiddevelopers.dao.CreatureDao;
 
 public class TamagotchiActivity extends Activity {
     private CreatureDao creatureDao;
