@@ -4,6 +4,9 @@ import org.andengine.AndEngine;
 
 import your.redditandroiddevelopers.dao.CreatureDao;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 
 public class TamagotchiActivity extends Activity {
