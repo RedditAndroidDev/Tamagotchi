@@ -8,10 +8,9 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 
-import your.redditandroiddevelopers.dao.CreatureDao;
-import your.redditandroiddevelopers.model.Creature;
+import org.andengine.AndEngine;
 
-import java.util.List;
+import your.redditandroiddevelopers.dao.CreatureDao;
 
 public class TamagotchiActivity extends Activity {
     private CreatureDao creatureDao;
@@ -51,17 +50,15 @@ public class TamagotchiActivity extends Activity {
         // Gender.MALE, type);
         // creatureDao.create(submitted);
 
-        creatureDao.seedData();
-
         /* Check to see if the database is empty */
         Boolean isDatabaseEmpty = creatureDao.isDatabaseEmpty();
 
         if (!isDatabaseEmpty) {
 
             /* Get the number of alive creatures */
-            List<Creature> aliveCreatures = creatureDao.getAlive();
+            int aliveCreatures = creatureDao.getNumberOfAlive();
 
-            switch (aliveCreatures.size()) {
+            switch (aliveCreatures) {
             /* Dead creatures */
                 case 0: {
                     createCreature();
@@ -83,8 +80,10 @@ public class TamagotchiActivity extends Activity {
                 }
             }
         }
-        /* If the database is empty create a new creature */
-        createCreature();
+        else {
+            /* If the database is empty create a new creature */
+            createCreature();
+        }
     }
 
     private void createCreature() {

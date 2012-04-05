@@ -9,7 +9,7 @@ public class MainCreatureActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.create_creature_layout);
+        setContentView(R.layout.main_creature_layout);
     }
 
 }

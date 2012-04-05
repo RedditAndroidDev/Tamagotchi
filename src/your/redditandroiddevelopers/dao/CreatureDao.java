@@ -67,16 +67,11 @@ public class CreatureDao {
         return toReturn;
     }
 
-    public List<Creature> getAlive() {
+    public int getNumberOfAlive() {
         Cursor c = db
                 .query(CreatureDatabase.INFO_TABLE_NAME,
                         null, "CI_ALIVE = 1", null, null, null, null);
-        List<Creature> toReturn = new ArrayList<Creature>(c.getCount());
-        while (!c.isAfterLast()) {
-            toReturn.add(CreatureMapper.mapRow(c));
-            c.moveToNext();
-        }
-        return toReturn;
+        return c.getCount();
     }
 
     public Creature findById(long id) {
