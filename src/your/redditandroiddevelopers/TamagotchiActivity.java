@@ -22,7 +22,7 @@ public class TamagotchiActivity extends Activity {
         setContentView(R.layout.main);
 
         // Check if AndEngine is supported on device
-        if (AndEngine.isDeviceSupported()) {
+        if (!AndEngine.isDeviceSupported()) {
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
             dialog.setTitle(R.string.error);
             dialog.setMessage(R.string.error_device_not_supported);
