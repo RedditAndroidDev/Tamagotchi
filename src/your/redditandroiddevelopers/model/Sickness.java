@@ -20,7 +20,7 @@ public class Sickness {
 		ContentValues toReturn = new ContentValues();
 		toReturn.put("S_ID", id);
 		toReturn.put("M_ID", medicine.id);
-		toReturn.put("M_NAME", name);
+		toReturn.put("S_NAME", name);
 		return toReturn;
 	}
 }

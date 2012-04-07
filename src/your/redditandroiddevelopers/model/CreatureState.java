@@ -26,9 +26,9 @@ public class CreatureState {
 	public ContentValues buildContentValues() {
 		ContentValues toReturn = new ContentValues();
 		toReturn.put("CS_ID", id);
-		toReturn.put("CI_ID", creature.id);
-		toReturn.put("CRT_ID", raiseType.id);
-		toReturn.put("S_ID", sickness.id);
+		toReturn.put("CI_ID", (creature == null) ? 0 : creature.id);
+		toReturn.put("CRT_ID", (raiseType == null) ? 0 : raiseType.id);
+		toReturn.put("S_ID", (sickness == null) ? 0 : sickness.id);
 		toReturn.put("CS_HEALTH", health);
 		toReturn.put("CS_BOWEL", bowel);
 		toReturn.put("CS_DISCIPLINE", discipline);

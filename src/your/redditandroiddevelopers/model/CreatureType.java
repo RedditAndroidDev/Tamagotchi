@@ -12,7 +12,7 @@ import android.content.ContentValues;
  */
 public class CreatureType {
 
-	public int id;
+	public long id;
 	public String name;
 	
 	public ContentValues buildContentValues() {

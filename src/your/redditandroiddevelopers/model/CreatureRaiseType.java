@@ -12,7 +12,7 @@ import android.content.ContentValues;
  */
 public class CreatureRaiseType {
 
-	public int id;
+	public long id;
 	public String name;
 	public double multiplier;
 	

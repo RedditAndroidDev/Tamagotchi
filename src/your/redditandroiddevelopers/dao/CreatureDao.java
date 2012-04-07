@@ -52,6 +52,7 @@ public class CreatureDao {
 			toReturn.add(CreatureMapper.mapRow(c));
 			c.moveToNext();
 		}
+		c.close();
 		return toReturn;
 	}
 
