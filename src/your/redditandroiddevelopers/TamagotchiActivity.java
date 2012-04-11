@@ -12,72 +12,107 @@ public class TamagotchiActivity extends Activity {
     private CreatureDao creatureDao;
 
     /** Called when the activity is first created. */
-    @SuppressWarnings("unused")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        // Check if AndEngine is supported on device
-        if (/* placeholder */false) {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle(R.string.error)
-            .setMessage(R.string.error_device_not_supported)
-            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+        // Check if game is supported on device
+        if (gameIsSupported()) {
 
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    TamagotchiActivity.this.finish();
-                }
-            })
-            .create().show();
+            // Run game
+            initialize();
 
-            /* Note that .show() is asynchronous! We really need to block here
-             * and wait for user to click "OK" and close the app. Otherwise,
-             * the following code will be executed before the UI thread even has
-             * a chance of rendering what was supposed to be the only thing
-             * the user sees. Not only is the following code unnecessary at this
-             * point, it might crash the app on unsupported devices, too!
-             */
-
-            // for simplicity sake, just don't do anything else after this point
         }
         else {
-            initialize();
+
+            // Display error dialog if game cannot run on device.
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.error)
+                    .setMessage(R.string.error_device_not_supported)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Since the game cannot run, it should close after
+                            // the user has read the error message.
+                            TamagotchiActivity.this.finish();
+                        }
+                    })
+                    .create().show();
+
         }
     }
 
+    /**
+     * Checks if the game can run on this device.
+     * 
+     * @return <b>true</b> if game is supported, <b>false</b> if not
+     */
+    private boolean gameIsSupported() {
+        // TODO: implement code that checks for compatibility
+        return true;
+    }
+
+    /**
+     * This method performs some initial database checks. If no database can be
+     * found, a new one is created.<br>
+     * In any case, the app tries to read the database and starts the
+     * appropriate activity.
+     */
     private void initialize() {
         creatureDao = new CreatureDao(getBaseContext());
         boolean isDatabaseEmpty = creatureDao.isDatabaseEmpty();
         if (!isDatabaseEmpty) {
             int aliveCreatures = creatureDao.getNumberOfAlive();
             switch (aliveCreatures) {
-            case 0:     // dead creatures
-                createCreature();
-                break;
-            case 1:
-                startActivity(new Intent(getBaseContext(), MainCreatureActivity.class)
-                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
-                finish();
-                break;
-            default:    // multiple creatures
-                startActivity(new Intent(getBaseContext(), CreatureSelectionActivity.class)
-                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
-                finish();
-                break;
+                case 0:
+                    // No creature is alive, user is taken to
+                    // CreateCreatureActivity
+                    createNewCreature();
+                    break;
+                case 1:
+                    // One creature is alive, user is taken to
+                    // MainCreatureActivity
+                    startMainCreatureActivity();
+                    break;
+                default:
+                    // More than one creature is alive, user is taken to
+                    // CreatureSelectionActivity
+                    startCreatureSelectionActivity();
+                    break;
             }
         }
         else {
-            /* If the database is empty create a new creature */
-            createCreature();
+            /* If the database is empty, create a new creature */
+            createNewCreature();
         }
     }
 
-    private void createCreature() {
+    /**
+     * Launches <i>CreateCreatureActivity</i>.
+     */
+    private void createNewCreature() {
         startActivity(new Intent(getBaseContext(), CreateCreatureActivity.class)
-        .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
+                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
         finish();
     }
 
+    /**
+     * Launches <i>MainCreatureActivity</i>.
+     */
+    private void startMainCreatureActivity() {
+        startActivity(new Intent(getBaseContext(), MainCreatureActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
+        finish();
+    }
+
+    /**
+     * Launches <i>CreatureSelectionActivity</i>.
+     */
+    private void startCreatureSelectionActivity() {
+        startActivity(new Intent(getBaseContext(), CreatureSelectionActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
+        finish();
+    }
 }
