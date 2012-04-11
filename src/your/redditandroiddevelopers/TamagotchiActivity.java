@@ -1,8 +1,6 @@
 
 package your.redditandroiddevelopers;
 
-import org.andengine.AndEngine;
-
 import your.redditandroiddevelopers.dao.CreatureDao;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,13 +12,14 @@ public class TamagotchiActivity extends Activity {
     private CreatureDao creatureDao;
 
     /** Called when the activity is first created. */
+    @SuppressWarnings("unused")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
         // Check if AndEngine is supported on device
-        if (!AndEngine.isDeviceSupported()) {
+        if (/* placeholder */false) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.error)
             .setMessage(R.string.error_device_not_supported)
