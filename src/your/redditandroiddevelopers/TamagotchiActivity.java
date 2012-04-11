@@ -69,7 +69,7 @@ public class TamagotchiActivity extends Activity {
                 case 0:
                     // No creature is alive, user is taken to
                     // CreateCreatureActivity
-                    createNewCreature();
+                    startCreateNewCreature();
                     break;
                 case 1:
                     // One creature is alive, user is taken to
@@ -85,14 +85,14 @@ public class TamagotchiActivity extends Activity {
         }
         else {
             /* If the database is empty, create a new creature */
-            createNewCreature();
+            startCreateNewCreature();
         }
     }
 
     /**
      * Launches <i>CreateCreatureActivity</i>.
      */
-    private void createNewCreature() {
+    private void startCreateNewCreature() {
         startActivity(new Intent(getBaseContext(), CreateCreatureActivity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
         finish();
