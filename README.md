@@ -24,9 +24,9 @@ To set it up in eclipse:
 The ant equivalent is left to the reader as an exercise. ;-)
 
 # Useful links
-Irc channel - ##RAD_Tamagotchi on irc.freenode.net
-[RedditAndroidDevelopers page](http://www.redditandroiddevelopers.com)
-[Redmine page](http://rad.lc8n.com/projects/tamagotchi)
-[Code style for eclipse](http://rad.lc8n.com/boards/5/topics/36)
-[Requirements specifications](https://docs.google.com/document/d/1sLDQkcoDs5xYPKr-luaSfaY2cG0M-Nm8a_jZ80wK-d0/edit)
-[Issue tracker](http://rad.lc8n.com/projects/tamagotchi/issues)
+* Irc channel - ##RAD_Tamagotchi on irc.freenode.net
+* [RedditAndroidDevelopers page](http://www.redditandroiddevelopers.com)
+* [Redmine page](http://rad.lc8n.com/projects/tamagotchi)
+* [Code style for eclipse](http://rad.lc8n.com/boards/5/topics/36)
+* [Requirements specifications](https://docs.google.com/document/d/1sLDQkcoDs5xYPKr-luaSfaY2cG0M-Nm8a_jZ80wK-d0/edit)
+* [Issue tracker](http://rad.lc8n.com/projects/tamagotchi/issues)
