@@ -12,7 +12,18 @@ To build this with the ant build script:
 
 3. Build! When you build from the project's root, the ant built script will also take care of building library projects (if any) automatically.
 
-# Usefull links
+# JUnit tests
+The project also sets up an Android JUnit test project under tests/ directory.
+To set it up in eclipse:
+
+1. File > Import... > General > Existing Project into Workspace
+2. Import tests/ as a project. Give it a meaningful name (e.g. TamagotchiTest).
+3. To run the tests therein, right click on the test project, then select
+    Run As > Android JUnit Test
+
+The ant equivalent is left to the reader as an exercise. ;-)
+
+# Useful links
 Irc channel - ##RAD_Tamagotchi on irc.freenode.net
 [RedditAndroidDevelopers page](http://www.redditandroiddevelopers.com)
 [Redmine page](http://rad.lc8n.com/projects/tamagotchi)
