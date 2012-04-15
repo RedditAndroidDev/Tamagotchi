@@ -1,4 +1,4 @@
-package com.rad.tamagotchi;
+package com.redditandroiddevelopers.tamagotchi;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;

@@ -1,7 +1,8 @@
-package com.rad.tamagotchi;
+package com.redditandroiddevelopers.tamagotchi;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
 
 public class Main {
 	public static void main(String[] args) {
