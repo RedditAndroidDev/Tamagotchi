@@ -52,7 +52,13 @@ public class CreatureDao {
     }
     
     public void seedData(){
+        // TODO: debug guard
         db.seedData();
+    }
+    
+    public void purgeData() {
+        // TODO: debug guard
+        db.deleteDatabase();
     }
 
     public List<Creature> getAll() {

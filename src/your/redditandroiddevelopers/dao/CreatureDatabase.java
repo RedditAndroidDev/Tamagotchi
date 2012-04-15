@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 
 public class CreatureDatabase {
+    
     public static final String INFO_TABLE_NAME = "CREATURE_INFO";
     public static final String STATE_TABLE_NAME = "CREATURE_STATE";
     public static final String EVOLUTION_TABLE_NAME = "CREATURE_EVOLUTION";
@@ -53,6 +54,14 @@ public class CreatureDatabase {
         databaseHelper.getWritableDatabase().delete(table, whereClause,
                 whereArgs);
     }
+    
+    /**
+     * For testing purposes during development!
+     */
+    public void deleteDatabase() {
+        // TODO: debug guard
+        databaseHelper.deleteDatabase();
+    }
 
     /**
      * This is a basic method for use by developers during development.
@@ -61,6 +70,7 @@ public class CreatureDatabase {
         // TODO: This needs to be set up with the actual data for the
         // game
         // seed data for constants, i.e. medicine, sickness, etc.
+        // TODO: debug guard
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
         for (int i = 0; i < 5; i++) {
@@ -105,6 +115,7 @@ public class CreatureDatabase {
 
         private static final String DB_NAME = "RAD_CREATURES.db";
         private static final int DB_VERSION = 2;
+        
         private static final String CREATE_INFO = "" + "CREATE TABLE "
                 + INFO_TABLE_NAME + " (" + "CI_ID INTEGER PRIMARY KEY, "
                 + "CT_ID INTEGER, " + "CE_ID INTEGER, "
@@ -152,9 +163,12 @@ public class CreatureDatabase {
                 + SICKNESS_TABLE_NAME + " (" + "S_ID INTEGER PRIMARY KEY, "
                 + "M_ID INTEGER, " + "S_NAME TEXT, "
                 + "FOREIGN KEY (M_ID) REFERENCES medicine(M_ID) " + ");";
+        
+        private Context mContext;
 
         public DatabaseHelper(Context context) {
             super(context, DB_NAME, null, DB_VERSION);
+            mContext = context;
         }
 
         @Override
@@ -172,6 +186,10 @@ public class CreatureDatabase {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        }
+        
+        public void deleteDatabase() {
+            mContext.deleteDatabase(DB_NAME);
         }
 
     }
