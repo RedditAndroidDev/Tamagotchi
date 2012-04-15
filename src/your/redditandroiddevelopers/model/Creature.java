@@ -46,7 +46,7 @@ public class Creature {
      * 
      * @return A basic creature object
      */
-    public static Creature getDefaultCreature() {
+    public static Creature createDefaultCreature() {
         CreatureType type = new CreatureType();
         type.id = 1;
         type.name = "Default";
@@ -67,7 +67,7 @@ public class Creature {
      * @author Hannes Vermeire
      * @return The creature.
      */
-    public static Creature createACreature(String name, Gender gender,
+    public static Creature createCreature(String name, Gender gender,
             CreatureType type) {
         Creature c = new Creature();
         c.name = name;
