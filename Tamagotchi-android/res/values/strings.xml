@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tamagotchi</string>
+    <string name="error_device_not_supported">Unfortunately, your device is not supported. We are sorry :(\n\nThis application will now exit.</string>
+    <string name="error">Error</string> 
+    <string name="ok">OK</string>
+</resources>
