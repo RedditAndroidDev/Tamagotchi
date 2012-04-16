@@ -21,9 +21,6 @@ public class SplashScreen extends CommonScreen
     public void show() {
         // super.show();
 
-        // use white background for now
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-
         batch = new SpriteBatch();
 
         // load Reddit alien texture
@@ -49,6 +46,9 @@ public class SplashScreen extends CommonScreen
 
     @Override
     public void draw(float delta) {
+        // use white background for now
+        Gdx.gl.glClearColor(1, 1, 1, 1);
+
         batch.begin();
         // draw Reddit alien on the screen
         batch.draw(splashTexture, getCenterX(splashTexture), getCenterY(splashTexture));
