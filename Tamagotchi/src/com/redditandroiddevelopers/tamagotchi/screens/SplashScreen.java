@@ -45,7 +45,7 @@ public class SplashScreen extends CommonScreen
         // delta is the time since the last update, adding it up gives us the
         // time since the first update
 
-        if (timeElapsed < 3) {
+        if (timeElapsed < 0.5) { // revert to 3 (or any other suitable value) before publishing the game
             timeElapsed += delta;
         }
         else {
