@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="custom_rules">
+    <target name="-pre-build">
+        <!-- We copy over the gdx.jar to the Android project's libs directory
+             because all attempts to reference to JARs in external directories
+             were unsuccessful. This isn't quite as pretty but it works!
+             Ignoring the copied JAR in version control removes problems with
+             duplication. -->
+        <copy todir="libs" verbose="${verbose}">
+            <fileset dir="${root.dir}/Tamagotchi/libs" includes="gdx.jar" />
+        </copy>
+    </target>
+</project>
+

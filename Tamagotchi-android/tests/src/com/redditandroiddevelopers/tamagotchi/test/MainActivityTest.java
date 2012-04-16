@@ -5,13 +5,13 @@ import android.test.ActivityInstrumentationTestCase2;
 import com.redditandroiddevelopers.tamagotchi.MainActivity;
 
 
-public class MainActivityTest extends 
-        ActivityInstrumentationTestCase2<MainActivity> {
+public class MainActivityTest extends
+ActivityInstrumentationTestCase2<MainActivity> {
 
     private MainActivity mActivity;
 
     public MainActivityTest() {
-        super("com.redditandroiddevelopers.tamagotchi", MainActivity.class);
+        super(MainActivity.class);
     }
 
     @Override
