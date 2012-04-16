@@ -39,28 +39,28 @@ public class MainMenuScreen extends CommonScreen {
         stage.addActor(imgAppName);
 
         // adding the Play button
-        Button btnPlay = new Button("button-background.png", 0, 10, 235);
+        Button btnPlay = new Button("MainMenu/button-background.png", 0, 10, 235);
         rectPlay = new Rectangle(btnPlay.x, Gdx.graphics.getHeight() - btnPlay.y - btnPlay.height,
                 btnPlay.width,
                 btnPlay.height);
         stage.addActor(btnPlay);
 
         // adding the Select button
-        Button btnSelect = new Button("button-background.png", 0, 10, 160);
+        Button btnSelect = new Button("MainMenu/button-background.png", 0, 10, 160);
         rectSelect = new Rectangle(btnSelect.x, Gdx.graphics.getHeight() - btnSelect.y
                 - btnSelect.height,
                 btnSelect.width, btnSelect.height);
         stage.addActor(btnSelect);
 
         // adding the Memories button
-        Button btnMemories = new Button("button-background.png", 0, 10, 85);
+        Button btnMemories = new Button("MainMenu/button-background.png", 0, 10, 85);
         rectMemories = new Rectangle(btnMemories.x, Gdx.graphics.getHeight() - btnMemories.y
                 - btnMemories.height,
                 btnMemories.width, btnMemories.height);
         stage.addActor(btnMemories);
 
         // adding the Settings button
-        Button btnSettings = new Button("button-background.png", 0, 10, 10);
+        Button btnSettings = new Button("MainMenu/button-background.png", 0, 10, 10);
         rectSettings = new Rectangle(btnSettings.x, Gdx.graphics.getHeight() - btnSettings.y
                 - btnSettings.height,
                 btnSettings.width, btnSettings.height);
