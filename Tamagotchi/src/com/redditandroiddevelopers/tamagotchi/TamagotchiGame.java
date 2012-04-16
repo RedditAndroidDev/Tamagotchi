@@ -36,6 +36,7 @@ public class TamagotchiGame extends Game {
             switch (MY_STATE) {
                 case 0:
                     setScreen(new MainMenuScreen());
+                    break;
                 case 1:
                     setScreen(new GameLoop());
                     break;
