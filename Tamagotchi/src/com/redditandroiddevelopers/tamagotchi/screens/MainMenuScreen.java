@@ -11,10 +11,16 @@ public class MainMenuScreen extends CommonScreen {
 	
 	SpriteBatch batch = new SpriteBatch();
 	Stage stage;
-    @Override
-    public void update(float delta) {
+	@Override
+	public void show(){
 		 stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, batch);
 		 stage.addActor(button);
+		Gdx.input.setInputProcessor(stage);
+		
+	}
+    @Override
+    public void update(float delta) {
+
     }
 
     @Override
