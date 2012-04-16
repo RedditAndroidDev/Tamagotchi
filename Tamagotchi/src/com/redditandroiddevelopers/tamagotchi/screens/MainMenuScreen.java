@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -16,10 +15,10 @@ public class MainMenuScreen extends CommonScreen {
     SpriteBatch batch = new SpriteBatch();
     Stage stage;
 
-    Rectangle rectPlay;
-    Rectangle rectSelect;
-    Rectangle rectMemories;
-    Rectangle rectSettings;
+    Button btnPlay;
+    Button btnSelect;
+    Button btnMemories;
+    Button btnSettings;
 
     Vector2 touchPoint;
 
@@ -39,31 +38,19 @@ public class MainMenuScreen extends CommonScreen {
         stage.addActor(imgAppName);
 
         // adding the Play button
-        Button btnPlay = new Button("MainMenu/btn_play_unpressed.png", 0, 10, 235);
-        rectPlay = new Rectangle(btnPlay.x, Gdx.graphics.getHeight() - btnPlay.y - btnPlay.height,
-                btnPlay.width,
-                btnPlay.height);
+        btnPlay = new Button("MainMenu/btn_play_unpressed.png", 0, 10, 235);
         stage.addActor(btnPlay);
 
         // adding the Select button
-        Button btnSelect = new Button("MainMenu/btn_select_unpressed.png", 0, 10, 160);
-        rectSelect = new Rectangle(btnSelect.x, Gdx.graphics.getHeight() - btnSelect.y
-                - btnSelect.height,
-                btnSelect.width, btnSelect.height);
+        btnSelect = new Button("MainMenu/btn_select_unpressed.png", 0, 10, 160);
         stage.addActor(btnSelect);
 
         // adding the Memories button
-        Button btnMemories = new Button("MainMenu/btn_memories_unpressed.png", 0, 10, 85);
-        rectMemories = new Rectangle(btnMemories.x, Gdx.graphics.getHeight() - btnMemories.y
-                - btnMemories.height,
-                btnMemories.width, btnMemories.height);
+        btnMemories = new Button("MainMenu/btn_memories_unpressed.png", 0, 10, 85);
         stage.addActor(btnMemories);
 
         // adding the Settings button
-        Button btnSettings = new Button("MainMenu/btn_settings_unpressed.png", 0, 10, 10);
-        rectSettings = new Rectangle(btnSettings.x, Gdx.graphics.getHeight() - btnSettings.y
-                - btnSettings.height,
-                btnSettings.width, btnSettings.height);
+        btnSettings = new Button("MainMenu/btn_settings_unpressed.png", 0, 10, 10);
         stage.addActor(btnSettings);
     }
 
@@ -75,20 +62,20 @@ public class MainMenuScreen extends CommonScreen {
             // update touch point
             touchPoint.set(Gdx.input.getX(), Gdx.input.getY());
 
-            // check if touchpoint lies in one of the defined rectangles
-            if (pointInRectangle(rectPlay, touchPoint.x, touchPoint.y)) {
+            // check if touch point lies in one of the defined rectangles
+            if (btnPlay.pointOnButton(touchPoint.x, touchPoint.y)) {
                 Gdx.app.log("Tamagotchi", "Touch on Play");
                 return;
             }
-            if (pointInRectangle(rectSelect, touchPoint.x, touchPoint.y)) {
+            if (btnSelect.pointOnButton(touchPoint.x, touchPoint.y)) {
                 Gdx.app.log("Tamagotchi", "Touch on Select");
                 return;
             }
-            if (pointInRectangle(rectMemories, touchPoint.x, touchPoint.y)) {
+            if (btnMemories.pointOnButton(touchPoint.x, touchPoint.y)) {
                 Gdx.app.log("Tamagotchi", "Touch on Memories");
                 return;
             }
-            if (pointInRectangle(rectSettings, touchPoint.x, touchPoint.y)) {
+            if (btnSettings.pointOnButton(touchPoint.x, touchPoint.y)) {
                 Gdx.app.log("Tamagotchi", "Touch on Settings");
                 return;
             }
@@ -100,33 +87,4 @@ public class MainMenuScreen extends CommonScreen {
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         stage.draw();
     }
-
-    /*******************************************************************************
-     * Copyright 2011
-     * <badlogicgames@gmail.com> and Nathan Sweet <nathan.sweet@gmail.com>
-     * Licensed under the Apache License, Version 2.0 (the "License");
-     * you may not use this file except in compliance with the License.
-     * You may obtain a copy of the License at
-     * http://www.apache.org/licenses/LICENSE-2.0
-     * Unless required by applicable law or agreed to in writing, software
-     * distributed under the License is distributed on an "AS IS" BASIS,
-     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     * See the License for the specific language governing permissions and
-     * limitations under the License.
-     ******************************************************************************/
-
-    /**
-     * Determines if a point lies within a rectangle.
-     * @param rect The rectangle
-     * @param x X coordinate of the point
-     * @param y Y coordinate of the point
-     * @return <b>true</b>, if point lies within rectangle, <b>false</b>, if not
-     */
-    public static boolean pointInRectangle(Rectangle rect, float x, float y) {
-        return rect.x <= x && rect.x + rect.width >= x && rect.y <= y && rect.y + rect.height >= y;
-    }
-
-    /*******************************************************************************
-     * End of copyrighted code
-     ******************************************************************************/
 }
