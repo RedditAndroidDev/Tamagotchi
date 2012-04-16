@@ -1,6 +1,8 @@
 package com.redditandroiddevelopers.tamagotchi.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL10;
 
 
 public abstract class CommonScreen implements Screen {
@@ -28,6 +30,8 @@ public abstract class CommonScreen implements Screen {
     }
 
     public void render(float delta) {
+        Gdx.gl.glClearColor(1, 0, 1, 1);
+        Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         update(delta);
         draw(delta);
     }
