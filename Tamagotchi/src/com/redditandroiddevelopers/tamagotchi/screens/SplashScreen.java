@@ -5,6 +5,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
 
 /**
  * A simple splash screen that is shown when the game is started. It
@@ -12,20 +13,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 public class SplashScreen extends CommonScreen
 {
-    private Game TamagotchiGame;
     private SpriteBatch batch;
     private Texture splashTexture;
     private float timeElapsed = 0;
-
-    /**
-     * Creates a default splash screen.
-     * 
-     * @param g Main game instance
-     */
-    public SplashScreen(Game g)
-    {
-        TamagotchiGame = g;
-    }
 
     @Override
     public void show() {
@@ -45,13 +35,15 @@ public class SplashScreen extends CommonScreen
         // delta is the time since the last update, adding it up gives us the
         // time since the first update
 
-        if (timeElapsed < 0.5) { // revert to 3 (or any other suitable value) before publishing the game
+        if (timeElapsed < 0.5) { // revert to 3 (or any other suitable value)
+                                 // before publishing the game
             timeElapsed += delta;
         }
         else {
             // after 3 seconds, the Splash screen is hidden and the
             // MainMenuScreen is shown
-            TamagotchiGame.setScreen(new MainMenuScreen());
+            TamagotchiGame.MY_STATE = TamagotchiGame.STATE_MAIN_MENU;
+            TamagotchiGame.STATE_CHANGE = true;
         }
     }
 
