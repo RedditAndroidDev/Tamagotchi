@@ -15,6 +15,9 @@ public class TamagotchiGame extends Game {
     public static int STATE_MAIN_MENU = 0;
     public static int STATE_RUNNING = 1;
     public static int STATE_PAUSED = 2;
+    public static int STATE_SELECT_PET = 3;
+    public static int STATE_MEMORIES = 4;
+    public static int STATE_SETTINGS = 5;
 
     public static int MY_STATE = 0;
     public static boolean STATE_CHANGE = false;
@@ -43,6 +46,18 @@ public class TamagotchiGame extends Game {
                 case 2:
                     setScreen(new PauseScreen());
                     break;
+                case 3:
+                    setScreen(new PauseScreen()); // FIXME: launch correct
+                                                  // screen when class has been
+                                                  // created
+                    break;
+                case 4:
+                    setScreen(new PauseScreen());// FIXME: launch correct screen
+                                                 // when class has been created
+                    break;
+                case 5:
+                    setScreen(new PauseScreen());// FIXME: launch correct screen
+                                                 // when class has been created;
                 default:
                     break;
             }
