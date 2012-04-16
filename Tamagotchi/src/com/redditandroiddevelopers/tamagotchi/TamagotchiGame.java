@@ -24,7 +24,7 @@ public class TamagotchiGame extends Game {
 
     @Override
     public void create() {
-        setScreen(new SplashScreen(this));
+        setScreen(new SplashScreen());
     }
 
     @Override
