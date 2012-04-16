@@ -30,7 +30,6 @@ public abstract class CommonScreen implements Screen {
     }
 
     public void render(float delta) {
-        Gdx.gl.glClearColor(1, 0, 1, 1);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         update(delta);
         draw(delta);
