@@ -10,8 +10,10 @@ import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
  * A simple splash screen that is shown when the game is started. It
  * automatically transitions to the MainMenuScreen after 3 seconds.
  */
-public class SplashScreen extends CommonScreen
-{
+public class SplashScreen extends CommonScreen {
+
+    private static final float SPLASH_DURATION = .5f;
+
     private SpriteBatch batch;
     private Texture splashTexture;
     private float timeElapsed = 0;
@@ -30,9 +32,8 @@ public class SplashScreen extends CommonScreen
     public void update(float delta) {
         // delta is the time since the last update, adding it up gives us the
         // time since the first update
-
-        if (timeElapsed < 0.5) { // revert to 3 (or any other suitable value)
-                                 // before publishing the game
+        if (timeElapsed < SPLASH_DURATION) { // revert to 3 (or any other suitable value)
+            // before publishing the game
             timeElapsed += delta;
         }
         else {
@@ -61,7 +62,7 @@ public class SplashScreen extends CommonScreen
      * @param t Texture to display
      * @return X coordinate
      */
-    protected int getCenterX(Texture t) {
+    private static final int getCenterX(Texture t) {
         return (Gdx.graphics.getWidth() - t.getWidth()) / 2;
     }
 
@@ -72,7 +73,7 @@ public class SplashScreen extends CommonScreen
      * @param t Texture to display
      * @return Y coordinate
      */
-    protected int getCenterY(Texture t) {
+    private static final int getCenterY(Texture t) {
         return (Gdx.graphics.getHeight() - t.getHeight()) / 2;
     }
 }
