@@ -3,11 +3,12 @@ package com.redditandroiddevelopers.tamagotchi.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
 import com.redditandroiddevelopers.tamagotchi.ui.Button;
 
 public class MainMenuScreen extends CommonScreen {
 
-	Button button = new Button("button-background.png", 0, 0, 2);
+	Button button = new Button("button-background.png", 0, 0, TamagotchiGame.STATE_PAUSED);
 	
 	SpriteBatch batch = new SpriteBatch();
 	Stage stage;
