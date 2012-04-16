@@ -1,5 +1,5 @@
-package com.redditandroiddevelopers.tamagotchi;
 
+package com.redditandroiddevelopers.tamagotchi;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -7,6 +7,7 @@ import com.redditandroiddevelopers.tamagotchi.screens.CommonScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.GameLoop;
 import com.redditandroiddevelopers.tamagotchi.screens.MainMenuScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.PauseScreen;
+import com.redditandroiddevelopers.tamagotchi.screens.SplashScreen;
 
 public class TamagotchiGame extends Game {
 
@@ -20,7 +21,7 @@ public class TamagotchiGame extends Game {
 
     @Override
     public void create() {
-        setScreen(new MainMenuScreen());
+        setScreen(new SplashScreen(this));
     }
 
     @Override
@@ -31,18 +32,18 @@ public class TamagotchiGame extends Game {
         } else {
             STATE_CHANGE = false;
             getScreen().dispose();
-            
+
             switch (MY_STATE) {
-            case 0:
-                setScreen(new MainMenuScreen());
-            case 1:
-                setScreen(new GameLoop());
-                break;
-            case 2:
-                setScreen(new PauseScreen());
-                break;
-            default:
-                break;
+                case 0:
+                    setScreen(new MainMenuScreen());
+                case 1:
+                    setScreen(new GameLoop());
+                    break;
+                case 2:
+                    setScreen(new PauseScreen());
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -51,7 +52,7 @@ public class TamagotchiGame extends Game {
     public CommonScreen getScreen() {
         return (CommonScreen) super.getScreen();
     }
-    
+
     public void updateState(int newStateVal) {
         MY_STATE = newStateVal;
         STATE_CHANGE = true;
