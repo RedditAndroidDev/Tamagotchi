@@ -4,6 +4,8 @@ package com.redditandroiddevelopers.tamagotchi.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
 
 /**
@@ -14,32 +16,35 @@ public class SplashScreen extends CommonScreen {
 
     private static final float SPLASH_DURATION = .5f;
 
-    private SpriteBatch batch;
-    private Texture splashTexture;
+    private Stage stage;
+
     private float timeElapsed = 0;
 
     @Override
     public void show() {
         // super.show();
-
-        batch = new SpriteBatch();
+        stage = new Stage(800, 480, true, new SpriteBatch());
 
         // load Reddit alien texture
-        splashTexture = new Texture(Gdx.files.internal("Reddit-alien.png"));
+        Image splashLogo = new Image(new Texture(Gdx.files.internal("Reddit-alien.png")));
+        splashLogo.x = getCenterX(splashLogo.getRegion().getTexture());
+        splashLogo.y = getCenterY(splashLogo.getRegion().getTexture());
+        stage.addActor(splashLogo);
     }
 
     @Override
     public void update(float delta) {
         // delta is the time since the last update, adding it up gives us the
         // time since the first update
-        if (timeElapsed < SPLASH_DURATION) { // revert to 3 (or any other suitable value)
+        if (timeElapsed < SPLASH_DURATION) { // revert to 3 (or any other
+                                             // suitable value)
             // before publishing the game
             timeElapsed += delta;
         }
         else {
             // after 3 seconds, the Splash screen is hidden and the
             // MainMenuScreen is shown
-        	TamagotchiGame.updateState(TamagotchiGame.STATE_MAIN_MENU);
+            TamagotchiGame.updateState(TamagotchiGame.STATE_MAIN_MENU);
         }
     }
 
@@ -48,10 +53,8 @@ public class SplashScreen extends CommonScreen {
         // use white background for now
         Gdx.gl.glClearColor(1, 1, 1, 1);
 
-        batch.begin();
-        // draw Reddit alien on the screen
-        batch.draw(splashTexture, getCenterX(splashTexture), getCenterY(splashTexture));
-        batch.end();
+        // draw stage
+        stage.draw();
     }
 
     /**
@@ -61,8 +64,8 @@ public class SplashScreen extends CommonScreen {
      * @param t Texture to display
      * @return X coordinate
      */
-    private static final int getCenterX(Texture t) {
-        return (Gdx.graphics.getWidth() - t.getWidth()) / 2;
+    private final float getCenterX(Texture t) {
+        return (stage.width() - t.getWidth()) / 2;
     }
 
     /**
@@ -72,7 +75,7 @@ public class SplashScreen extends CommonScreen {
      * @param t Texture to display
      * @return Y coordinate
      */
-    private static final int getCenterY(Texture t) {
-        return (Gdx.graphics.getHeight() - t.getHeight()) / 2;
+    private final float getCenterY(Texture t) {
+        return (stage.height() - t.getHeight()) / 2;
     }
 }

@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class MainMenuScreen extends CommonScreen implements ClickListener {
-    
+
     private static final String TAG = "Tamagotchi:MainMenuScreen";
 
     private Stage stage;
@@ -22,19 +22,21 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
     private Button btnMemories;
     private Button btnSettings;
 
+
     @Override
     public void show() {
 
         // create new stage
-        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, new SpriteBatch());
+        stage = new Stage(800, 480, true, new SpriteBatch());
 
         // adding the game name
         Image imgAppName = new Image(new Texture(Gdx.files.internal("MainMenu/AppName.png")));
         imgAppName.x = 10;
         imgAppName.y = 325;
         stage.addActor(imgAppName);
-        
-        // TODO: Set up a TextureRegion that encompasses all UI elements involved here
+
+        // TODO: Set up a TextureRegion that encompasses all UI elements
+        // involved here
 
         // adding the Play button
         btnPlay = new Button(new TextureRegion(new Texture(Gdx.files.internal("MainMenu/btn_play_unpressed.png"))));
@@ -51,19 +53,21 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
         stage.addActor(btnSelect);
 
         // adding the Memories button
-        btnMemories = new Button(new TextureRegion(new Texture(Gdx.files.internal("MainMenu/btn_memories_unpressed.png"))));
+        btnMemories = new Button(new TextureRegion(new Texture(
+                Gdx.files.internal("MainMenu/btn_memories_unpressed.png"))));
         btnMemories.x = 10;
         btnMemories.y = 85;
         btnMemories.setClickListener(this);
         stage.addActor(btnMemories);
 
         // adding the Settings button
-        btnSettings = new Button(new TextureRegion(new Texture(Gdx.files.internal("MainMenu/btn_settings_unpressed.png"))));
+        btnSettings = new Button(new TextureRegion(new Texture(
+                Gdx.files.internal("MainMenu/btn_settings_unpressed.png"))));
         btnSettings.x = 10;
         btnSettings.y = 10;
         btnSettings.setClickListener(this);
         stage.addActor(btnSettings);
-        
+
         // ready the input processor to receive input events for the stage
         Gdx.input.setInputProcessor(stage);
     }
