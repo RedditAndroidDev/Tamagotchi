@@ -16,12 +16,12 @@ import com.redditandroiddevelopers.tamagotchi.screens.SplashScreen;
 public class TamagotchiGame extends Game {
 
     // enums are expensive
-    public static int STATE_MAIN_MENU = 0;
-    public static int STATE_RUNNING = 1;
-    public static int STATE_PAUSED = 2;
-    public static int STATE_SELECT_PET = 3;
-    public static int STATE_MEMORIES = 4;
-    public static int STATE_SETTINGS = 5;
+    public static final int STATE_MAIN_MENU = 0;
+    public static final int STATE_RUNNING = 1;
+    public static final int STATE_PAUSED = 2;
+    public static final int STATE_SELECT_PET = 3;
+    public static final int STATE_MEMORIES = 4;
+    public static final int STATE_SETTINGS = 5;
 
     public static int MY_STATE = 0;
     public static boolean STATE_CHANGE = false;
@@ -43,25 +43,25 @@ public class TamagotchiGame extends Game {
             getScreen().dispose();
 
             switch (MY_STATE) {
-            case 0:
+            case STATE_MAIN_MENU:
                 setScreen(new MainMenuScreen());
                 break;
-            case 1:
+            case STATE_RUNNING:
                 setScreen(new GameLoop());
                 break;
-            case 2:
+            case STATE_PAUSED:
                 setScreen(new PauseScreen());
                 break;
-            case 3:
+            case STATE_SELECT_PET:
                 setScreen(new PauseScreen()); // FIXME: launch correct
                                               // screen when class has been
                                               // created
                 break;
-            case 4:
+            case STATE_MEMORIES:
                 setScreen(new PauseScreen());// FIXME: launch correct screen
                                              // when class has been created
                 break;
-            case 5:
+            case STATE_SETTINGS:
                 setScreen(new PauseScreen());// FIXME: launch correct screen
                                              // when class has been created;
             default:
