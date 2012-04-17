@@ -10,14 +10,11 @@
 
 # generated files
 */bin/
-Tamagotchi-android/gen/*
-Tamagotchi-android/tests/bin/*
-Tamagotchi-android/tests/gen/*
+*/gen/
 
 # Local configuration file (sdk path, etc)
 /.checkstyle
 */local.properties
-Tamagotchi-android/tests/local.properties
 Tamagotchi-android/libs/gdx.jar
 
 # Mischellaneous trash
