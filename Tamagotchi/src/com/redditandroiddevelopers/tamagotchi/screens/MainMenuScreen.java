@@ -24,6 +24,8 @@ public class MainMenuScreen extends CommonScreen {
 
     @Override
     public void show() {
+    	
+    	//TODO consider refactor http://code.google.com/p/libgdx-users/wiki/scene2d#Actor
 
         // create new stage
         stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, batch);

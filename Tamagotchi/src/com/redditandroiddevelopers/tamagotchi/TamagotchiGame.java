@@ -1,4 +1,3 @@
-
 package com.redditandroiddevelopers.tamagotchi;
 
 import com.badlogic.gdx.Game;
@@ -9,6 +8,11 @@ import com.redditandroiddevelopers.tamagotchi.screens.MainMenuScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.PauseScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.SplashScreen;
 
+/**
+ * The main activity for our game. This will be the only activity running in our
+ * app, it will delegate what screen instance will render to the display based
+ * on the state.
+ */
 public class TamagotchiGame extends Game {
 
     // enums are expensive
@@ -29,6 +33,8 @@ public class TamagotchiGame extends Game {
 
     @Override
     public void render() {
+        // TODO FrameBuffer here?
+
         if (!STATE_CHANGE) {
             CommonScreen currentScreen = getScreen();
             currentScreen.render(Gdx.graphics.getDeltaTime());
@@ -37,29 +43,29 @@ public class TamagotchiGame extends Game {
             getScreen().dispose();
 
             switch (MY_STATE) {
-                case 0:
-                    setScreen(new MainMenuScreen());
-                    break;
-                case 1:
-                    setScreen(new GameLoop());
-                    break;
-                case 2:
-                    setScreen(new PauseScreen());
-                    break;
-                case 3:
-                    setScreen(new PauseScreen()); // FIXME: launch correct
-                                                  // screen when class has been
-                                                  // created
-                    break;
-                case 4:
-                    setScreen(new PauseScreen());// FIXME: launch correct screen
-                                                 // when class has been created
-                    break;
-                case 5:
-                    setScreen(new PauseScreen());// FIXME: launch correct screen
-                                                 // when class has been created;
-                default:
-                    break;
+            case 0:
+                setScreen(new MainMenuScreen());
+                break;
+            case 1:
+                setScreen(new GameLoop());
+                break;
+            case 2:
+                setScreen(new PauseScreen());
+                break;
+            case 3:
+                setScreen(new PauseScreen()); // FIXME: launch correct
+                                              // screen when class has been
+                                              // created
+                break;
+            case 4:
+                setScreen(new PauseScreen());// FIXME: launch correct screen
+                                             // when class has been created
+                break;
+            case 5:
+                setScreen(new PauseScreen());// FIXME: launch correct screen
+                                             // when class has been created;
+            default:
+                break;
             }
         }
     }
@@ -69,7 +75,14 @@ public class TamagotchiGame extends Game {
         return (CommonScreen) super.getScreen();
     }
 
-    public void updateState(int newStateVal) {
+    /**
+     * Update the state, all updates outside of this class should use this
+     * method
+     * 
+     * @param newStateVal
+     *            The int val of the new state
+     */
+    public static void updateState(int newStateVal) {
         MY_STATE = newStateVal;
         STATE_CHANGE = true;
     }

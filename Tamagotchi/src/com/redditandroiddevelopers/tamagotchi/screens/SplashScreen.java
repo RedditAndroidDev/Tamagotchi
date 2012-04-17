@@ -39,8 +39,7 @@ public class SplashScreen extends CommonScreen {
         else {
             // after 3 seconds, the Splash screen is hidden and the
             // MainMenuScreen is shown
-            TamagotchiGame.MY_STATE = TamagotchiGame.STATE_MAIN_MENU;
-            TamagotchiGame.STATE_CHANGE = true;
+        	TamagotchiGame.updateState(TamagotchiGame.STATE_MAIN_MENU);
         }
     }
 
