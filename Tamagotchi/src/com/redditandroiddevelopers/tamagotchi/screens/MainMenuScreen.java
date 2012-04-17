@@ -52,16 +52,16 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
 
         // adding the Memories button
         btnMemories = new Button(new TextureRegion(new Texture(Gdx.files.internal("MainMenu/btn_memories_unpressed.png"))));
-        btnMemories.setClickListener(this);
         btnMemories.x = 10;
         btnMemories.y = 85;
+        btnMemories.setClickListener(this);
         stage.addActor(btnMemories);
 
         // adding the Settings button
         btnSettings = new Button(new TextureRegion(new Texture(Gdx.files.internal("MainMenu/btn_settings_unpressed.png"))));
-        btnSettings.setClickListener(this);
         btnSettings.x = 10;
         btnSettings.y = 10;
+        btnSettings.setClickListener(this);
         stage.addActor(btnSettings);
         
         // ready the input processor to receive input events for the stage
