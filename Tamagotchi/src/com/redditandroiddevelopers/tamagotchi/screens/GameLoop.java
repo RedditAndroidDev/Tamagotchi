@@ -34,6 +34,7 @@ public class GameLoop extends CommonScreen implements ClickListener, AssetErrorL
 
     private Stage stage;
     private Group ui;
+    private Group topButtons;
 
     @Override
     public void show() {
@@ -41,6 +42,7 @@ public class GameLoop extends CommonScreen implements ClickListener, AssetErrorL
         // TODO document this :)
         stage = new Stage(800, 480, true, new SpriteBatch());
         ui = new Group("ui");
+        topButtons = new Group("top_buttons");
 
         // FIXME: Change to support multiple resolutions
         Resolution resolution = new Resolution(800, 480, "");
@@ -54,37 +56,40 @@ public class GameLoop extends CommonScreen implements ClickListener, AssetErrorL
         assetManager.finishLoading();
 
         final int marginBetweenButtons = 10;
-        int width = assetManager.get("InGame/button.png", Texture.class).getWidth() + marginBetweenButtons;
+        int width = assetManager.get("InGame/button.png", Texture.class).getWidth()
+                + marginBetweenButtons;
 
-        btnLight = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
+        // add buttons
+        btnFood = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
                 "InGame/button.png", Texture.class)));
-        btnLight.x = stage.right() - width;
-        btnLight.y = stage.top() - width;
-        btnLight.setClickListener(this);
-        ui.addActor(btnLight);
-
-        btnShower = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
-                "InGame/button.png", Texture.class)));
-        btnShower.x = stage.right() - (width * 2);
-        btnShower.y = stage.top() - width;
-        btnShower.setClickListener(this);
-        ui.addActor(btnShower);
+        btnFood.x = width * 0;
+        btnFood.setClickListener(this);
+        topButtons.addActor(btnFood);
 
         btnToilet = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
                 "InGame/button.png", Texture.class)));
-        btnToilet.x = stage.right() - (width * 3);
-        btnToilet.y = stage.top() - width;
+        btnToilet.x = width * 1;
         btnToilet.setClickListener(this);
-        ui.addActor(btnToilet);
+        topButtons.addActor(btnToilet);
 
-        btnFood = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
+        btnShower = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
                 "InGame/button.png", Texture.class)));
-        btnFood.x = stage.right() - (width * 4);
-        btnFood.y = stage.top() - width;
-        btnFood.setClickListener(this);
+        btnShower.x = width * 2;
+        btnShower.setClickListener(this);
+        topButtons.addActor(btnShower);
 
-        ui.addActor(btnFood);
+        btnLight = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
+                "InGame/button.png", Texture.class)));
+        btnLight.x = width * 3;
+        btnLight.setClickListener(this);
+        topButtons.addActor(btnLight);
 
+        // setup topButtons
+        topButtons.width = width * 4; // FIXME: make this more dynamic
+        topButtons.x = stage.right() - topButtons.width;
+        topButtons.y = stage.top() - width;
+
+        ui.addActor(topButtons);
         stage.addActor(ui);
 
         Gdx.input.setInputProcessor(stage);
