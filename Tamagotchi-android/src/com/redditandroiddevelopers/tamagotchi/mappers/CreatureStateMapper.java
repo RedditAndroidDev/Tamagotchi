@@ -19,6 +19,7 @@ public class CreatureStateMapper {
         state.happy = c.getInt(c.getColumnIndex("CS_HAPPY"));
         state.sick = (c.getInt(c.getColumnIndex("CS_SICK")) == 1) ? true
                 : false;
+        state.experience = c.getInt(c.getColumnIndex("CS_EXPERIENCE"));
         return state;
     }
 }

@@ -22,6 +22,7 @@ public class CreatureState {
     public int hunger;
     public int happy;
     public boolean sick;
+    public int experience;
 
     public ContentValues buildContentValues() {
         ContentValues toReturn = new ContentValues();
@@ -35,6 +36,7 @@ public class CreatureState {
         toReturn.put("CS_HUNGER", hunger);
         toReturn.put("CS_HAPPY", happy);
         toReturn.put("CS_SICK", sick);
+        toReturn.put("CS_EXPERIENCE", experience);
         return toReturn;
     }
 }

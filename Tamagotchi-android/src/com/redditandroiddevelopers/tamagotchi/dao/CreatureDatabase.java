@@ -16,6 +16,7 @@ public class CreatureDatabase {
     public static final String RAISE_TYPE_TABLE_NAME = "CREATURE_RAISE_TYPE";
     public static final String MEDICINE_TABLE_NAME = "MEDICINE";
     public static final String SICKNESS_TABLE_NAME = "SICKNESS";
+    public static final String EXPERIENCE_TABLE_NAME = "EXPERIENCE";
 
     private final DatabaseHelper databaseHelper;
 
@@ -72,23 +73,24 @@ public class CreatureDatabase {
         // seed data for constants, i.e. medicine, sickness, etc.
         // TODO: debug guard
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
-
+        ContentValues vals;
+        
         for (int i = 0; i < 5; i++) {
-            ContentValues vals = new ContentValues();
+            vals = new ContentValues();
             vals.put("M_ID", i);
             vals.put("M_NAME", "MEDICINE" + i);
             db.insert(MEDICINE_TABLE_NAME, null, vals);
         }
 
         for (int i = 0; i < 5; i++) {
-            ContentValues vals = new ContentValues();
+            vals = new ContentValues();
             vals.put("S_ID", i);
             vals.put("M_ID", i);
             vals.put("S_NAME", "SICKNESS" + i);
             db.insert(SICKNESS_TABLE_NAME, null, vals);
         }
 
-        ContentValues vals = new ContentValues();
+        vals = new ContentValues();
         vals.put("CRT_ID", 1);
         vals.put("CRT_NAME", "HEALTHY");
         vals.put("CRT_MULTIPLIER", "1.00");
@@ -108,7 +110,16 @@ public class CreatureDatabase {
         vals.put("CE_MAX_DISCIPLINE", 100);
         vals.put("CE_MAX_HUNGER", 100);
         vals.put("CE_MAX_HAPPY", 100);
+        // The min and max needs to be replaced based on creature type
+        vals.put("CE_MAX_EXPERIENCE", 70000 + (int)(Math.random()*((70000 + 120000) + 1)));
         db.insert(EVOLUTION_TABLE_NAME, null, vals);
+        
+        vals = new ContentValues();
+        vals.put("E_ID", 1);
+        vals.put("CT_ID", 1);
+        vals.put("E_MIN_XP", 70000);
+        vals.put("E_MAX_XP", 120000);
+        db.insert(EXPERIENCE_TABLE_NAME, null, vals);
     }
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -122,8 +133,8 @@ public class CreatureDatabase {
                 + "CI_NAME VARCHAR2(50), " + "CI_BIRTH_DATE INTEGER, "
                 + "CI_DEATH_DATE INTEGER, " + "CI_ALIVE BOOLEAN, "
                 + "CI_GENDER BOOLEAN, "
-                + "FOREIGN KEY(CT_ID) REFERENCES creature_type(CT_ID), "
-                + "FOREIGN KEY(CE_ID) REFERENCES creature_evolution(CE_ID) "
+                + "FOREIGN KEY(CT_ID) REFERENCES " +  TYPE_TABLE_NAME + "(CT_ID), "
+                + "FOREIGN KEY(CE_ID) REFERENCES " + EVOLUTION_TABLE_NAME + "(CE_ID) "
                 + ");";
         private static final String CREATE_STATE = ""
                 + "CREATE TABLE "
@@ -139,16 +150,17 @@ public class CreatureDatabase {
                 + "CS_HUNGER INTEGER, "
                 + "CS_HAPPY INTEGER, "
                 + "CS_SICK BOOLEAN, "
-                + "FOREIGN KEY(CI_ID) REFERENCES creature_info(CI_ID), "
-                + "FOREIGN KEY(CRT_ID) REFERENCES creature_raise_type(CRT_ID), "
-                + "FOREIGN KEY(S_ID) REFERENCES sickness(S_ID) " + ");";
+                + "CS_EXPERIENCE INTEGER, "
+                + "FOREIGN KEY(CI_ID) REFERENCES " + INFO_TABLE_NAME + "(CI_ID), "
+                + "FOREIGN KEY(CRT_ID) REFERENCES " + RAISE_TYPE_TABLE_NAME + "(CRT_ID), "
+                + "FOREIGN KEY(S_ID) REFERENCES " + SICKNESS_TABLE_NAME + "(S_ID) " + ");";
         private static final String CREATE_EVOLUTION = "" + "CREATE TABLE "
                 + EVOLUTION_TABLE_NAME + " (" + "CE_ID INTEGER PRIMARY KEY, "
                 + "CT_ID INTEGER, " + "CE_NAME VARCHAR2(100), "
                 + "CE_MAX_HEALTH INTEGER, " + "CE_MAX_BOWEL INTEGER, "
                 + "CE_MAX_DISCIPLINE INTEGER, " + "CE_MAX_HUNGER INTEGER, "
-                + "CE_MAX_HAPPY INTEGER, "
-                + "FOREIGN KEY(CT_ID) REFERENCES creature_type(CT_ID) " + ");";
+                + "CE_MAX_HAPPY INTEGER, " + "CE_MAX_EXPERIENCE INTEGER, "
+                + "FOREIGN KEY(CT_ID) REFERENCES " + TYPE_TABLE_NAME + "(CT_ID) " + ");";
         private static final String CREATE_CREATURE_TYPE = "" + "CREATE TABLE "
                 + TYPE_TABLE_NAME + " (" + "CT_ID INTEGER PRIMARY KEY, "
                 + "CT_NAME VARCHAR2(100) " + ");";
@@ -162,7 +174,11 @@ public class CreatureDatabase {
         private static final String CREATE_SICKNESS = "" + "CREATE TABLE "
                 + SICKNESS_TABLE_NAME + " (" + "S_ID INTEGER PRIMARY KEY, "
                 + "M_ID INTEGER, " + "S_NAME TEXT, "
-                + "FOREIGN KEY (M_ID) REFERENCES medicine(M_ID) " + ");";
+                + "FOREIGN KEY (M_ID) REFERENCES " + MEDICINE_TABLE_NAME + "(M_ID) " + ");";
+        private static final String CREATE_EXPERIENCE = "" + "CREATE TABLE "
+                + EXPERIENCE_TABLE_NAME + " (" + "E_ID INTEGER PRIMARY KEY, "
+                + "CT_ID INTEGER, " + "E_MIN_XP INTEGER, " + "E_MAX_XP INTEGER, "
+                + "FOREIGN KEY (CT_ID) REFERENCES " + TYPE_TABLE_NAME + "(CT_ID)" + ");";
         
         private Context mContext;
 
@@ -180,6 +196,7 @@ public class CreatureDatabase {
             db.execSQL(CREATE_INFO);
             db.execSQL(CREATE_STATE);
             db.execSQL(CREATE_EVOLUTION);
+            db.execSQL(CREATE_EXPERIENCE);
             // turn on foreign keys
             db.execSQL("PRAGMA foreign_keys=ON;");
         }

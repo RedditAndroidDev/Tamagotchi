@@ -22,7 +22,7 @@ public class SicknessMedicineDao {
     /*
      * Sickness
      */
-    public Sickness creature(Sickness sickness) {
+    public Sickness create(Sickness sickness) {
         ContentValues vals = sickness.buildContentValues();
         if (sickness.id <= 0) {
             vals.putNull("S_ID");

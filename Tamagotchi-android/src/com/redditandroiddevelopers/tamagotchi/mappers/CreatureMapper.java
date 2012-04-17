@@ -46,5 +46,4 @@ public class CreatureMapper {
                 .getColumnIndex("CI_GENDER")));
         return c;
     }
-
 }
