@@ -38,11 +38,14 @@ public class GameLoop extends CommonScreen implements ClickListener, AssetErrorL
     @Override
     public void show() {
 
+        // FIXME: Touch input area of buttons is too big
+
         // TODO document this :)
         stage = new Stage(800, 480, true, new SpriteBatch());
         ui = new Group("ui");
 
-        Resolution resolution = new Resolution(480, 800, "");
+        // FIXME: Change to support multiple resolutions
+        Resolution resolution = new Resolution(800, 480, "");
         ResolutionFileResolver resolver = new ResolutionFileResolver(
                 new InternalFileHandleResolver(), resolution);
         assetManager = TamagotchiGame.getAssetManager();
@@ -57,28 +60,28 @@ public class GameLoop extends CommonScreen implements ClickListener, AssetErrorL
         btnLight = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
                 "InGame/button.png", Texture.class)));
         btnLight.x = stage.right() - width;
-        btnLight.y = 0;
+        btnLight.y = stage.top() - width;
         btnLight.setClickListener(this);
         ui.addActor(btnLight);
 
         btnShower = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
                 "InGame/button.png", Texture.class)));
         btnShower.x = stage.right() - (width * 2);
-        btnShower.y = 0;
+        btnShower.y = stage.top() - width;
         btnShower.setClickListener(this);
         ui.addActor(btnShower);
 
         btnToilet = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
                 "InGame/button.png", Texture.class)));
         btnToilet.x = stage.right() - (width * 3);
-        btnToilet.y = 0;
+        btnToilet.y = stage.top() - width;
         btnToilet.setClickListener(this);
         ui.addActor(btnToilet);
 
         btnFood = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
                 "InGame/button.png", Texture.class)));
         btnFood.x = stage.right() - (width * 4);
-        btnFood.y = 0;
+        btnFood.y = stage.top() - width;
         btnFood.setClickListener(this);
 
         ui.addActor(btnFood);
@@ -102,13 +105,24 @@ public class GameLoop extends CommonScreen implements ClickListener, AssetErrorL
 
     @Override
     public void click(Actor actor, float x, float y) {
-
+        if (actor == btnFood) {
+            Gdx.app.debug(TAG, "Touch on food button");
+        } else if (actor == btnToilet) {
+            Gdx.app.debug(TAG, "Touch on toilet button");
+        } else if (actor == btnShower) {
+            Gdx.app.debug(TAG, "Touch on shower button");
+        } else if (actor == btnLight) {
+            Gdx.app.debug(TAG, "Touch on light button");
+        } else {
+            Gdx.app.error(TAG, "Unknown actor");
+            assert false;
+        }
     }
 
     @Override
     public void error(String fileName, @SuppressWarnings("rawtypes")
     Class type, Throwable throwable) {
-        Gdx.app.log(TAG, "AssetManager: Cannot load asset: " + type + " " + fileName);
+        Gdx.app.error(TAG, "AssetManager: Cannot load asset: " + type + " " + fileName);
     }
 
 }
