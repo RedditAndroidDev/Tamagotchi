@@ -36,11 +36,11 @@ public class TamagotchiGame extends Game {
     @Override
     public void render() {
         // TODO FrameBuffer here?
+        
+        super.render();     // this will take care of the case where the
+                            // current screen is still the same
 
-        if (!STATE_CHANGE) {
-            CommonScreen currentScreen = getScreen();
-            currentScreen.render(Gdx.graphics.getDeltaTime());
-        } else {
+        if (STATE_CHANGE) {
             STATE_CHANGE = false;
             getScreen().dispose();
 
