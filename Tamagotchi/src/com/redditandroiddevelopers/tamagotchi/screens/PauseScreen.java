@@ -1,5 +1,8 @@
 package com.redditandroiddevelopers.tamagotchi.screens;
 
+/**
+ * The Pause screen
+ */
 public class PauseScreen extends CommonScreen {
 
     @Override

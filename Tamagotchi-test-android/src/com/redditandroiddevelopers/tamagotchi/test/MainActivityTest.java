@@ -1,12 +1,10 @@
 package com.redditandroiddevelopers.tamagotchi.test;
 
-import android.test.ActivityInstrumentationTestCase2;
+import android.test.SingleLaunchActivityTestCase;
 
 import com.redditandroiddevelopers.tamagotchi.MainActivity;
 
-
-public class MainActivityTest extends 
-        ActivityInstrumentationTestCase2<MainActivity> {
+public class MainActivityTest extends SingleLaunchActivityTestCase<MainActivity> {
 
     private MainActivity mActivity;
 
@@ -17,7 +15,6 @@ public class MainActivityTest extends
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        setActivityInitialTouchMode(false);
         mActivity = getActivity();
     }
 
