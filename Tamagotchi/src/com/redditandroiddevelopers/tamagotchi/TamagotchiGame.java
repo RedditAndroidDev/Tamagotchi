@@ -1,8 +1,10 @@
+
 package com.redditandroiddevelopers.tamagotchi;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.redditandroiddevelopers.tamagotchi.screens.CommonScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.GameLoop;
 import com.redditandroiddevelopers.tamagotchi.screens.MainMenuScreen;
@@ -27,6 +29,8 @@ public class TamagotchiGame extends Game {
     public static int MY_STATE = 0;
     public static boolean STATE_CHANGE = false;
 
+    private static AssetManager assetManager = new AssetManager();
+
     @Override
     public void create() {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
@@ -36,38 +40,38 @@ public class TamagotchiGame extends Game {
     @Override
     public void render() {
         // TODO FrameBuffer here?
-        
-        super.render();     // this will take care of the case where the
-                            // current screen is still the same
+
+        super.render(); // this will take care of the case where the
+                        // current screen is still the same
 
         if (STATE_CHANGE) {
             STATE_CHANGE = false;
             getScreen().dispose();
 
             switch (MY_STATE) {
-            case STATE_MAIN_MENU:
-                setScreen(new MainMenuScreen());
-                break;
-            case STATE_RUNNING:
-                setScreen(new GameLoop());
-                break;
-            case STATE_PAUSED:
-                setScreen(new PauseScreen());
-                break;
-            case STATE_SELECT_PET:
-                setScreen(new PauseScreen()); // FIXME: launch correct
-                                              // screen when class has been
-                                              // created
-                break;
-            case STATE_MEMORIES:
-                setScreen(new PauseScreen());// FIXME: launch correct screen
-                                             // when class has been created
-                break;
-            case STATE_SETTINGS:
-                setScreen(new PauseScreen());// FIXME: launch correct screen
-                                             // when class has been created;
-            default:
-                break;
+                case STATE_MAIN_MENU:
+                    setScreen(new MainMenuScreen());
+                    break;
+                case STATE_RUNNING:
+                    setScreen(new GameLoop());
+                    break;
+                case STATE_PAUSED:
+                    setScreen(new PauseScreen());
+                    break;
+                case STATE_SELECT_PET:
+                    setScreen(new PauseScreen()); // FIXME: launch correct
+                                                  // screen when class has been
+                                                  // created
+                    break;
+                case STATE_MEMORIES:
+                    setScreen(new PauseScreen());// FIXME: launch correct screen
+                                                 // when class has been created
+                    break;
+                case STATE_SETTINGS:
+                    setScreen(new PauseScreen());// FIXME: launch correct screen
+                                                 // when class has been created;
+                default:
+                    break;
             }
         }
     }
@@ -87,6 +91,15 @@ public class TamagotchiGame extends Game {
     public static void updateState(int newStateVal) {
         MY_STATE = newStateVal;
         STATE_CHANGE = true;
+    }
+
+    /**
+     * Returns the AssetManager of the game.
+     * 
+     * @return AssetManager
+     */
+    public static AssetManager getAssetManager() {
+        return assetManager;
     }
 
 }
