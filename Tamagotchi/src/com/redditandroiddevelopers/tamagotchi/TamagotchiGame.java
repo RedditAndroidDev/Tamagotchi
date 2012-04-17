@@ -1,5 +1,6 @@
 package com.redditandroiddevelopers.tamagotchi;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.redditandroiddevelopers.tamagotchi.screens.CommonScreen;
@@ -28,6 +29,7 @@ public class TamagotchiGame extends Game {
 
     @Override
     public void create() {
+        Gdx.app.setLogLevel(Application.LOG_DEBUG);
         setScreen(new SplashScreen());
     }
 
