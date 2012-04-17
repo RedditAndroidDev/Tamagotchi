@@ -38,8 +38,6 @@ public class GameLoop extends CommonScreen implements ClickListener, AssetErrorL
     @Override
     public void show() {
 
-        // FIXME: Touch input area of buttons is too big
-
         // TODO document this :)
         stage = new Stage(800, 480, true, new SpriteBatch());
         ui = new Group("ui");
@@ -55,7 +53,8 @@ public class GameLoop extends CommonScreen implements ClickListener, AssetErrorL
         assetManager.load("InGame/button.png", Texture.class);
         assetManager.finishLoading();
 
-        int width = assetManager.get("InGame/button.png", Texture.class).getWidth();
+        final int marginBetweenButtons = 10;
+        int width = assetManager.get("InGame/button.png", Texture.class).getWidth() + marginBetweenButtons;
 
         btnLight = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
                 "InGame/button.png", Texture.class)));
@@ -117,6 +116,12 @@ public class GameLoop extends CommonScreen implements ClickListener, AssetErrorL
             Gdx.app.error(TAG, "Unknown actor");
             assert false;
         }
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        assetManager.dispose();
     }
 
     @Override
