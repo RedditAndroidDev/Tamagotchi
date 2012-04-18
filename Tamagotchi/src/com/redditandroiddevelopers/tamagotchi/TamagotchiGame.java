@@ -6,7 +6,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.redditandroiddevelopers.tamagotchi.screens.CommonScreen;
-import com.redditandroiddevelopers.tamagotchi.screens.MainGame;
+import com.redditandroiddevelopers.tamagotchi.screens.MainGameScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.MainMenuScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.PauseScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.SplashScreen;
@@ -53,7 +53,7 @@ public class TamagotchiGame extends Game {
                     setScreen(new MainMenuScreen());
                     break;
                 case STATE_MAIN_GAME:
-                    setScreen(new MainGame());
+                    setScreen(new MainGameScreen());
                     break;
                 case STATE_PAUSED:
                     setScreen(new PauseScreen());
