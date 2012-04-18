@@ -19,7 +19,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
 
 /**
- * This screen instance will represent the normal game execution
+ * This screen instance will represent the main game screen where your creature
+ * will live.<br>
+ * This is where the user will spend most of the time.
  */
 public class MainGameScreen extends CommonScreen implements ClickListener, AssetErrorListener {
 
@@ -39,11 +41,16 @@ public class MainGameScreen extends CommonScreen implements ClickListener, Asset
     @Override
     public void show() {
 
-        // TODO document this :)
+        // add stage
         stage = new Stage(800, 480, true, new SpriteBatch());
+
+        // TODO: add an OrthographicCamera
+
+        // add groups for better readability and flexibility
         ui = new Group("ui");
         topButtons = new Group("top_buttons");
 
+        // initialize AssetManager
         // FIXME: Change to support multiple resolutions
         Resolution resolution = new Resolution(800, 480, "");
         ResolutionFileResolver resolver = new ResolutionFileResolver(
@@ -52,46 +59,64 @@ public class MainGameScreen extends CommonScreen implements ClickListener, Asset
         assetManager.setErrorListener(this);
         assetManager.setLoader(Texture.class, new TextureLoader(resolver));
 
+        // load needed textures
         assetManager.load("InGame/button.png", Texture.class);
+
+        // make sure all textures are loaded before continuing
+        // TODO: Add a loading screen if loading takes too long
         assetManager.finishLoading();
 
+        // set margin between buttons
         final int marginBetweenButtons = 10;
+
+        // buttons have the same width and height. using this value allows
+        // precise placement of the buttons
         int width = assetManager.get("InGame/button.png", Texture.class).getWidth()
                 + marginBetweenButtons;
 
-        // add buttons
+        // add food button
         btnFood = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
                 "InGame/button.png", Texture.class)));
         btnFood.x = width * 0;
         btnFood.setClickListener(this);
         topButtons.addActor(btnFood);
 
+        // add toilet button
         btnToilet = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
                 "InGame/button.png", Texture.class)));
         btnToilet.x = width * 1;
         btnToilet.setClickListener(this);
         topButtons.addActor(btnToilet);
 
+        // add shower button
         btnShower = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
                 "InGame/button.png", Texture.class)));
         btnShower.x = width * 2;
         btnShower.setClickListener(this);
         topButtons.addActor(btnShower);
 
+        // add light button
         btnLight = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
                 "InGame/button.png", Texture.class)));
         btnLight.x = width * 3;
         btnLight.setClickListener(this);
         topButtons.addActor(btnLight);
 
-        // setup topButtons
-        topButtons.width = width * 4; // FIXME: make this more dynamic
+        // setup UI group 'topButtons'
+        topButtons.width = width * 4; // FIXME: make this more dynamic without
+                                      // wasting too many resources
+
+        // position topButtons in top right corner
         topButtons.x = stage.right() - topButtons.width;
         topButtons.y = stage.top() - width;
 
+        // add 'topbuttons' to the 'ui' group
         ui.addActor(topButtons);
+
+        // add the 'ui' to the stage
         stage.addActor(ui);
 
+        // allow stage to receive touch input
         Gdx.input.setInputProcessor(stage);
 
     }
@@ -103,12 +128,13 @@ public class MainGameScreen extends CommonScreen implements ClickListener, Asset
 
     @Override
     public void draw(float delta) {
+        // draw the stage
         stage.draw();
-
     }
 
     @Override
     public void click(Actor actor, float x, float y) {
+        // touch input was received, time to find the culprit
         if (actor == btnFood) {
             Gdx.app.debug(TAG, "Touch on food button");
         } else if (actor == btnToilet) {
@@ -126,6 +152,7 @@ public class MainGameScreen extends CommonScreen implements ClickListener, Asset
     @Override
     public void dispose() {
         super.dispose();
+        // AssetManagers needs to be manually disposed
         assetManager.dispose();
     }
 
