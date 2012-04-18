@@ -53,8 +53,7 @@ public class MainGameScreen extends CommonScreen implements ClickListener, Asset
         topButtons = new Group("top_buttons");
 
         // initialize AssetManager
-        // FIXME: Change to support multiple resolutions
-        Resolution resolution = new Resolution(800, 480, "");
+        Resolution resolution = new Resolution(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), "");
         ResolutionFileResolver resolver = new ResolutionFileResolver(
                 new InternalFileHandleResolver(), resolution);
         assetManager = TamagotchiGame.getAssetManager();
