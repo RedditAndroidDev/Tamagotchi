@@ -74,43 +74,45 @@ public class MainGameScreen extends CommonScreen implements ClickListener, Asset
         int width = assetManager.get("InGame/button.png", Texture.class).getWidth()
                 + marginBetweenButtons;
 
-        // add food button
+        // create food button
         btnFood = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
                 "InGame/button.png", Texture.class)));
         btnFood.x = width * 0;
         btnFood.setClickListener(this);
-        topButtons.addActor(btnFood);
 
-        // add toilet button
+        // create toilet button
         btnToilet = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
                 "InGame/button.png", Texture.class)));
         btnToilet.x = width * 1;
         btnToilet.setClickListener(this);
-        topButtons.addActor(btnToilet);
 
-        // add shower button
+        // create shower button
         btnShower = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
                 "InGame/button.png", Texture.class)));
         btnShower.x = width * 2;
         btnShower.setClickListener(this);
-        topButtons.addActor(btnShower);
 
-        // add light button
+        // create light button
         btnLight = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
                 "InGame/button.png", Texture.class)));
         btnLight.x = width * 3;
         btnLight.setClickListener(this);
+
+        // add buttons to 'topButtons'
+        topButtons.addActor(btnFood);
+        topButtons.addActor(btnToilet);
+        topButtons.addActor(btnShower);
         topButtons.addActor(btnLight);
 
-        // setup UI group 'topButtons'
-        topButtons.width = width * 4; // FIXME: make this more dynamic without
-                                      // wasting too many resources
+        // adjust width of 'topButtons'
+        // FIXME: make this more dynamic without wasting too many resources
+        topButtons.width = width * 4;
 
         // position topButtons in top right corner
         topButtons.x = stage.right() - topButtons.width;
         topButtons.y = stage.top() - width;
 
-        // add 'topbuttons' to the 'ui' group
+        // add 'topButtons' to the 'ui' group
         ui.addActor(topButtons);
 
         // add the 'ui' to the stage
@@ -118,7 +120,6 @@ public class MainGameScreen extends CommonScreen implements ClickListener, Asset
 
         // allow stage to receive touch input
         Gdx.input.setInputProcessor(stage);
-
     }
 
     @Override
