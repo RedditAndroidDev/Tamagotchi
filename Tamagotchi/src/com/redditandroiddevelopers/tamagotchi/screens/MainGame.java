@@ -21,7 +21,7 @@ import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
 /**
  * This screen instance will represent the normal game execution
  */
-public class GameLoop extends CommonScreen implements ClickListener, AssetErrorListener {
+public class MainGame extends CommonScreen implements ClickListener, AssetErrorListener {
 
     private static final String TAG = "Tamagotchi:MainCreatureScreen";
 

@@ -6,7 +6,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.redditandroiddevelopers.tamagotchi.screens.CommonScreen;
-import com.redditandroiddevelopers.tamagotchi.screens.GameLoop;
+import com.redditandroiddevelopers.tamagotchi.screens.MainGame;
 import com.redditandroiddevelopers.tamagotchi.screens.MainMenuScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.PauseScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.SplashScreen;
@@ -20,7 +20,7 @@ public class TamagotchiGame extends Game {
 
     // enums are expensive
     public static final int STATE_MAIN_MENU = 0;
-    public static final int STATE_RUNNING = 1;
+    public static final int STATE_MAIN_GAME = 1;
     public static final int STATE_PAUSED = 2;
     public static final int STATE_SELECT_PET = 3;
     public static final int STATE_MEMORIES = 4;
@@ -52,8 +52,8 @@ public class TamagotchiGame extends Game {
                 case STATE_MAIN_MENU:
                     setScreen(new MainMenuScreen());
                     break;
-                case STATE_RUNNING:
-                    setScreen(new GameLoop());
+                case STATE_MAIN_GAME:
+                    setScreen(new MainGame());
                     break;
                 case STATE_PAUSED:
                     setScreen(new PauseScreen());

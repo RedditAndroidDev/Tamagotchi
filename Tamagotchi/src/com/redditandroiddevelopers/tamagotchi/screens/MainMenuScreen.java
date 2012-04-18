@@ -83,7 +83,7 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
     public void click(Actor actor, float x, float y) {
         if (actor == btnPlay) {
             Gdx.app.debug(TAG, "Touch on Play");
-            TamagotchiGame.updateState(TamagotchiGame.STATE_RUNNING);
+            TamagotchiGame.updateState(TamagotchiGame.STATE_MAIN_GAME);
         } else if (actor == btnSelect) {
             Gdx.app.debug(TAG, "Touch on Select");
         } else if (actor == btnMemories) {
