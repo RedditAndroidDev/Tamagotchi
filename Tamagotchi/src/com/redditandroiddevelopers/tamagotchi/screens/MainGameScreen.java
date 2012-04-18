@@ -34,6 +34,8 @@ public class MainGameScreen extends CommonScreen implements ClickListener, Asset
     private Button btnToilet;
     private Button btnFood;
 
+    //TODO make it drag down,not click
+    private Button dragDown;
     private Stage stage;
     private Group ui;
     private Group topButtons;
@@ -61,7 +63,7 @@ public class MainGameScreen extends CommonScreen implements ClickListener, Asset
 
         // load needed textures
         assetManager.load("InGame/button.png", Texture.class);
-
+        assetManager.load("InGame/arrow.png", Texture.class);
         // make sure all textures are loaded before continuing
         // TODO: Add a loading screen if loading takes too long
         assetManager.finishLoading();
@@ -114,6 +116,13 @@ public class MainGameScreen extends CommonScreen implements ClickListener, Asset
         // add 'topButtons' to the 'ui' group
         ui.addActor(topButtons);
 
+        
+        dragDown = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
+                "InGame/arrow.png", Texture.class)));
+        dragDown.y = stage.top() - 64;
+       dragDown.setClickListener(this);
+       ui.addActor(dragDown);
+       
         // add the 'ui' to the stage
         stage.addActor(ui);
 
