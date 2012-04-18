@@ -105,8 +105,7 @@ public class MainGameScreen extends CommonScreen implements ClickListener, Asset
         topButtons.addActor(btnLight);
 
         // adjust width of 'topButtons'
-        // FIXME: make this more dynamic without wasting too many resources
-        topButtons.width = width * 4;
+        topButtons.width = width * topButtons.getActors().size();
 
         // position topButtons in top right corner
         topButtons.x = stage.right() - topButtons.width;
