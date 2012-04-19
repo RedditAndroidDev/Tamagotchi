@@ -2,14 +2,11 @@
 package com.redditandroiddevelopers.tamagotchi.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
@@ -19,36 +16,32 @@ import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
  * will live.<br>
  * This is where the user will spend most of the time.
  */
-public class MainGameScreen extends CommonScreen implements ClickListener, AssetErrorListener {
+public class MainGameScreen extends CommonScreen implements ClickListener {
 
     private static final String TAG = "Tamagotchi:MainGameScreen";
-
-    private final AssetManager assetManager = TamagotchiGame.getAssetManager();
 
     private Button btnLight;
     private Button btnShower;
     private Button btnToilet;
     private Button btnFood;
-
-    //TODO make it drag down,not click
-    private Button dragDown;
-    private Stage stage;
-    private Group ui;
-    private Group topButtons;
+    // TODO make it drag down,not click
+    private Button btnDragDown;
+    
+    public MainGameScreen(TamagotchiGame game) {
+        super(game);
+    }
 
     @Override
     public void show() {
-
-        // add stage
-        stage = new Stage(800, 480, true, new SpriteBatch());
+        super.show();
 
         // TODO: add an OrthographicCamera
 
         // add groups for better readability and flexibility
-        ui = new Group("ui");
-        topButtons = new Group("top_buttons");
-
-        assetManager.setErrorListener(this);
+        final Group ui = new Group("ui");
+        final Group topButtons = new Group("top_buttons");
+        
+        final AssetManager assetManager = game.assetManager;
 
         // load needed textures for this screen
         assetManager.load("InGame/button.png", Texture.class);
@@ -112,22 +105,13 @@ public class MainGameScreen extends CommonScreen implements ClickListener, Asset
         ui.addActor(topButtons);
 
 
-        dragDown = new Button(arrowTextureRegion);
-        dragDown.y = stage.top() - 64;
-        dragDown.setClickListener(this);
-        ui.addActor(dragDown);
+        btnDragDown = new Button(arrowTextureRegion);
+        btnDragDown.y = stage.top() - 64;
+        btnDragDown.setClickListener(this);
+        ui.addActor(btnDragDown);
 
         // add the 'ui' to the stage
         stage.addActor(ui);
-
-        // allow stage to receive touch input
-        TamagotchiGame.getInputMultiplexer().addProcessor(stage);
-    }
-
-    @Override
-    public void hide() {
-        super.hide();
-        TamagotchiGame.getInputMultiplexer().removeProcessor(stage);
     }
 
     @Override
@@ -157,17 +141,12 @@ public class MainGameScreen extends CommonScreen implements ClickListener, Asset
     }
 
     @Override
-    public void dispose() {
-        super.dispose();
+    public void hide() {
         // AssetManagers needs to be manually told to unload resources
+        final AssetManager assetManager = game.assetManager;
         assetManager.unload("InGame/arrow.png");
         assetManager.unload("InGame/button.png");
-        assetManager.setErrorListener(null);
-    }
-
-    @Override
-    public void error(String fileName, @SuppressWarnings("rawtypes") Class type, Throwable throwable) {
-        Gdx.app.error(TAG, "AssetManager: Cannot load asset: " + type + " " + fileName);
+        super.hide();
     }
 
 }

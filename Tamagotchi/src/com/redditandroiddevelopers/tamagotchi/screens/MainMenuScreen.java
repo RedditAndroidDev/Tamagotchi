@@ -4,10 +4,8 @@ package com.redditandroiddevelopers.tamagotchi.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -17,15 +15,18 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
 
     private static final String TAG = "Tamagotchi:MainMenuScreen";
 
-    private Stage stage;
     private Button btnPlay;
     private Button btnSelect;
     private Button btnMemories;
     private Button btnSettings;
+    
+    public MainMenuScreen(TamagotchiGame game) {
+        super(game);
+    }
 
     @Override
     public void show() {
-        stage = new Stage(800, 480, true, new SpriteBatch());
+        super.show();
 
         // adding the game name
         Image imgAppName = new Image(new Texture(Gdx.files.internal("MainMenu/AppName.png")));
@@ -65,15 +66,11 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
         btnSettings.y = 10;
         btnSettings.setClickListener(this);
         stage.addActor(btnSettings);
-
-        // ready the input processor to receive input events for the stage
-        TamagotchiGame.getInputMultiplexer().addProcessor(stage);
     }
-
+    
     @Override
-    public void hide() {
-        super.hide();
-        TamagotchiGame.getInputMultiplexer().removeProcessor(stage);
+    public void update(float delta) {
+        // TODO: what to do here?
     }
 
     @Override
@@ -86,7 +83,7 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
     public void click(Actor actor, float x, float y) {
         if (actor == btnPlay) {
             Gdx.app.debug(TAG, "Touch on Play");
-            TamagotchiGame.updateState(TamagotchiGame.STATE_MAIN_GAME);
+            game.updateState(TamagotchiGame.STATE_MAIN_GAME);
         } else if (actor == btnSelect) {
             Gdx.app.debug(TAG, "Touch on Select");
         } else if (actor == btnMemories) {
@@ -98,9 +95,5 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
             assert false;
         }
     }
-
-    @Override
-    public void update(float delta) {
-        // TODO: what to do here?
-    }
+    
 }
