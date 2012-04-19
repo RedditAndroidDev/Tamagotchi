@@ -10,6 +10,7 @@ import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.ResolutionFileResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.ResolutionFileResolver.Resolution;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.redditandroiddevelopers.tamagotchi.screens.CommonScreen;
@@ -38,6 +39,8 @@ public class TamagotchiGame extends Game {
     public InputMultiplexer inputMultiplexer;
     public SpriteBatch spriteBatch;
     
+    private FPSLogger fpsLogger;
+
     public TamagotchiGame() {
         screens = new CommonScreen[] {
                 new MainMenuScreen(this),
@@ -53,6 +56,7 @@ public class TamagotchiGame extends Game {
     public void create() {
         // do first-time configuration that should live as long as the application does
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        fpsLogger = new FPSLogger();
         
         Resolution resolution = new Resolution(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), "");
         ResolutionFileResolver resolver = new ResolutionFileResolver(
@@ -74,6 +78,7 @@ public class TamagotchiGame extends Game {
         
         // actually render the current screen
         super.render();
+        fpsLogger.log();
     }
 
     /**
