@@ -4,6 +4,7 @@ package com.redditandroiddevelopers.tamagotchi;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
@@ -35,15 +36,19 @@ public class TamagotchiGame extends Game {
     public static boolean STATE_CHANGE = false;
 
     private static AssetManager assetManager = new AssetManager();
+    private static InputMultiplexer inputMultiplexer = new InputMultiplexer();
 
     @Override
     public void create() {
         // do first-time configuration that should live as long as the application does
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        
         Resolution resolution = new Resolution(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), "");
         ResolutionFileResolver resolver = new ResolutionFileResolver(
                 new InternalFileHandleResolver(), resolution);
         assetManager.setLoader(Texture.class, new TextureLoader(resolver));
+        
+        Gdx.input.setInputProcessor(inputMultiplexer);
 
         setScreen(new SplashScreen());
     }
@@ -111,6 +116,10 @@ public class TamagotchiGame extends Game {
      */
     public static AssetManager getAssetManager() {
         return assetManager;
+    }
+    
+    public static InputMultiplexer getInputMultiplexer() {
+        return inputMultiplexer;
     }
 
 }

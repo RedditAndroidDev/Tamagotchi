@@ -23,11 +23,8 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
     private Button btnMemories;
     private Button btnSettings;
 
-
     @Override
     public void show() {
-
-        // create new stage
         stage = new Stage(800, 480, true, new SpriteBatch());
 
         // adding the game name
@@ -70,7 +67,13 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
         stage.addActor(btnSettings);
 
         // ready the input processor to receive input events for the stage
-        Gdx.input.setInputProcessor(stage);
+        TamagotchiGame.getInputMultiplexer().addProcessor(stage);
+    }
+
+    @Override
+    public void hide() {
+        super.hide();
+        TamagotchiGame.getInputMultiplexer().removeProcessor(stage);
     }
 
     @Override

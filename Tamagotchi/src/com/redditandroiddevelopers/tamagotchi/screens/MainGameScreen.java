@@ -121,17 +121,21 @@ public class MainGameScreen extends CommonScreen implements ClickListener, Asset
         stage.addActor(ui);
 
         // allow stage to receive touch input
-        Gdx.input.setInputProcessor(stage);
+        TamagotchiGame.getInputMultiplexer().addProcessor(stage);
+    }
+
+    @Override
+    public void hide() {
+        super.hide();
+        TamagotchiGame.getInputMultiplexer().removeProcessor(stage);
     }
 
     @Override
     public void update(float delta) {
-
     }
 
     @Override
     public void draw(float delta) {
-        // draw the stage
         stage.draw();
     }
 
