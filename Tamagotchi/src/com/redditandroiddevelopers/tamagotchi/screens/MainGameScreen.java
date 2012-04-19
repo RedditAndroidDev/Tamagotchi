@@ -27,8 +27,9 @@ public class MainGameScreen extends CommonScreen implements ClickListener {
     private Button btnFood;
     // TODO make it drag down,not click
     private Button btnDragDown;
-    
+
     OrthographicCamera camera;
+
     public MainGameScreen(TamagotchiGame game) {
         super(game);
     }
@@ -37,13 +38,13 @@ public class MainGameScreen extends CommonScreen implements ClickListener {
     public void show() {
         super.show();
 
-        // TODO: add an OrthographicCamera
-        camera = new OrthographicCamera(stage.width(),stage.height());
-        
+        // use an OrthographicCamera
+        camera = (OrthographicCamera) stage.getCamera();
+
         // add groups for better readability and flexibility
         final Group ui = new Group("ui");
         final Group topButtons = new Group("top_buttons");
-        
+
         final AssetManager assetManager = game.assetManager;
 
         // load needed textures for this screen
@@ -55,7 +56,8 @@ public class MainGameScreen extends CommonScreen implements ClickListener {
         assetManager.finishLoading();
 
         // prepare texture regions from the loaded textures
-        // TODO: group the images into ONE Texture, and then create individual TextureRegions from that
+        // TODO: group the images into ONE Texture, and then create individual
+        // TextureRegions from that
         final Texture buttonTexture = assetManager.get(
                 "InGame/button.png", Texture.class);
         final Texture arrowTexture = assetManager.get(
@@ -107,7 +109,6 @@ public class MainGameScreen extends CommonScreen implements ClickListener {
         // add 'topButtons' to the 'ui' group
         ui.addActor(topButtons);
 
-
         btnDragDown = new Button(arrowTextureRegion);
         btnDragDown.y = stage.top() - 64;
         btnDragDown.setClickListener(this);
@@ -115,18 +116,16 @@ public class MainGameScreen extends CommonScreen implements ClickListener {
 
         // add the 'ui' to the stage
         stage.addActor(ui);
-      
-        stage.setCamera(camera);
     }
 
     @Override
     public void update(float delta) {
-    	camera.update();
+        camera.update();
     }
 
     @Override
     public void draw(float delta) {
-   	camera.apply(Gdx.gl10); 
+        camera.apply(Gdx.gl10); // not sure if we need this line
         stage.draw();
     }
 
@@ -135,12 +134,16 @@ public class MainGameScreen extends CommonScreen implements ClickListener {
         // touch input was received, time to find the culprit
         if (actor == btnFood) {
             Gdx.app.debug(TAG, "Touch on food button");
+            camera.rotate(1, 0, 0, 1);
         } else if (actor == btnToilet) {
             Gdx.app.debug(TAG, "Touch on toilet button");
+            camera.rotate(-1, 0, 0, 1);
         } else if (actor == btnShower) {
             Gdx.app.debug(TAG, "Touch on shower button");
+            camera.zoom += 0.02;
         } else if (actor == btnLight) {
             Gdx.app.debug(TAG, "Touch on light button");
+            camera.zoom -= 0.02;
         } else {
             Gdx.app.error(TAG, "Unknown actor");
             assert false;
