@@ -18,8 +18,6 @@ import com.redditandroiddevelopers.tamagotchi.screens.MainMenuScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.PauseScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.SplashScreen;
 
-import javax.xml.bind.ValidationException;
-
 /**
  * The main activity for our game. This will be the only activity running in our
  * app, it will delegate what screen instance will render to the display based
