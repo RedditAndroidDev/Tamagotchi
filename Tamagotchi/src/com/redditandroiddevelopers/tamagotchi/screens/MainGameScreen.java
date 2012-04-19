@@ -4,9 +4,11 @@ package com.redditandroiddevelopers.tamagotchi.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
@@ -32,7 +34,12 @@ public class MainGameScreen extends CommonScreen implements ClickListener {
     }
 
     @Override
-    public void show() {
+    protected final Stage createStage(SpriteBatch batch) {
+        return new Stage(game.config.stageWidth, game.config.stageHeight, false, batch);
+    }
+
+    @Override
+    public final void show() {
         super.show();
 
         // add groups for better readability and flexibility
@@ -113,7 +120,7 @@ public class MainGameScreen extends CommonScreen implements ClickListener {
     }
 
     @Override
-    public void click(Actor actor, float x, float y) {
+    public final void click(Actor actor, float x, float y) {
         // touch input was received, time to find the culprit
         if (actor == btnFood) {
             Gdx.app.debug(TAG, "Touch on food button");
@@ -134,7 +141,7 @@ public class MainGameScreen extends CommonScreen implements ClickListener {
     }
 
     @Override
-    public void hide() {
+    public final void hide() {
         // AssetManagers needs to be manually told to unload resources
         final AssetManager assetManager = game.assetManager;
         assetManager.unload("InGame/arrow.png");

@@ -3,8 +3,10 @@ package com.redditandroiddevelopers.tamagotchi.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -24,7 +26,12 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
     }
 
     @Override
-    public void show() {
+    protected final Stage createStage(SpriteBatch batch) {
+        return new Stage(game.config.stageWidth, game.config.stageHeight, false, batch);
+    }
+
+    @Override
+    public final void show() {
         super.show();
 
         // adding the game name
@@ -70,7 +77,7 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
     }
 
     @Override
-    public void click(Actor actor, float x, float y) {
+    public final void click(Actor actor, float x, float y) {
         if (actor == btnPlay) {
             Gdx.app.debug(TAG, "Touch on Play");
             game.updateState(TamagotchiGame.STATE_MAIN_GAME);

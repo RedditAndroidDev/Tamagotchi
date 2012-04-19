@@ -3,6 +3,8 @@ package com.redditandroiddevelopers.tamagotchi.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
 
@@ -21,7 +23,12 @@ public class SplashScreen extends CommonScreen {
     }
 
     @Override
-    public void show() {
+    protected final Stage createStage(SpriteBatch batch) {
+        return new Stage(game.config.stageWidth, game.config.stageHeight, false, batch);
+    }
+
+    @Override
+    public final void show() {
         super.show();
 
         // load Reddit alien texture
@@ -32,7 +39,8 @@ public class SplashScreen extends CommonScreen {
     }
 
     @Override
-    public void update(float delta) {
+    public final void update(float delta) {
+        super.update(delta);
         // delta is the time since the last update, adding it up gives us the
         // time since the first update
         if (timeElapsed < SPLASH_DURATION) { // revert to 3 (or any other
@@ -48,7 +56,7 @@ public class SplashScreen extends CommonScreen {
     }
 
     @Override
-    public void draw() {
+    public final void draw() {
         // use white background for now
         Gdx.gl.glClearColor(1, 1, 1, 1);
         super.draw();
