@@ -2,7 +2,6 @@
 package com.redditandroiddevelopers.tamagotchi.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -19,7 +18,7 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
     private Button btnSelect;
     private Button btnMemories;
     private Button btnSettings;
-    
+
     public MainMenuScreen(TamagotchiGame game) {
         super(game);
     }
@@ -38,14 +37,16 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
         // involved here
 
         // adding the Play button
-        btnPlay = new Button(new TextureRegion(new Texture(Gdx.files.internal("MainMenu/btn_play_unpressed.png"))));
+        btnPlay = new Button(new TextureRegion(new Texture(
+                Gdx.files.internal("MainMenu/btn_play_unpressed.png"))));
         btnPlay.x = 10;
         btnPlay.y = 235;
         btnPlay.setClickListener(this);
         stage.addActor(btnPlay);
 
         // adding the Select button
-        btnSelect = new Button(new TextureRegion(new Texture(Gdx.files.internal("MainMenu/btn_select_unpressed.png"))));
+        btnSelect = new Button(new TextureRegion(new Texture(
+                Gdx.files.internal("MainMenu/btn_select_unpressed.png"))));
         btnSelect.x = 10;
         btnSelect.y = 160;
         btnSelect.setClickListener(this);
@@ -67,17 +68,6 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
         btnSettings.setClickListener(this);
         stage.addActor(btnSettings);
     }
-    
-    @Override
-    public void update(float delta) {
-        // TODO: what to do here?
-    }
-
-    @Override
-    public void draw(float delta) {
-        Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-        stage.draw();
-    }
 
     @Override
     public void click(Actor actor, float x, float y) {
@@ -95,5 +85,5 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
             assert false;
         }
     }
-    
+
 }

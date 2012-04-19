@@ -3,7 +3,6 @@ package com.redditandroiddevelopers.tamagotchi.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -28,8 +27,6 @@ public class MainGameScreen extends CommonScreen implements ClickListener {
     // TODO make it drag down,not click
     private Button btnDragDown;
 
-    OrthographicCamera camera;
-
     public MainGameScreen(TamagotchiGame game) {
         super(game);
     }
@@ -37,9 +34,6 @@ public class MainGameScreen extends CommonScreen implements ClickListener {
     @Override
     public void show() {
         super.show();
-
-        // use an OrthographicCamera
-        camera = (OrthographicCamera) stage.getCamera();
 
         // add groups for better readability and flexibility
         final Group ui = new Group("ui");
@@ -116,17 +110,6 @@ public class MainGameScreen extends CommonScreen implements ClickListener {
 
         // add the 'ui' to the stage
         stage.addActor(ui);
-    }
-
-    @Override
-    public void update(float delta) {
-        camera.update();
-    }
-
-    @Override
-    public void draw(float delta) {
-        camera.apply(Gdx.gl10); // not sure if we need this line
-        stage.draw();
     }
 
     @Override

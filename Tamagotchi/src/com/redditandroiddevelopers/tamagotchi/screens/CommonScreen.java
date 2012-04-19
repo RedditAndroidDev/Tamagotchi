@@ -4,7 +4,9 @@ package com.redditandroiddevelopers.tamagotchi.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetErrorListener;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
 
@@ -18,6 +20,7 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
 
     protected TamagotchiGame game;
     protected Stage stage;
+    protected OrthographicCamera camera;
 
     /**
      * A CommonScreen must have a reference to a TamagotchiGame. You must
@@ -31,14 +34,26 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
 
     /**
      * Called when the screen should update itself, e.g. continue a simulation
-     * etc.
+     * etc. By default, the {@link Camera} object of the associated
+     * {@link Stage} of this {@code Screen} is updated. Override this method for
+     * a game state update (make it brief!) but don't forget to call
+     * {@code super.update(delta)}.
      */
-    public abstract void update(float delta);
+    public void update(float delta) {
+        camera.update();
+    }
 
     /**
-     * Called when a screen should render itself
+     * Called when a screen should render itself. By default, the associated
+     * {@link Stage} of this {@code Screen} is drawn. If necessary, override
+     * this method for a more involved {@code draw()} implementation (make it
+     * brief!) but don't forget to call {@code super.draw()}.
      */
-    public abstract void draw(float delta);
+    public void draw() {
+        if (!Gdx.graphics.isGL20Available())
+            camera.apply(Gdx.gl10);
+        stage.draw();
+    }
 
     @Override
     public void dispose() {
@@ -62,7 +77,7 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
     public void render(float delta) {
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
         update(delta);
-        draw(delta);
+        draw();
     }
 
     @Override
@@ -76,9 +91,18 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
 
     @Override
     public void show() {
-        stage = new Stage(game.config.stageWidth, game.config.stageHeight, true, game.spriteBatch);
+        final float width = game.config.stageWidth;
+        final float height = game.config.stageHeight;
+        final boolean stretch = true;
+
+        stage = new Stage(width, height, stretch, game.spriteBatch);
         game.inputMultiplexer.addProcessor(stage);
         game.assetManager.setErrorListener(this);
+
+        // set up an ortographic camera for the stage
+        camera = new OrthographicCamera();
+        stage.setCamera(camera);
+        stage.setViewport(width, height, stretch);
     }
 
     @Override

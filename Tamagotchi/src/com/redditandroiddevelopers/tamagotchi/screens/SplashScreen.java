@@ -15,7 +15,7 @@ public class SplashScreen extends CommonScreen {
     private static final float SPLASH_DURATION = .5f;
 
     private float timeElapsed = 0;
-    
+
     public SplashScreen(TamagotchiGame game) {
         super(game);
     }
@@ -48,12 +48,10 @@ public class SplashScreen extends CommonScreen {
     }
 
     @Override
-    public void draw(float delta) {
+    public void draw() {
         // use white background for now
         Gdx.gl.glClearColor(1, 1, 1, 1);
-
-        // draw stage
-        stage.draw();
+        super.draw();
     }
 
     /**
