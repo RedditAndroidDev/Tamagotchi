@@ -4,10 +4,6 @@ package com.redditandroiddevelopers.tamagotchi.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.TextureLoader;
-import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
-import com.badlogic.gdx.assets.loaders.resolvers.ResolutionFileResolver;
-import com.badlogic.gdx.assets.loaders.resolvers.ResolutionFileResolver.Resolution;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -25,9 +21,9 @@ import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
  */
 public class MainGameScreen extends CommonScreen implements ClickListener, AssetErrorListener {
 
-    private static final String TAG = "Tamagotchi:MainCreatureScreen";
+    private static final String TAG = "Tamagotchi:MainGameScreen";
 
-    AssetManager assetManager;
+    private final AssetManager assetManager = TamagotchiGame.getAssetManager();
 
     private Button btnLight;
     private Button btnShower;
@@ -52,50 +48,50 @@ public class MainGameScreen extends CommonScreen implements ClickListener, Asset
         ui = new Group("ui");
         topButtons = new Group("top_buttons");
 
-        // initialize AssetManager
-        Resolution resolution = new Resolution(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), "");
-        ResolutionFileResolver resolver = new ResolutionFileResolver(
-                new InternalFileHandleResolver(), resolution);
-        assetManager = TamagotchiGame.getAssetManager();
         assetManager.setErrorListener(this);
-        assetManager.setLoader(Texture.class, new TextureLoader(resolver));
 
-        // load needed textures
+        // load needed textures for this screen
         assetManager.load("InGame/button.png", Texture.class);
         assetManager.load("InGame/arrow.png", Texture.class);
         // make sure all textures are loaded before continuing
+
         // TODO: Add a loading screen if loading takes too long
         assetManager.finishLoading();
+
+        // prepare texture regions from the loaded textures
+        // TODO: group the images into ONE Texture, and then create individual TextureRegions from that
+        final Texture buttonTexture = assetManager.get(
+                "InGame/button.png", Texture.class);
+        final Texture arrowTexture = assetManager.get(
+                "InGame/arrow.png", Texture.class);
+        final TextureRegion buttonTextureRegion = new TextureRegion(buttonTexture);
+        final TextureRegion arrowTextureRegion = new TextureRegion(arrowTexture);
 
         // set margin between buttons
         final int marginBetweenButtons = 10;
 
         // buttons have the same width and height. using this value allows
         // precise placement of the buttons
-        int width = assetManager.get("InGame/button.png", Texture.class).getWidth()
-                + marginBetweenButtons;
+        final int width = buttonTexture.getWidth() + marginBetweenButtons;
 
         // create food button
-        btnFood = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
+        btnFood = new Button(new TextureRegion(assetManager.get(
                 "InGame/button.png", Texture.class)));
         btnFood.x = width * 0;
         btnFood.setClickListener(this);
 
         // create toilet button
-        btnToilet = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
-                "InGame/button.png", Texture.class)));
+        btnToilet = new Button(buttonTextureRegion);
         btnToilet.x = width * 1;
         btnToilet.setClickListener(this);
 
         // create shower button
-        btnShower = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
-                "InGame/button.png", Texture.class)));
+        btnShower = new Button(buttonTextureRegion);
         btnShower.x = width * 2;
         btnShower.setClickListener(this);
 
         // create light button
-        btnLight = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
-                "InGame/button.png", Texture.class)));
+        btnLight = new Button(buttonTextureRegion);
         btnLight.x = width * 3;
         btnLight.setClickListener(this);
 
@@ -115,13 +111,12 @@ public class MainGameScreen extends CommonScreen implements ClickListener, Asset
         // add 'topButtons' to the 'ui' group
         ui.addActor(topButtons);
 
-        
-        dragDown = new Button(new TextureRegion(TamagotchiGame.getAssetManager().get(
-                "InGame/arrow.png", Texture.class)));
+
+        dragDown = new Button(arrowTextureRegion);
         dragDown.y = stage.top() - 64;
-       dragDown.setClickListener(this);
-       ui.addActor(dragDown);
-       
+        dragDown.setClickListener(this);
+        ui.addActor(dragDown);
+
         // add the 'ui' to the stage
         stage.addActor(ui);
 
@@ -160,13 +155,14 @@ public class MainGameScreen extends CommonScreen implements ClickListener, Asset
     @Override
     public void dispose() {
         super.dispose();
-        // AssetManagers needs to be manually disposed
-        assetManager.dispose();
+        // AssetManagers needs to be manually told to unload resources
+        assetManager.unload("InGame/arrow.png");
+        assetManager.unload("InGame/button.png");
+        assetManager.setErrorListener(null);
     }
 
     @Override
-    public void error(String fileName, @SuppressWarnings("rawtypes")
-    Class type, Throwable throwable) {
+    public void error(String fileName, @SuppressWarnings("rawtypes") Class type, Throwable throwable) {
         Gdx.app.error(TAG, "AssetManager: Cannot load asset: " + type + " " + fileName);
     }
 

@@ -5,6 +5,11 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.TextureLoader;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.ResolutionFileResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.ResolutionFileResolver.Resolution;
+import com.badlogic.gdx.graphics.Texture;
 import com.redditandroiddevelopers.tamagotchi.screens.CommonScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.MainGameScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.MainMenuScreen;
@@ -33,7 +38,13 @@ public class TamagotchiGame extends Game {
 
     @Override
     public void create() {
+        // do first-time configuration that should live as long as the application does
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        Resolution resolution = new Resolution(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), "");
+        ResolutionFileResolver resolver = new ResolutionFileResolver(
+                new InternalFileHandleResolver(), resolution);
+        assetManager.setLoader(Texture.class, new TextureLoader(resolver));
+
         setScreen(new SplashScreen());
     }
 
@@ -41,8 +52,8 @@ public class TamagotchiGame extends Game {
     public void render() {
         // TODO FrameBuffer here?
 
-        super.render(); // this will take care of the case where the
-                        // current screen is still the same
+        super.render(); /* this will take care of the case where the
+                           current screen is still the same */
 
         if (STATE_CHANGE) {
             STATE_CHANGE = false;
@@ -60,16 +71,16 @@ public class TamagotchiGame extends Game {
                     break;
                 case STATE_SELECT_PET:
                     setScreen(new PauseScreen()); // FIXME: launch correct
-                                                  // screen when class has been
-                                                  // created
+                    // screen when class has been
+                    // created
                     break;
                 case STATE_MEMORIES:
                     setScreen(new PauseScreen());// FIXME: launch correct screen
-                                                 // when class has been created
+                    // when class has been created
                     break;
                 case STATE_SETTINGS:
                     setScreen(new PauseScreen());// FIXME: launch correct screen
-                                                 // when class has been created;
+                    // when class has been created;
                 default:
                     break;
             }
