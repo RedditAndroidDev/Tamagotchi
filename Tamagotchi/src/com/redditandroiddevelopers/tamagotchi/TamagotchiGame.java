@@ -1,7 +1,6 @@
 
 package com.redditandroiddevelopers.tamagotchi;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -25,48 +24,54 @@ import com.redditandroiddevelopers.tamagotchi.screens.SplashScreen;
  * on the state.
  */
 public class TamagotchiGame extends Game {
-    
+
     public static final int STATE_MAIN_MENU = 0;
     public static final int STATE_MAIN_GAME = 1;
     public static final int STATE_PAUSED = 2;
     public static final int STATE_SELECT_PET = 3;
     public static final int STATE_MEMORIES = 4;
     public static final int STATE_SETTINGS = 5;
-    
+
     private CommonScreen[] screens;
-    
+
+    public final TamagotchiConfiguration config;
     public AssetManager assetManager;
     public InputMultiplexer inputMultiplexer;
     public SpriteBatch spriteBatch;
-    
-    private FPSLogger fpsLogger;
 
-    public TamagotchiGame() {
-        screens = new CommonScreen[] {
-                new MainMenuScreen(this),
-                new MainGameScreen(this),
-                new PauseScreen(this),
-                new PauseScreen(this),  // TODO: implement PetSelectionScreen
-                new PauseScreen(this),  // TODO: implement MemoriesScreen
-                new PauseScreen(this),  // TODO: implement SettingsScreen
-        };
+    private FPSLogger fpsLogger; // XXX: temporary!
+
+    public TamagotchiGame(TamagotchiConfiguration config) {
+        this.config = config;
     }
 
     @Override
     public void create() {
-        // do first-time configuration that should live as long as the application does
-        Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        // do first-time configurations that should live as long as the
+        // application does
+        Gdx.app.setLogLevel(config.logLevel);
         fpsLogger = new FPSLogger();
-        
-        Resolution resolution = new Resolution(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), "");
+
+        // create screen objects we're going to need throughout
+        screens = new CommonScreen[] {
+                new MainMenuScreen(this),
+                new MainGameScreen(this),
+                new PauseScreen(this),
+                new PauseScreen(this), // TODO: implement PetSelectionScreen
+                new PauseScreen(this), // TODO: implement MemoriesScreen
+                new PauseScreen(this), // TODO: implement SettingsScreen
+        };
+
+        Resolution resolution = new Resolution(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),
+                "");
         ResolutionFileResolver resolver = new ResolutionFileResolver(
                 new InternalFileHandleResolver(), resolution);
         assetManager = new AssetManager();
         assetManager.setLoader(Texture.class, new TextureLoader(resolver));
-        
+
         inputMultiplexer = new InputMultiplexer();
         Gdx.input.setInputProcessor(inputMultiplexer);
-        
+
         spriteBatch = new SpriteBatch();
 
         setScreen(new SplashScreen(this));
@@ -75,18 +80,18 @@ public class TamagotchiGame extends Game {
     @Override
     public void render() {
         // TODO FrameBuffer here?
-        
+
         // actually render the current screen
         super.render();
-        fpsLogger.log();
+        if (config.logFps)
+            fpsLogger.log();
     }
 
     /**
      * Update the state, all updates outside of this class should use this
      * method
      * 
-     * @param state
-     *            The int val of the new state
+     * @param state The int val of the new state
      */
     public void updateState(int state) {
         if (state < 0 || state >= 6) {
