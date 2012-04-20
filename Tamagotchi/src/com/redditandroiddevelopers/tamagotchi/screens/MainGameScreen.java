@@ -24,6 +24,11 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
 
     private static final String TAG = "Tamagotchi:MainGameScreen";
 
+    private static final String GRP_TOP_BUTTONS = "top_buttons";
+    private static final String GRP_STATUS_PANEL = "status_panel";
+    private static final String GRP_CREATURE = "creature";
+    private static final String GRP_BACKGROUND = "background";
+
     private static final int FOOD = 0;
     private static final int TOILET = 1;
     private static final int SHOWER = 2;
@@ -48,10 +53,10 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
 
         // add groups for better readability and flexibility
         final Group ui = new Group("ui");
-        final Group topButtons = new Group("top_buttons");
-        final Group statusPanel = new Group("statusPanel");
-        final Group creature = new Group("creature");
-        final Group background = new Group("background");
+        final Group topButtons = new Group(GRP_TOP_BUTTONS);
+        final Group statusPanel = new Group(GRP_STATUS_PANEL);
+        final Group creature = new Group(GRP_CREATURE);
+        final Group background = new Group(GRP_BACKGROUND);
 
         // prepare texture regions from the loaded textures
         // TODO: group the images into ONE Texture, and then create individual
@@ -140,7 +145,7 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
              * dragging starts. In order to make it look better, we need to
              * apply an offset for the correct touch point.
              */
-            stage.findActor("statusPanel").y += y;
+            stage.findActor(GRP_STATUS_PANEL).y += y;
         }
     }
 
