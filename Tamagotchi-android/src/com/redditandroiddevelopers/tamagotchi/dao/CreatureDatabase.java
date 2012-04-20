@@ -1,5 +1,8 @@
 package com.redditandroiddevelopers.tamagotchi.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -7,8 +10,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 
-public class CreatureDatabase {
-    
+import com.redditandroiddevelopers.tamagotchi.mappers.Mapper;
+import com.redditandroiddevelopers.tamagotchi.model.CommonModel;
+import com.redditandroiddevelopers.tamagotchi.util.ContentValueUtils;
+
+public class CreatureDatabase<T extends CommonModel> implements
+        CommonDatabase<T> {
+
     public static final String INFO_TABLE_NAME = "CREATURE_INFO";
     public static final String STATE_TABLE_NAME = "CREATURE_STATE";
     public static final String EVOLUTION_TABLE_NAME = "CREATURE_EVOLUTION";
@@ -24,7 +32,38 @@ public class CreatureDatabase {
         databaseHelper = new DatabaseHelper(context);
     }
 
-    public Cursor query(String table, String[] projectionIn, String selection,
+    public T queryUnique(Mapper<T> rowMapper, String table,
+            String[] projectionIn, String selection, String[] selectionArgs,
+            String groupBy, String having, String sortOrder) {
+        Cursor c = query(table, projectionIn, selection, selectionArgs,
+                groupBy, having, sortOrder);
+        T toReturn = rowMapper.mapRow(c);
+        c.close();
+        return toReturn;
+    }
+
+    public List<T> queryList(Mapper<T> rowMapper, String table,
+            String[] projectionIn, String selection, String[] selectionArgs,
+            String groupBy, String having, String sortOrder) {
+        Cursor c = query(table, projectionIn, selection, selectionArgs,
+                groupBy, having, sortOrder);
+        List<T> toReturn = new ArrayList<T>(c.getCount());
+        while (!c.isAfterLast()) {
+            toReturn.add(rowMapper.mapRow(c));
+            c.moveToNext();
+        }
+        c.close();
+        return toReturn;
+    }
+
+    public int getResultCount(String table, String[] projectionIn,
+            String selection, String[] selectionArgs, String groupBy,
+            String having, String sortOrder) {
+        return query(table, projectionIn, selection, selectionArgs, groupBy,
+                having, sortOrder).getCount();
+    }
+
+    private Cursor query(String table, String[] projectionIn, String selection,
             String[] selectionArgs, String groupBy, String having,
             String sortOrder) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
@@ -41,21 +80,24 @@ public class CreatureDatabase {
         return c;
     }
 
-    public long insert(String table, ContentValues vals) {
-        return databaseHelper.getWritableDatabase().insert(table, null, vals);
+    public T insert(T toCreate, String table) {
+        long res = databaseHelper.getWritableDatabase().insert(table, null,
+                ContentValueUtils.buildContentValues(toCreate));
+        toCreate.id = res;
+        return toCreate;
     }
 
-    public void update(String table, ContentValues vals, String whereClause,
+    public void update(String table, T toUpdate, String whereClause,
             String[] whereArgs) {
-        databaseHelper.getWritableDatabase().update(table, vals, whereClause,
-                whereArgs);
+        databaseHelper.getWritableDatabase().update(table,
+                ContentValueUtils.buildContentValues(toUpdate), whereClause, whereArgs);
     }
 
     public void delete(String table, String whereClause, String[] whereArgs) {
         databaseHelper.getWritableDatabase().delete(table, whereClause,
                 whereArgs);
     }
-    
+
     /**
      * For testing purposes during development!
      */
@@ -126,7 +168,7 @@ public class CreatureDatabase {
 
         private static final String DB_NAME = "RAD_CREATURES.db";
         private static final int DB_VERSION = 2;
-        
+
         private static final String CREATE_INFO = "" + "CREATE TABLE "
                 + INFO_TABLE_NAME + " (" + "CI_ID INTEGER PRIMARY KEY, "
                 + "CT_ID INTEGER, " + "CE_ID INTEGER, "
@@ -179,7 +221,7 @@ public class CreatureDatabase {
                 + EXPERIENCE_TABLE_NAME + " (" + "E_ID INTEGER PRIMARY KEY, "
                 + "CT_ID INTEGER, " + "E_MIN_XP INTEGER, " + "E_MAX_XP INTEGER, "
                 + "FOREIGN KEY (CT_ID) REFERENCES " + TYPE_TABLE_NAME + "(CT_ID)" + ");";
-        
+
         private Context mContext;
 
         public DatabaseHelper(Context context) {
@@ -204,7 +246,7 @@ public class CreatureDatabase {
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         }
-        
+
         public void deleteDatabase() {
             mContext.deleteDatabase(DB_NAME);
         }
