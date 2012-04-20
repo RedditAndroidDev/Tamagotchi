@@ -1,6 +1,5 @@
-package com.redditandroiddevelopers.tamagotchi;
 
-import java.util.List;
+package com.redditandroiddevelopers.tamagotchi;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -12,9 +11,6 @@ import com.badlogic.gdx.assets.loaders.resolvers.ResolutionFileResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.ResolutionFileResolver.Resolution;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.redditandroiddevelopers.tamagotchi.dao.CreatureDao;
-import com.redditandroiddevelopers.tamagotchi.model.Creature;
 import com.redditandroiddevelopers.tamagotchi.screens.CommonScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.MainGameScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.MainMenuScreen;
@@ -37,19 +33,10 @@ public class TamagotchiGame extends Game {
 
     private CommonScreen[] screens;
 
-    private CreatureDao creatureDao;
-
-    public void test() {
-        List<Creature> res = creatureDao.getAll();
-        for (Creature c : res) {
-            System.out.println(c.id + ", " + c.name);
-        }
-    }
-
     public final TamagotchiConfiguration config;
-    public AssetManager assetManager;
     public InputMultiplexer inputMultiplexer;
-    public SpriteBatch spriteBatch;
+    public AssetManager assetManager;
+    public TamagotchiAssets assets;
 
     private FPSLogger fpsLogger; // XXX: temporary!
 
@@ -65,24 +52,26 @@ public class TamagotchiGame extends Game {
         fpsLogger = new FPSLogger();
 
         // create screen objects we're going to need throughout
-        screens = new CommonScreen[] { new MainMenuScreen(this),
-                new MainGameScreen(this), new PauseScreen(this),
+        screens = new CommonScreen[] {
+                new MainMenuScreen(this),
+                new MainGameScreen(this),
+                new PauseScreen(this),
                 new PauseScreen(this), // TODO: implement PetSelectionScreen
                 new PauseScreen(this), // TODO: implement MemoriesScreen
                 new PauseScreen(this), // TODO: implement SettingsScreen
         };
 
-        Resolution resolution = new Resolution(Gdx.graphics.getWidth(),
+        final Resolution resolution = new Resolution(Gdx.graphics.getWidth(),
                 Gdx.graphics.getHeight(), "");
-        ResolutionFileResolver resolver = new ResolutionFileResolver(
+        final ResolutionFileResolver resolver = new ResolutionFileResolver(
                 new InternalFileHandleResolver(), resolution);
         assetManager = new AssetManager();
         assetManager.setLoader(Texture.class, new TextureLoader(resolver));
 
+        assets = new TamagotchiAssets(assetManager);
+
         inputMultiplexer = new InputMultiplexer();
         Gdx.input.setInputProcessor(inputMultiplexer);
-
-        spriteBatch = new SpriteBatch();
 
         setScreen(new SplashScreen(this));
     }
@@ -101,8 +90,7 @@ public class TamagotchiGame extends Game {
      * Update the state, all updates outside of this class should use this
      * method
      * 
-     * @param state
-     *            The int val of the new state
+     * @param state The int val of the new state
      */
     public void updateState(int state) {
         if (state < 0 || state >= 6) {

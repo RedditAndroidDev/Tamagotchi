@@ -1,5 +1,7 @@
+
 package com.redditandroiddevelopers.tamagotchi;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
@@ -36,26 +38,29 @@ public class MainActivity extends AndroidApplication {
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
         cfg.useGL20 = false;
 
-        TamagotchiConfiguration tamCfg = new TamagotchiConfiguration();
-        initializeDatabase(tamCfg);
-        initialize(new TamagotchiGame(tamCfg), cfg);
+        TamagotchiConfiguration tcfg = new TamagotchiConfiguration();
+        initializeDatabase(tcfg);
+        initialize(new TamagotchiGame(tcfg), cfg);
 
     }
 
     private void initializeDatabase(TamagotchiConfiguration config) {
+        final Context context = getBaseContext();
         config.creatureDao = new CreatureDao(new CreatureDatabase<Creature>(
-                getBaseContext()), new CreatureMapper());
-        config.creatureEvolutionDao = new CreatureEvolutionDao(new CreatureDatabase<CreatureEvolution>(
-                getBaseContext()), new CreatureEvolutionMapper());
-        config.creatureRaiseTypeDao = new CreatureRaiseTypeDao(new CreatureDatabase<CreatureRaiseType>(
-                getBaseContext()), new CreatureRaiseTypeMapper());
+                context), new CreatureMapper());
+        config.creatureEvolutionDao = new CreatureEvolutionDao(
+                new CreatureDatabase<CreatureEvolution>(
+                        context), new CreatureEvolutionMapper());
+        config.creatureRaiseTypeDao = new CreatureRaiseTypeDao(
+                new CreatureDatabase<CreatureRaiseType>(
+                        context), new CreatureRaiseTypeMapper());
         config.creatureStateDao = new CreatureStateDao(new CreatureDatabase<CreatureState>(
-                getBaseContext()), new CreatureStateMapper());
+                context), new CreatureStateMapper());
         config.experienceDao = new ExperienceDao(new CreatureDatabase<Experience>(
-                getBaseContext()), new ExperienceMapper());
+                context), new ExperienceMapper());
         config.medicineDao = new MedicineDao(new CreatureDatabase<Medicine>(
-                getBaseContext()), new MedicineMapper());
+                context), new MedicineMapper());
         config.sicknessDay = new SicknessDao(new CreatureDatabase<Sickness>(
-                getBaseContext()), new SicknessMapper());
+                context), new SicknessMapper());
     }
 }

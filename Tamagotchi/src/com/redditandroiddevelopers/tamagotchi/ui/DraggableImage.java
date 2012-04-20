@@ -16,7 +16,7 @@ public class DraggableImage extends Image {
     /**
      * The Draggable instance which will receive delegated Drag events
      */
-    private Draggable draggable;
+    private DragListener draggable;
 
     /**
      * Constructor (the only one needed thus far, override others as needed)
@@ -33,12 +33,12 @@ public class DraggableImage extends Image {
     }
 
     /**
-     * Set the Draggable instance
+     * Set the DragListener instance
      * 
      * @param d
-     *            The Draggable instance
+     *            The DragListener instance
      */
-    public void setDraggable(Draggable d) {
+    public void setDragListener(DragListener d) {
         this.draggable = d;
     }
 
