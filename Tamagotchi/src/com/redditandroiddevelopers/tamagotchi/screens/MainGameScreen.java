@@ -29,7 +29,7 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
     private Button btnToilet;
     private Button btnFood;
     private DraggableImage btnDragDown;
-    
+
     public MainGameScreen(TamagotchiGame game) {
         super(game);
     }
@@ -152,9 +152,7 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
 
     @Override
     public void drag(Actor a, float x, float y, int pointer) {
-        // NOTICE THE += HERE!
-        //a.x += x;
-        a.y += y;
+        camera.translate(0, -y, 0);
     }
 
 }
