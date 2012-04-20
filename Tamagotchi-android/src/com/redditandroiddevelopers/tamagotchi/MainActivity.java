@@ -1,3 +1,4 @@
+
 package com.redditandroiddevelopers.tamagotchi;
 
 import android.os.Bundle;
@@ -9,10 +10,10 @@ public class MainActivity extends AndroidApplication {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
         cfg.useGL20 = false;
-        
-        initialize(new TamagotchiGame(), cfg);
+
+        initialize(new TamagotchiGame(new TamagotchiConfiguration()), cfg);
     }
 }

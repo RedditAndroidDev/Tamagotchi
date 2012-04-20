@@ -3,8 +3,6 @@ package com.redditandroiddevelopers.tamagotchi.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
 
@@ -16,14 +14,15 @@ public class SplashScreen extends CommonScreen{
 
     private static final float SPLASH_DURATION = .5f;
 
-    private Stage stage;
-
     private float timeElapsed = 0;
+    
+    public SplashScreen(TamagotchiGame game) {
+        super(game);
+    }
 
     @Override
     public void show() {
-        // super.show();
-        stage = new Stage(800, 480, true, new SpriteBatch());
+        super.show();
 
         // load Reddit alien texture
         Image splashLogo = new Image(new Texture(Gdx.files.internal("Reddit-alien.png")));
@@ -44,7 +43,7 @@ public class SplashScreen extends CommonScreen{
         else {
             // after 3 seconds, the Splash screen is hidden and the
             // MainMenuScreen is shown
-            TamagotchiGame.updateState(TamagotchiGame.STATE_MAIN_MENU);
+            game.updateState(TamagotchiGame.STATE_MAIN_MENU);
         }
     }
 
