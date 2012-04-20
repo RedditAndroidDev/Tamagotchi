@@ -2,89 +2,95 @@
 package com.redditandroiddevelopers.tamagotchi.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.redditandroiddevelopers.tamagotchi.ui.Button;
+import com.redditandroiddevelopers.tamagotchi.TamagotchiAssets.TextureAsset;
+import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
 
-public class MainMenuScreen extends CommonScreen {
+public class MainMenuScreen extends CommonScreen implements ClickListener {
 
-    SpriteBatch batch = new SpriteBatch();
-    Stage stage;
+    private static final String TAG = "Tamagotchi:MainMenuScreen";
 
-    Button btnPlay;
-    Button btnSelect;
-    Button btnMemories;
-    Button btnSettings;
+    private Button btnPlay;
+    private Button btnSelect;
+    private Button btnMemories;
+    private Button btnSettings;
 
-    Vector2 touchPoint;
+    public MainMenuScreen(TamagotchiGame game) {
+        super(game);
+    }
 
     @Override
-    public void show() {
+    protected final Stage createStage(SpriteBatch batch) {
+        return new Stage(game.config.stageWidth, game.config.stageHeight, false, batch);
+    }
 
-        // create new stage
-        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false, batch);
-
-        // point, where user last touched the screen
-        touchPoint = new Vector2();
+    @Override
+    public final void show() {
+        super.show();
 
         // adding the game name
-        Image imgAppName = new Image(new Texture(Gdx.files.internal("MainMenu/AppName.png")));
+        Image imgAppName = new Image(game.assets.getTexture(TextureAsset.APP_NAME));
         imgAppName.x = 10;
         imgAppName.y = 325;
         stage.addActor(imgAppName);
 
+        // TODO: Set up a TextureRegion that encompasses all UI elements
+        // involved here
+
         // adding the Play button
-        btnPlay = new Button("MainMenu/btn_play_unpressed.png", 0, 10, 235);
+        btnPlay = new Button(new TextureRegion(
+                game.assets.getTexture(TextureAsset.BTN_PLAY_UNPRESSED)));
+        btnPlay.x = 10;
+        btnPlay.y = 235;
+        btnPlay.setClickListener(this);
         stage.addActor(btnPlay);
 
         // adding the Select button
-        btnSelect = new Button("MainMenu/btn_select_unpressed.png", 0, 10, 160);
+        btnSelect = new Button(new TextureRegion(
+                game.assets.getTexture(TextureAsset.BTN_SELECT_UNPRESSED)));
+        btnSelect.x = 10;
+        btnSelect.y = 160;
+        btnSelect.setClickListener(this);
         stage.addActor(btnSelect);
 
         // adding the Memories button
-        btnMemories = new Button("MainMenu/btn_memories_unpressed.png", 0, 10, 85);
+        btnMemories = new Button(new TextureRegion(
+                game.assets.getTexture(TextureAsset.BTN_MEMORIES_UNPRESSED)));
+        btnMemories.x = 10;
+        btnMemories.y = 85;
+        btnMemories.setClickListener(this);
         stage.addActor(btnMemories);
 
         // adding the Settings button
-        btnSettings = new Button("MainMenu/btn_settings_unpressed.png", 0, 10, 10);
+        btnSettings = new Button(new TextureRegion(
+                game.assets.getTexture(TextureAsset.BTN_SETTINGS_UNPRESSED)));
+        btnSettings.x = 10;
+        btnSettings.y = 10;
+        btnSettings.setClickListener(this);
         stage.addActor(btnSettings);
     }
 
     @Override
-    public void update(float delta) {
-
-        // check for touch input
-        if (Gdx.input.justTouched()) {
-            // update touch point
-            touchPoint.set(Gdx.input.getX(), Gdx.input.getY());
-
-            // check if touch point lies in one of the defined rectangles
-            if (btnPlay.pointOnButton(touchPoint.x, touchPoint.y)) {
-                Gdx.app.log("Tamagotchi", "Touch on Play");
-                return;
-            }
-            if (btnSelect.pointOnButton(touchPoint.x, touchPoint.y)) {
-                Gdx.app.log("Tamagotchi", "Touch on Select");
-                return;
-            }
-            if (btnMemories.pointOnButton(touchPoint.x, touchPoint.y)) {
-                Gdx.app.log("Tamagotchi", "Touch on Memories");
-                return;
-            }
-            if (btnSettings.pointOnButton(touchPoint.x, touchPoint.y)) {
-                Gdx.app.log("Tamagotchi", "Touch on Settings");
-                return;
-            }
+    public final void click(Actor actor, float x, float y) {
+        if (actor == btnPlay) {
+            Gdx.app.debug(TAG, "Touch on Play");
+            game.updateState(TamagotchiGame.STATE_MAIN_GAME);
+        } else if (actor == btnSelect) {
+            Gdx.app.debug(TAG, "Touch on Select");
+        } else if (actor == btnMemories) {
+            Gdx.app.debug(TAG, "Touch on Memories");
+        } else if (actor == btnSettings) {
+            Gdx.app.debug(TAG, "Touch on Settings");
+        } else {
+            Gdx.app.error(TAG, "Unknown actor");
+            assert false;
         }
     }
 
-    @Override
-    public void draw(float delta) {
-        Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-        stage.draw();
-    }
 }

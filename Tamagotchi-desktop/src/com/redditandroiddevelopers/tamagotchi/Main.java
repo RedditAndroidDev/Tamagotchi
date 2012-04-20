@@ -12,7 +12,7 @@ public class Main {
         cfg.width = 800;
         cfg.height = 480;
         cfg.resizable = false;
-        
-        new LwjglApplication(new TamagotchiGame(), cfg);
+
+        new LwjglApplication(new TamagotchiGame(new TamagotchiConfiguration()), cfg);
     }
 }

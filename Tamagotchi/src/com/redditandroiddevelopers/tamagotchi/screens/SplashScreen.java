@@ -4,6 +4,8 @@ package com.redditandroiddevelopers.tamagotchi.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
 
 /**
@@ -12,47 +14,49 @@ import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
  */
 public class SplashScreen extends CommonScreen {
 
-    private static final float SPLASH_DURATION = .5f;
+    private static final String TAG = "Tamagotchi:SplashScreen";
 
-    private SpriteBatch batch;
-    private Texture splashTexture;
-    private float timeElapsed = 0;
+    public SplashScreen(TamagotchiGame game) {
+        super(game);
+    }
 
     @Override
-    public void show() {
-        // super.show();
+    protected final Stage createStage(SpriteBatch batch) {
+        return new Stage(game.config.stageWidth, game.config.stageHeight, false, batch);
+    }
 
-        batch = new SpriteBatch();
+    @Override
+    public final void show() {
+        super.show();
 
         // load Reddit alien texture
-        splashTexture = new Texture(Gdx.files.internal("Reddit-alien.png"));
+        Image splashLogo = new Image(new Texture(Gdx.files.internal("Reddit-alien.png")));
+        splashLogo.x = getCenterX(splashLogo.getRegion().getTexture());
+        splashLogo.y = getCenterY(splashLogo.getRegion().getTexture());
+        stage.addActor(splashLogo);
+
+        // begin loading all assets (asynchronously)
+        game.assets.loadAssets();
     }
 
     @Override
-    public void update(float delta) {
-        // delta is the time since the last update, adding it up gives us the
-        // time since the first update
-        if (timeElapsed < SPLASH_DURATION) { // revert to 3 (or any other suitable value)
-            // before publishing the game
-            timeElapsed += delta;
-        }
-        else {
-            // after 3 seconds, the Splash screen is hidden and the
-            // MainMenuScreen is shown
-            TamagotchiGame.MY_STATE = TamagotchiGame.STATE_MAIN_MENU;
-            TamagotchiGame.STATE_CHANGE = true;
+    public final void update(float delta) {
+        super.update(delta);
+
+        final float progress = game.assets.getProgress();
+        Gdx.app.log(TAG, "Loading assets ... " + (progress * 100) + "% done");
+        if (game.assets.update()) {
+            // we are done loading, move to main menu screen
+            Gdx.app.log(TAG, "Loading assets ... finished");
+            game.updateState(TamagotchiGame.STATE_MAIN_MENU);
         }
     }
 
     @Override
-    public void draw(float delta) {
+    public final void draw() {
         // use white background for now
         Gdx.gl.glClearColor(1, 1, 1, 1);
-
-        batch.begin();
-        // draw Reddit alien on the screen
-        batch.draw(splashTexture, getCenterX(splashTexture), getCenterY(splashTexture));
-        batch.end();
+        super.draw();
     }
 
     /**
@@ -62,8 +66,8 @@ public class SplashScreen extends CommonScreen {
      * @param t Texture to display
      * @return X coordinate
      */
-    private static final int getCenterX(Texture t) {
-        return (Gdx.graphics.getWidth() - t.getWidth()) / 2;
+    private final float getCenterX(Texture t) {
+        return (stage.width() - t.getWidth()) / 2;
     }
 
     /**
@@ -73,7 +77,7 @@ public class SplashScreen extends CommonScreen {
      * @param t Texture to display
      * @return Y coordinate
      */
-    private static final int getCenterY(Texture t) {
-        return (Gdx.graphics.getHeight() - t.getHeight()) / 2;
+    private final float getCenterY(Texture t) {
+        return (stage.height() - t.getHeight()) / 2;
     }
 }
