@@ -2,7 +2,6 @@
 package com.redditandroiddevelopers.tamagotchi.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
+import com.redditandroiddevelopers.tamagotchi.TamagotchiAssets.TextureAsset;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
 import com.redditandroiddevelopers.tamagotchi.ui.DragListener;
 import com.redditandroiddevelopers.tamagotchi.ui.DraggableImage;
@@ -47,23 +47,11 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
         final Group ui = new Group("ui");
         final Group topButtons = new Group("top_buttons");
 
-        final AssetManager assetManager = game.assetManager;
-
-        // load needed textures for this screen
-        assetManager.load("InGame/button.png", Texture.class);
-        assetManager.load("InGame/arrow.png", Texture.class);
-        // make sure all textures are loaded before continuing
-
-        // TODO: Add a loading screen if loading takes too long
-        assetManager.finishLoading();
-
         // prepare texture regions from the loaded textures
         // TODO: group the images into ONE Texture, and then create individual
         // TextureRegions from that
-        final Texture buttonTexture = assetManager.get(
-                "InGame/button.png", Texture.class);
-        final Texture arrowTexture = assetManager.get(
-                "InGame/arrow.png", Texture.class);
+        final Texture buttonTexture = game.assets.getTexture(TextureAsset.BTN_STATUS);
+        final Texture arrowTexture = game.assets.getTexture(TextureAsset.DRG_ARROW);
         final TextureRegion buttonTextureRegion = new TextureRegion(buttonTexture);
         final TextureRegion arrowTextureRegion = new TextureRegion(arrowTexture);
 
@@ -75,8 +63,7 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
         final int width = buttonTexture.getWidth() + marginBetweenButtons;
 
         // create food button
-        btnFood = new Button(new TextureRegion(assetManager.get(
-                "InGame/button.png", Texture.class)));
+        btnFood = new Button(buttonTextureRegion);
         btnFood.x = width * 0;
         btnFood.setClickListener(this);
 
@@ -135,19 +122,13 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
         } else if (actor == btnLight) {
             Gdx.app.debug(TAG, "Touch on light button");
             camera.zoom -= 0.02;
+        } else if (actor == btnDragDown) {
+            Gdx.app.debug(TAG, "Touch on arrow");
+            // do nothing, handle in drag()
         } else {
             Gdx.app.error(TAG, "Unknown actor");
             assert false;
         }
-    }
-
-    @Override
-    public final void hide() {
-        // AssetManagers needs to be manually told to unload resources
-        final AssetManager assetManager = game.assetManager;
-        assetManager.unload("InGame/arrow.png");
-        assetManager.unload("InGame/button.png");
-        super.hide();
     }
 
     @Override

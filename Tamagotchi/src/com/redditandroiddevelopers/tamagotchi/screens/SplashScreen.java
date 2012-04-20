@@ -12,11 +12,9 @@ import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
  * A simple splash screen that is shown when the game is started. It
  * automatically transitions to the MainMenuScreen after 3 seconds.
  */
-public class SplashScreen extends CommonScreen{
+public class SplashScreen extends CommonScreen {
 
-    private static final float SPLASH_DURATION = .5f;
-
-    private float timeElapsed = 0;
+    private static final String TAG = "Tamagotchi:SplashScreen";
 
     public SplashScreen(TamagotchiGame game) {
         super(game);
@@ -36,21 +34,20 @@ public class SplashScreen extends CommonScreen{
         splashLogo.x = getCenterX(splashLogo.getRegion().getTexture());
         splashLogo.y = getCenterY(splashLogo.getRegion().getTexture());
         stage.addActor(splashLogo);
+
+        // begin loading all assets (asynchronously)
+        game.assets.loadAssets();
     }
 
     @Override
     public final void update(float delta) {
         super.update(delta);
-        // delta is the time since the last update, adding it up gives us the
-        // time since the first update
-        if (timeElapsed < SPLASH_DURATION) { // revert to 3 (or any other
-                                             // suitable value)
-            // before publishing the game
-            timeElapsed += delta;
-        }
-        else {
-            // after 3 seconds, the Splash screen is hidden and the
-            // MainMenuScreen is shown
+
+        final float progress = game.assets.getProgress();
+        Gdx.app.log(TAG, "Loading assets ... " + (progress * 100) + "% done");
+        if (game.assets.update()) {
+            // we are done loading, move to main menu screen
+            Gdx.app.log(TAG, "Loading assets ... finished");
             game.updateState(TamagotchiGame.STATE_MAIN_MENU);
         }
     }

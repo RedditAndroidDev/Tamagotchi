@@ -34,8 +34,9 @@ public class TamagotchiGame extends Game {
     private CommonScreen[] screens;
 
     public final TamagotchiConfiguration config;
-    public AssetManager assetManager;
     public InputMultiplexer inputMultiplexer;
+    public AssetManager assetManager;
+    public TamagotchiAssets assets;
 
     private FPSLogger fpsLogger; // XXX: temporary!
 
@@ -60,12 +61,14 @@ public class TamagotchiGame extends Game {
                 new PauseScreen(this), // TODO: implement SettingsScreen
         };
 
-        Resolution resolution = new Resolution(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),
-                "");
-        ResolutionFileResolver resolver = new ResolutionFileResolver(
+        final Resolution resolution = new Resolution(Gdx.graphics.getWidth(),
+                Gdx.graphics.getHeight(), "");
+        final ResolutionFileResolver resolver = new ResolutionFileResolver(
                 new InternalFileHandleResolver(), resolution);
         assetManager = new AssetManager();
         assetManager.setLoader(Texture.class, new TextureLoader(resolver));
+
+        assets = new TamagotchiAssets(assetManager);
 
         inputMultiplexer = new InputMultiplexer();
         Gdx.input.setInputProcessor(inputMultiplexer);

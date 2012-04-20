@@ -68,6 +68,7 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
 
     @Override
     public void hide() {
+        // TODO: clear assets
         game.assetManager.setErrorListener(null);
         game.inputMultiplexer.removeProcessor(stage);
         stage.dispose();
@@ -103,6 +104,7 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
         camera = (OrthographicCamera) stage.getCamera();
         game.inputMultiplexer.addProcessor(stage);
         game.assetManager.setErrorListener(this);
+        // TODO: reload assets (after clearing them in hide())
     }
 
     /**
