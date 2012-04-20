@@ -24,10 +24,13 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
 
     private static final String TAG = "Tamagotchi:MainGameScreen";
 
-    private Button btnLight;
-    private Button btnShower;
-    private Button btnToilet;
-    private Button btnFood;
+    private static final int FOOD = 0;
+    private static final int TOILET = 1;
+    private static final int SHOWER = 2;
+    private static final int LIGHT = 3;
+    private static final int NUM_BUTTONS = 4;
+
+    private Button[] buttons;
     private DraggableImage btnDragDown;
 
     public MainGameScreen(TamagotchiGame game) {
@@ -62,31 +65,14 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
         // precise placement of the buttons
         final int width = buttonTexture.getWidth() + marginBetweenButtons;
 
-        // create food button
-        btnFood = new Button(buttonTextureRegion);
-        btnFood.x = width * 0;
-        btnFood.setClickListener(this);
-
-        // create toilet button
-        btnToilet = new Button(buttonTextureRegion);
-        btnToilet.x = width * 1;
-        btnToilet.setClickListener(this);
-
-        // create shower button
-        btnShower = new Button(buttonTextureRegion);
-        btnShower.x = width * 2;
-        btnShower.setClickListener(this);
-
-        // create light button
-        btnLight = new Button(buttonTextureRegion);
-        btnLight.x = width * 3;
-        btnLight.setClickListener(this);
-
-        // add buttons to 'topButtons'
-        topButtons.addActor(btnFood);
-        topButtons.addActor(btnToilet);
-        topButtons.addActor(btnShower);
-        topButtons.addActor(btnLight);
+        buttons = new Button[NUM_BUTTONS];
+        for (int i = 0; i < NUM_BUTTONS; i++) {
+            final Button button = new Button(buttonTextureRegion);
+            button.x = width * i;
+            button.setClickListener(this);
+            topButtons.addActor(button);
+            buttons[i] = button;
+        }
 
         // adjust width of 'topButtons'
         topButtons.width = width * topButtons.getActors().size();
@@ -110,16 +96,16 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
     @Override
     public final void click(Actor actor, float x, float y) {
         // touch input was received, time to find the culprit
-        if (actor == btnFood) {
+        if (actor == buttons[FOOD]) {
             Gdx.app.debug(TAG, "Touch on food button");
             camera.rotate(1, 0, 0, 1);
-        } else if (actor == btnToilet) {
+        } else if (actor == buttons[TOILET]) {
             Gdx.app.debug(TAG, "Touch on toilet button");
             camera.rotate(-1, 0, 0, 1);
-        } else if (actor == btnShower) {
+        } else if (actor == buttons[SHOWER]) {
             Gdx.app.debug(TAG, "Touch on shower button");
             camera.zoom += 0.02;
-        } else if (actor == btnLight) {
+        } else if (actor == buttons[LIGHT]) {
             Gdx.app.debug(TAG, "Touch on light button");
             camera.zoom -= 0.02;
         } else if (actor == btnDragDown) {
