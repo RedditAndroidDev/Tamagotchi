@@ -50,6 +50,8 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
         final Group ui = new Group("ui");
         final Group topButtons = new Group("top_buttons");
         final Group statusPanel = new Group("statusPanel");
+        final Group creature = new Group("creature");
+        final Group background = new Group("background");
 
         // prepare texture regions from the loaded textures
         // TODO: group the images into ONE Texture, and then create individual
