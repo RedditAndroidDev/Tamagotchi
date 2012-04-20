@@ -89,7 +89,7 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
         btnDragDown.setDragListener(this);
         statusPanel.addActor(btnDragDown);
 
-        // TODO: Add basic stats mockup that can be pulled down
+        // TODO: Add basic status mockup that can be pulled down
         // TODO: Position statusPanel in top left corner
 
         // add various groups to the 'ui' group
@@ -134,9 +134,9 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
         if (a == btnDragDown) {
             /*
              * TODO: detect precise touch point and use it when moving the group
-             * Currently it snaps to the bottom line of the texture when
-             * dragging starts. Needs to apply a offset for the correct touch
-             * point.
+             * Currently, it snaps to the bottom line of the texture when
+             * dragging starts. In order to make it look better, we need to
+             * apply an offset for the correct touch point.
              */
             stage.findActor("statusPanel").y += y;
         }
