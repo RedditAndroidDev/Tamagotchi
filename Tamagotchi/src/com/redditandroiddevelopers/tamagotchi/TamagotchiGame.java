@@ -11,7 +11,6 @@ import com.badlogic.gdx.assets.loaders.resolvers.ResolutionFileResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.ResolutionFileResolver.Resolution;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.redditandroiddevelopers.tamagotchi.screens.CommonScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.MainGameScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.MainMenuScreen;
@@ -37,7 +36,6 @@ public class TamagotchiGame extends Game {
     public final TamagotchiConfiguration config;
     public AssetManager assetManager;
     public InputMultiplexer inputMultiplexer;
-    public SpriteBatch spriteBatch;
 
     private FPSLogger fpsLogger; // XXX: temporary!
 
@@ -71,8 +69,6 @@ public class TamagotchiGame extends Game {
 
         inputMultiplexer = new InputMultiplexer();
         Gdx.input.setInputProcessor(inputMultiplexer);
-
-        spriteBatch = new SpriteBatch();
 
         setScreen(new SplashScreen(this));
     }

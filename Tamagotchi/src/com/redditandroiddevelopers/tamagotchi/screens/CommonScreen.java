@@ -20,6 +20,7 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
     private static final String TAG = "Tamagotchi:CommonScreen";
 
     protected TamagotchiGame game;
+    protected SpriteBatch batch;
     protected Stage stage;
     protected OrthographicCamera camera;
 
@@ -97,7 +98,8 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
 
     @Override
     public void show() {
-        stage = createStage(game.spriteBatch);
+        batch = new SpriteBatch();
+        stage = createStage(batch);
         camera = (OrthographicCamera) stage.getCamera();
         game.inputMultiplexer.addProcessor(stage);
         game.assetManager.setErrorListener(this);
