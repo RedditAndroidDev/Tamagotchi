@@ -20,6 +20,7 @@ public class CreatureEvolutionMapper {
         evo.maxDiscipline = c.getInt(c.getColumnIndex("CE_MAX_DISCIPLINE"));
         evo.maxHunger = c.getInt(c.getColumnIndex("CE_MAX_HUNGER"));
         evo.maxHappy = c.getInt(c.getColumnIndex("CE_MAX_HAPPY"));
+        evo.maxExperience = c.getInt(c.getColumnIndex("CE_MAX_EXPERIENCE"));
         return evo;
     }
 }

@@ -20,6 +20,7 @@ public class CreatureEvolution {
     public int maxDiscipline;
     public int maxHunger;
     public int maxHappy;
+    public int maxExperience;
 
     public ContentValues buildContentValues() {
         ContentValues toReturn = new ContentValues();
@@ -31,6 +32,7 @@ public class CreatureEvolution {
         toReturn.put("CE_MAX_DISCIPLINE", maxDiscipline);
         toReturn.put("CE_MAX_HUNGER", maxHunger);
         toReturn.put("CE_MAX_HAPPY", maxHappy);
+        toReturn.put("CE_MAX_EXPERIENCE", maxExperience);
         return toReturn;
     }
 }
