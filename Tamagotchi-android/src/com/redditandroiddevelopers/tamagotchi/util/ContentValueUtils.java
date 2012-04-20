@@ -7,6 +7,7 @@ import com.redditandroiddevelopers.tamagotchi.model.CreatureEvolution;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureRaiseType;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureState;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureType;
+import com.redditandroiddevelopers.tamagotchi.model.Experience;
 import com.redditandroiddevelopers.tamagotchi.model.Medicine;
 import com.redditandroiddevelopers.tamagotchi.model.Sickness;
 
@@ -28,12 +29,23 @@ public class ContentValueUtils {
             return buildMedicine((Medicine)modelObj);
         } else if (modelObj instanceof Sickness) {
             return buildSickness((Sickness)modelObj);
+        } else if (modelObj instanceof Experience) {
+            return buildExperience((Experience)modelObj);
         } else {
             throw new IllegalArgumentException(
                     "Couldn't build content value map for class "
                             + modelObj.getClass()
                             + ". Did you forget code in ContentValueUtils?");
         }
+    }
+    
+    public static ContentValues buildExperience(Experience modelObj) {
+        ContentValues toReturn = new ContentValues();
+        toReturn.put("E_ID", modelObj.id);
+        toReturn.put("CT_ID", modelObj.type.id);
+        toReturn.put("E_MIN_XP", modelObj.minXp);
+        toReturn.put("E_MAX_XP", modelObj.maxXp);
+        return toReturn;
     }
 
     private static ContentValues buildSickness(Sickness modelObj) {
@@ -70,6 +82,7 @@ public class ContentValueUtils {
         toReturn.put("CS_HUNGER", modelObj.hunger);
         toReturn.put("CS_HAPPY", modelObj.happy);
         toReturn.put("CS_SICK", modelObj.sick);
+        toReturn.put("CS_EXPERIENCE", modelObj.experience);
         return toReturn;
     }
 
@@ -91,6 +104,7 @@ public class ContentValueUtils {
         toReturn.put("CE_MAX_DISCIPLINE", modelObj.maxDiscipline);
         toReturn.put("CE_MAX_HUNGER", modelObj.maxHunger);
         toReturn.put("CE_MAX_HAPPY", modelObj.maxHappy);
+        toReturn.put("CE_MAX_EXPERIENCE", modelObj.maxExperience);
         return toReturn;
     }
 

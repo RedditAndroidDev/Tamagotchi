@@ -13,6 +13,7 @@ public interface CommonDatabase<T extends CommonModel> {
     public static final String RAISE_TYPE_TABLE_NAME = "CREATURE_RAISE_TYPE";
     public static final String MEDICINE_TABLE_NAME = "MEDICINE";
     public static final String SICKNESS_TABLE_NAME = "SICKNESS";
+    public static final String EXPERIENCE_TABLE_NAME = "EXPERIENCE";
     
     public T queryUnique(Mapper<T> rowMapper, String table,
             String[] projectionIn, String selection, String[] selectionArgs,

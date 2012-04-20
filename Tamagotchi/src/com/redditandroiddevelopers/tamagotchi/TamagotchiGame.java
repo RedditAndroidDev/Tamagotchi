@@ -1,4 +1,3 @@
-
 package com.redditandroiddevelopers.tamagotchi;
 
 import java.util.List;
@@ -37,15 +36,9 @@ public class TamagotchiGame extends Game {
     public static final int STATE_SETTINGS = 5;
 
     private CommonScreen[] screens;
-    
+
     private CreatureDao creatureDao;
-    
-    public TamagotchiGame(CreatureDao creatureDao) {
-        super();
-        this.creatureDao = creatureDao;
-        //test();
-    }
-    
+
     public void test() {
         List<Creature> res = creatureDao.getAll();
         for (Creature c : res) {
@@ -72,17 +65,15 @@ public class TamagotchiGame extends Game {
         fpsLogger = new FPSLogger();
 
         // create screen objects we're going to need throughout
-        screens = new CommonScreen[] {
-                new MainMenuScreen(this),
-                new MainGameScreen(this),
-                new PauseScreen(this),
+        screens = new CommonScreen[] { new MainMenuScreen(this),
+                new MainGameScreen(this), new PauseScreen(this),
                 new PauseScreen(this), // TODO: implement PetSelectionScreen
                 new PauseScreen(this), // TODO: implement MemoriesScreen
                 new PauseScreen(this), // TODO: implement SettingsScreen
         };
 
-        Resolution resolution = new Resolution(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),
-                "");
+        Resolution resolution = new Resolution(Gdx.graphics.getWidth(),
+                Gdx.graphics.getHeight(), "");
         ResolutionFileResolver resolver = new ResolutionFileResolver(
                 new InternalFileHandleResolver(), resolution);
         assetManager = new AssetManager();
@@ -110,7 +101,8 @@ public class TamagotchiGame extends Game {
      * Update the state, all updates outside of this class should use this
      * method
      * 
-     * @param state The int val of the new state
+     * @param state
+     *            The int val of the new state
      */
     public void updateState(int state) {
         if (state < 0 || state >= 6) {

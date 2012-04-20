@@ -20,4 +20,5 @@ public class CreatureState extends CommonModel {
     public int hunger;
     public int happy;
     public boolean sick;
+    public int experience;
 }
