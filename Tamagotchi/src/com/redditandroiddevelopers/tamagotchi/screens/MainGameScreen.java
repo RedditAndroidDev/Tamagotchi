@@ -12,13 +12,15 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
+import com.redditandroiddevelopers.tamagotchi.ui.Draggable;
+import com.redditandroiddevelopers.tamagotchi.ui.DraggableImage;
 
 /**
  * This screen instance will represent the main game screen where your creature
  * will live.<br>
  * This is where the user will spend most of the time.
  */
-public class MainGameScreen extends CommonScreen implements ClickListener {
+public class MainGameScreen extends CommonScreen implements ClickListener, Draggable {
 
     private static final String TAG = "Tamagotchi:MainGameScreen";
 
@@ -26,9 +28,8 @@ public class MainGameScreen extends CommonScreen implements ClickListener {
     private Button btnShower;
     private Button btnToilet;
     private Button btnFood;
-    // TODO make it drag down,not click
-    private Button btnDragDown;
-
+    private DraggableImage btnDragDown;
+    
     public MainGameScreen(TamagotchiGame game) {
         super(game);
     }
@@ -109,10 +110,10 @@ public class MainGameScreen extends CommonScreen implements ClickListener {
 
         // add 'topButtons' to the 'ui' group
         ui.addActor(topButtons);
-
-        btnDragDown = new Button(arrowTextureRegion);
+        btnDragDown = new DraggableImage(arrowTextureRegion);
         btnDragDown.y = stage.top() - 64;
         btnDragDown.setClickListener(this);
+        btnDragDown.setDraggable(this);
         ui.addActor(btnDragDown);
 
         // add the 'ui' to the stage
@@ -147,6 +148,13 @@ public class MainGameScreen extends CommonScreen implements ClickListener {
         assetManager.unload("InGame/arrow.png");
         assetManager.unload("InGame/button.png");
         super.hide();
+    }
+
+    @Override
+    public void drag(Actor a, float x, float y, int pointer) {
+        // NOTICE THE += HERE!
+        //a.x += x;
+        a.y += y;
     }
 
 }

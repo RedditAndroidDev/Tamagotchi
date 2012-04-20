@@ -12,7 +12,7 @@ import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
  * A simple splash screen that is shown when the game is started. It
  * automatically transitions to the MainMenuScreen after 3 seconds.
  */
-public class SplashScreen extends CommonScreen {
+public class SplashScreen extends CommonScreen{
 
     private static final float SPLASH_DURATION = .5f;
 
