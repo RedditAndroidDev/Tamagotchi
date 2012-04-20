@@ -49,6 +49,7 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
         // add groups for better readability and flexibility
         final Group ui = new Group("ui");
         final Group topButtons = new Group("top_buttons");
+        final Group statusPanel = new Group("statusPanel");
 
         // prepare texture regions from the loaded textures
         // TODO: group the images into ONE Texture, and then create individual
@@ -81,16 +82,27 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
         topButtons.x = stage.right() - topButtons.width;
         topButtons.y = stage.top() - width;
 
-        // add 'topButtons' to the 'ui' group
-        ui.addActor(topButtons);
+        // add status panel
         btnDragDown = new DraggableImage(arrowTextureRegion);
         btnDragDown.y = stage.top() - 64;
         btnDragDown.setClickListener(this);
         btnDragDown.setDragListener(this);
-        ui.addActor(btnDragDown);
+        statusPanel.addActor(btnDragDown);
+
+        // TODO: Add basic stats mockup that can be pulled down
+        // TODO: Position statusPanel in top left corner
+
+        // add various groups to the 'ui' group
+        ui.addActor(statusPanel);
+        ui.addActor(topButtons);
 
         // add the 'ui' to the stage
         stage.addActor(ui);
+
+        // TODO: Add creature
+        // TODO: Add background
+        // TODO: Add layers for background and the main stage
+        // TODO: Add overlays, e.g. for speech bubbles
     }
 
     @Override
@@ -119,7 +131,15 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
 
     @Override
     public void drag(Actor a, float x, float y, int pointer) {
-        camera.translate(0, -y, 0);
+        if (a == btnDragDown) {
+            /*
+             * TODO: detect precise touch point and use it when moving the group
+             * Currently it snaps to the bottom line of the texture when
+             * dragging starts. Needs to apply a offset for the correct touch
+             * point.
+             */
+            stage.findActor("statusPanel").y += y;
+        }
     }
 
 }
