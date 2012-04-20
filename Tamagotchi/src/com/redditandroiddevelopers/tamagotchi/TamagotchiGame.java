@@ -1,6 +1,8 @@
 
 package com.redditandroiddevelopers.tamagotchi;
 
+import java.util.List;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -12,6 +14,8 @@ import com.badlogic.gdx.assets.loaders.resolvers.ResolutionFileResolver.Resoluti
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.redditandroiddevelopers.tamagotchi.dao.CreatureDao;
+import com.redditandroiddevelopers.tamagotchi.model.Creature;
 import com.redditandroiddevelopers.tamagotchi.screens.CommonScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.MainGameScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.MainMenuScreen;
@@ -33,6 +37,21 @@ public class TamagotchiGame extends Game {
     public static final int STATE_SETTINGS = 5;
 
     private CommonScreen[] screens;
+    
+    private CreatureDao creatureDao;
+    
+    public TamagotchiGame(CreatureDao creatureDao) {
+        super();
+        this.creatureDao = creatureDao;
+        //test();
+    }
+    
+    public void test() {
+        List<Creature> res = creatureDao.getAll();
+        for (Creature c : res) {
+            System.out.println(c.id + ", " + c.name);
+        }
+    }
 
     public final TamagotchiConfiguration config;
     public AssetManager assetManager;
