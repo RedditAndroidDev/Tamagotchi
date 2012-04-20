@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
-import com.redditandroiddevelopers.tamagotchi.ui.Draggable;
+import com.redditandroiddevelopers.tamagotchi.ui.DragListener;
 import com.redditandroiddevelopers.tamagotchi.ui.DraggableImage;
 
 /**
@@ -20,7 +20,7 @@ import com.redditandroiddevelopers.tamagotchi.ui.DraggableImage;
  * will live.<br>
  * This is where the user will spend most of the time.
  */
-public class MainGameScreen extends CommonScreen implements ClickListener, Draggable {
+public class MainGameScreen extends CommonScreen implements ClickListener, DragListener {
 
     private static final String TAG = "Tamagotchi:MainGameScreen";
 
@@ -113,7 +113,7 @@ public class MainGameScreen extends CommonScreen implements ClickListener, Dragg
         btnDragDown = new DraggableImage(arrowTextureRegion);
         btnDragDown.y = stage.top() - 64;
         btnDragDown.setClickListener(this);
-        btnDragDown.setDraggable(this);
+        btnDragDown.setDragListener(this);
         ui.addActor(btnDragDown);
 
         // add the 'ui' to the stage

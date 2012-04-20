@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  * @author Jeffrey Selk
  *
  */
-public interface Draggable {
+public interface DragListener {
     /**
      * Dispatch a drag event
      * @param a The actor on which the event hit
