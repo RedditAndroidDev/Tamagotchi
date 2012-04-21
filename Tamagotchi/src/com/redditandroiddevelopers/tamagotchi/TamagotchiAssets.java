@@ -32,8 +32,6 @@ public class TamagotchiAssets {
         BTN_STATUS("InGame/button.png"),
         DRG_ARROW("InGame/arrow.png");
 
-        protected static final Class<? extends Object> type = Texture.class;
-
         private final String textureFile;
 
         private TextureAsset(String textureFile) {
@@ -56,8 +54,6 @@ public class TamagotchiAssets {
 
         DEFAULT("");
         // TODO: need moar fonts!
-
-        protected static final Class<? extends Object> type = BitmapFont.class;
 
         /**
          * A BMFont file. The image file for texture should be in the same
