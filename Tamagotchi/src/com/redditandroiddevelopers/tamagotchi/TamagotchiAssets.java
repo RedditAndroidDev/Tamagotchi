@@ -85,7 +85,9 @@ public class TamagotchiAssets {
     }
 
     /**
-     * Asynchronously load all assets.
+     * Asynchronously load all assets. Test for completion by calling
+     * {@link TamagotchiAssets#update()} or
+     * {@link TamagotchiAssets#getProgress()}.
      */
     public void loadAssets() {
         // load textures
@@ -101,10 +103,18 @@ public class TamagotchiAssets {
         }
     }
 
+    /**
+     * Asynchronously updates outstanding assets.
+     * 
+     * @return true if all assets are finished loading
+     */
     public boolean update() {
         return assetManager.update();
     }
 
+    /**
+     * @return the progress of asset loading in percentage
+     */
     public float getProgress() {
         return assetManager.getProgress();
     }
