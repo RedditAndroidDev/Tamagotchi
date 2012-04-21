@@ -61,8 +61,8 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
         // prepare texture regions from the loaded textures
         // TODO: group the images into ONE Texture, and then create individual
         // TextureRegions from that
-        final Texture buttonTexture = game.assets.getTexture(TextureAsset.BTN_STATUS);
-        final Texture arrowTexture = game.assets.getTexture(TextureAsset.DRG_ARROW);
+        final Texture buttonTexture = game.assets.getAsset(TextureAsset.BTN_STATUS);
+        final Texture arrowTexture = game.assets.getAsset(TextureAsset.DRG_ARROW);
         final TextureRegion buttonTextureRegion = new TextureRegion(buttonTexture);
         final TextureRegion arrowTextureRegion = new TextureRegion(arrowTexture);
 

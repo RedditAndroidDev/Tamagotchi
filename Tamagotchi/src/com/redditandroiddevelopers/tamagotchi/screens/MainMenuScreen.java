@@ -35,7 +35,7 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
         super.show();
 
         // adding the game name
-        Image imgAppName = new Image(game.assets.getTexture(TextureAsset.APP_NAME));
+        Image imgAppName = new Image(game.assets.getAsset(TextureAsset.APP_NAME));
         imgAppName.x = 10;
         imgAppName.y = 325;
         stage.addActor(imgAppName);
@@ -45,7 +45,7 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
 
         // adding the Play button
         btnPlay = new Button(new TextureRegion(
-                game.assets.getTexture(TextureAsset.BTN_PLAY_UNPRESSED)));
+                game.assets.getAsset(TextureAsset.BTN_PLAY_UNPRESSED)));
         btnPlay.x = 10;
         btnPlay.y = 235;
         btnPlay.setClickListener(this);
@@ -53,7 +53,7 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
 
         // adding the Select button
         btnSelect = new Button(new TextureRegion(
-                game.assets.getTexture(TextureAsset.BTN_SELECT_UNPRESSED)));
+                game.assets.getAsset(TextureAsset.BTN_SELECT_UNPRESSED)));
         btnSelect.x = 10;
         btnSelect.y = 160;
         btnSelect.setClickListener(this);
@@ -61,7 +61,7 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
 
         // adding the Memories button
         btnMemories = new Button(new TextureRegion(
-                game.assets.getTexture(TextureAsset.BTN_MEMORIES_UNPRESSED)));
+                game.assets.getAsset(TextureAsset.BTN_MEMORIES_UNPRESSED)));
         btnMemories.x = 10;
         btnMemories.y = 85;
         btnMemories.setClickListener(this);
@@ -69,7 +69,7 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
 
         // adding the Settings button
         btnSettings = new Button(new TextureRegion(
-                game.assets.getTexture(TextureAsset.BTN_SETTINGS_UNPRESSED)));
+                game.assets.getAsset(TextureAsset.BTN_SETTINGS_UNPRESSED)));
         btnSettings.x = 10;
         btnSettings.y = 10;
         btnSettings.setClickListener(this);
