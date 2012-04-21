@@ -9,7 +9,6 @@ import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.ResolutionFileResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.ResolutionFileResolver.Resolution;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.Texture;
 import com.redditandroiddevelopers.tamagotchi.screens.CommonScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.MainGameScreen;
@@ -38,8 +37,6 @@ public class TamagotchiGame extends Game {
     public AssetManager assetManager;
     public TamagotchiAssets assets;
 
-    private FPSLogger fpsLogger; // XXX: temporary!
-
     public TamagotchiGame(TamagotchiConfiguration config) {
         this.config = config;
     }
@@ -49,7 +46,6 @@ public class TamagotchiGame extends Game {
         // do first-time configurations that should live as long as the
         // application does
         Gdx.app.setLogLevel(config.logLevel);
-        fpsLogger = new FPSLogger();
 
         // create screen objects we're going to need throughout
         screens = new CommonScreen[] {
@@ -82,8 +78,6 @@ public class TamagotchiGame extends Game {
 
         // actually render the current screen
         super.render();
-        if (config.logFps)
-            fpsLogger.log();
     }
 
     /**

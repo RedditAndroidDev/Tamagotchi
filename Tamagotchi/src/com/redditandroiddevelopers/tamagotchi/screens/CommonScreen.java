@@ -46,8 +46,10 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
         camera.update();
         if (!Gdx.graphics.isGL20Available())
             camera.apply(Gdx.gl10);
-        else
+        else {
             assert false; // not supporting GL20 yet
+            throw new UnsupportedOperationException("OpenGL ES 2.0");
+        }
     }
 
     /**
