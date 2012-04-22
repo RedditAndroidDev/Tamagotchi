@@ -52,13 +52,6 @@ public class SplashScreen extends CommonScreen {
         }
     }
 
-    @Override
-    public final void draw() {
-        // use white background for now
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        super.draw();
-    }
-
     /**
      * Gets the X coordinate to display a texture centered on the X axis of the
      * screen.

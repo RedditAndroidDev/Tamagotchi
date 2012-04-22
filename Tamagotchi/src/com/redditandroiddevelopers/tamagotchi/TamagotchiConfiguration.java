@@ -2,6 +2,7 @@
 package com.redditandroiddevelopers.tamagotchi;
 
 import com.badlogic.gdx.Application;
+import com.badlogic.gdx.graphics.Color;
 import com.redditandroiddevelopers.tamagotchi.dao.CreatureDao;
 import com.redditandroiddevelopers.tamagotchi.dao.CreatureEvolutionDao;
 import com.redditandroiddevelopers.tamagotchi.dao.CreatureRaiseTypeDao;
@@ -24,7 +25,8 @@ public class TamagotchiConfiguration {
     public int logLevel = Application.LOG_DEBUG;
     public float stageWidth = 800;
     public float stageHeight = 480;
-    
+    public Color backgroundColor = Color.WHITE;
+
     // Persistence
     public CreatureDao creatureDao;
     public CreatureEvolutionDao creatureEvolutionDao;
