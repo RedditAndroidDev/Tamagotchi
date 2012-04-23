@@ -13,8 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
 
 /**
- * A common, base class for all of our app's screen implementations. Common
- * functionality for methods should go here
+ * A common, base class for all of our app's screen implementations.
  */
 public abstract class CommonScreen implements Screen, AssetErrorListener {
 
@@ -26,10 +25,11 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
     protected OrthographicCamera camera;
 
     /**
-     * A CommonScreen must have a reference to a TamagotchiGame. You must
-     * override this constructor (make sure to call this super constructor).
+     * A CommonScreen must have a reference to a {@link TamagotchiGame}. You
+     * must override this constructor (make sure to call this super
+     * constructor).
      * 
-     * @param game a TamagotchiGame instance
+     * @param game a {@link TamagotchiGame} instance
      */
     public CommonScreen(TamagotchiGame game) {
         this.game = game;
@@ -113,7 +113,7 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
     }
 
     /**
-     * Create a {@link Stage} for this screen, preferrably using the supplied
+     * Create a {@link Stage} for this screen, preferably using the supplied
      * {@link SpriteBatch} object.
      * 
      * @param batch the {@link SpriteBatch} object to use
