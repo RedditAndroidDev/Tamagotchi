@@ -19,4 +19,16 @@ public class PauseScreen extends CommonScreen {
         return new Stage(game.config.stageWidth, game.config.stageHeight, false, batch);
     }
 
+    @Override
+    public void loadResources() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void unloadResources() {
+        // TODO Auto-generated method stub
+
+    }
+
 }

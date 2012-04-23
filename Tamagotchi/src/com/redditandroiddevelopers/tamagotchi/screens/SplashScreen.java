@@ -30,26 +30,27 @@ public class SplashScreen extends CommonScreen {
         super.show();
 
         // load Reddit alien texture
-        Image splashLogo = new Image(new Texture(Gdx.files.internal("RedditAlien.png")));
+        final Image splashLogo = new Image(new Texture(Gdx.files.internal("RedditAlien.png")));
         splashLogo.x = getCenterX(splashLogo.getRegion().getTexture());
         splashLogo.y = getCenterY(splashLogo.getRegion().getTexture());
         stage.addActor(splashLogo);
 
         // begin loading all assets (asynchronously)
-        game.assets.loadAssets();
+        //        game.assets.loadAssets();
     }
 
     @Override
     public final void update(float delta) {
         super.update(delta);
 
-        final float progress = game.assets.getProgress();
-        Gdx.app.log(TAG, "Loading assets ... " + (progress * 100) + "% done");
-        if (game.assets.update()) {
-            // we are done loading, move to main menu screen
-            Gdx.app.log(TAG, "Loading assets ... finished");
-            game.updateState(TamagotchiGame.STATE_MAIN_MENU);
-        }
+        //        final float progress = game.assets.getProgress();
+        //        Gdx.app.log(TAG, "Loading assets ... " + (progress * 100) + "% done");
+        //        if (game.assets.update()) {
+        //            // we are done loading, move to main menu screen
+        //            Gdx.app.log(TAG, "Loading assets ... finished");
+        //            game.updateState(TamagotchiGame.STATE_MAIN_MENU);
+        //        }
+        game.updateState(TamagotchiGame.STATE_MAIN_MENU);
     }
 
     /**
@@ -72,5 +73,17 @@ public class SplashScreen extends CommonScreen {
      */
     private final float getCenterY(Texture t) {
         return (stage.height() - t.getHeight()) / 2;
+    }
+
+    @Override
+    public void loadResources() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void unloadResources() {
+        // TODO Auto-generated method stub
+
     }
 }

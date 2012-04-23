@@ -15,6 +15,7 @@ import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
 public class MainMenuScreen extends CommonScreen implements ClickListener {
 
     private static final String TAG = "Tamagotchi:MainMenuScreen";
+    public static final String ID = "main-menu";
 
     private Button btnPlay;
     private Button btnSelect;
@@ -33,17 +34,17 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
     @Override
     public final void show() {
         super.show();
+        layout();
+    }
 
-        final TextureAtlas textureAtlas = game.assets.getAsset(TextureAtlasAsset.TEXTURES);
+    private void layout() {
+        final TextureAtlas textureAtlas = game.assets.getAsset(TextureAtlasAsset.MAIN_MENU);
 
         // adding the game name
         Image imgAppName = new Image(textureAtlas.findRegion("AppName"));
         imgAppName.x = 10;
         imgAppName.y = 325;
         stage.addActor(imgAppName);
-
-        // TODO: Set up a TextureRegion that encompasses all UI elements
-        // involved here
 
         // adding the Play button
         btnPlay = new Button(textureAtlas.findRegion("BtnPlayUnpressed"));
@@ -89,6 +90,16 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
             Gdx.app.error(TAG, "Unknown actor");
             assert false;
         }
+    }
+
+    @Override
+    public void loadResources() {
+        game.assets.loadAsset(TextureAtlasAsset.MAIN_MENU);
+    }
+
+    @Override
+    public void unloadResources() {
+        game.assets.unloadAsset(TextureAtlasAsset.MAIN_MENU);
     }
 
 }

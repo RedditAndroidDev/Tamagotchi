@@ -36,6 +36,20 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
     }
 
     /**
+     * Must be overridden by a concrete screen that subclasses this class.
+     * Implement the logic to load all of the resources needed throughout the
+     * lifetime of this screen.
+     */
+    public abstract void loadResources();
+
+    /**
+     * Must be overridden by a concrete screen that subclasses this class.
+     * Implement the logic to unload all resources loaded by
+     * {@link CommonScreen#loadResources()} implementation.
+     */
+    public abstract void unloadResources();
+
+    /**
      * Called when the screen should update itself, e.g. continue a simulation
      * etc. By default, the {@link Camera} object of the associated
      * {@link Stage} of this {@code Screen} is updated. Override this method for
@@ -71,7 +85,7 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
 
     @Override
     public void hide() {
-        // TODO: clear assets
+        unloadResources();
         game.assetManager.setErrorListener(null);
         game.inputMultiplexer.removeProcessor(stage);
         stage.dispose();
@@ -109,7 +123,10 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
         camera = (OrthographicCamera) stage.getCamera();
         game.inputMultiplexer.addProcessor(stage);
         game.assetManager.setErrorListener(this);
-        // TODO: reload assets (after clearing them in hide())
+        loadResources();
+        // XXX: TEMPORARY!
+        // wait for resources to finish loading
+        game.assetManager.finishLoading();
     }
 
     /**

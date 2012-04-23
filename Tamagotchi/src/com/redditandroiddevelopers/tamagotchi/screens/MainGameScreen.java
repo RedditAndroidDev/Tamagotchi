@@ -26,6 +26,7 @@ import com.redditandroiddevelopers.tamagotchi.ui.DraggableImage;
 public class MainGameScreen extends CommonScreen implements ClickListener, DragListener {
 
     private static final String TAG = "Tamagotchi:MainGameScreen";
+    public static final String ID = "main-game";
 
     private static final String GRP_UI = "ui";
     private static final String GRP_TOP_BUTTONS = "top_buttons";
@@ -66,21 +67,27 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
         final Group creature = new Group(GRP_CREATURE);
         final Group background = new Group(GRP_BACKGROUND);
 
-        // prepare texture regions from the loaded textures
-        // TODO: group the images into ONE Texture, and then create individual
-        // TextureRegions from that
-        final TextureAtlas textureAtlas = game.assets.getAsset(TextureAtlasAsset.TEXTURES);
-        final TextureRegion buttonTextureRegion = textureAtlas.findRegion("MainButtonFood");
+        // prepare texture regions from a loaded texture atlas
+        final TextureAtlas textureAtlas = game.assets.getAsset(TextureAtlasAsset.MAIN_GAME);
         final TextureRegion arrowTextureRegion = textureAtlas.findRegion("LeftSwipeArrow");
+        final String[] interactButtonIDs = new String[] {
+                "MainButtonFood",
+                "MainButtonToilet",
+                "MainButtonShower",
+                "MainButtonSleepOff"
+        };
+        final TextureRegion[] interactButtonTextureRegions = new TextureRegion[interactButtonIDs.length];
+        for (int i = 0; i < interactButtonIDs.length; i++) {
+            interactButtonTextureRegions[i] = textureAtlas.findRegion(interactButtonIDs[i]);
+        }
 
-        // set margin between buttons
         final int marginBetweenButtons = 10;
         // buttons have the same width and height. using this value allows
         // precise placement of the buttons
-        final int width = buttonTextureRegion.getRegionWidth() + marginBetweenButtons;
+        final int width = interactButtonTextureRegions[0].getRegionWidth() + marginBetweenButtons;
         buttons = new Button[NUM_BUTTONS];
         for (int i = 0; i < NUM_BUTTONS; i++) {
-            final Button button = new Button(buttonTextureRegion);
+            final Button button = new Button(interactButtonTextureRegions[i]);
             button.x = width * i;
             button.setClickListener(this);
             topButtons.addActor(button);
@@ -171,6 +178,16 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
              */
             stage.findActor(GRP_STATUS_PANEL).y += y;
         }
+    }
+
+    @Override
+    public void loadResources() {
+        game.assets.loadAsset(TextureAtlasAsset.MAIN_GAME);
+    }
+
+    @Override
+    public void unloadResources() {
+        game.assets.unloadAsset(TextureAtlasAsset.MAIN_GAME);
     }
 
 }

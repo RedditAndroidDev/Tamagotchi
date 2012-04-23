@@ -15,17 +15,27 @@ public class Main {
         cfg.height = 480;
         cfg.resizable = false;
 
+        /* XXX TEMPORARY! XXX */
         // TODO: Only pack textures during development, disable for release
-
-        Settings texturePackerSettings = new Settings();
+        final Settings texturePackerSettings = new Settings();
         texturePackerSettings.padding = 2;
         texturePackerSettings.maxWidth = 4096;
         texturePackerSettings.maxHeight = 4096;
         texturePackerSettings.incremental = true;
         texturePackerSettings.rotate = true;
         texturePackerSettings.stripWhitespace = true;
-        TexturePacker.process(texturePackerSettings, "../Texture-assets",
-                "../Tamagotchi-android/assets");
+
+        // create a texture atlas per screen
+        final String[] screens = new String[] {
+                "main-menu",
+                "main-game"
+        };
+        for (String screen : screens) {
+            final String srcdir = "../Texture-assets/" + screen;
+            final String destdir = "../Tamagotchi-android/assets/" + screen;
+            TexturePacker.process(texturePackerSettings, srcdir, destdir);
+        }
+        /* XXX END TEMPORARY XXX */
 
         new LwjglApplication(new TamagotchiGame(new TamagotchiConfiguration()), cfg);
     }

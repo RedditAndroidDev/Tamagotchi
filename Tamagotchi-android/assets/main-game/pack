@@ -1,17 +1,5 @@
 
-Texture-assets1.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-AppName
-  rotate: false
-  xy: 2, 2
-  size: 512, 116
-  orig: 512, 128
-  offset: 0, 0
-  index: -1
-
-Backgrounds1.png
+backgrounds1.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -29,7 +17,7 @@ HillsMidground
   orig: 2361, 139
   offset: 0, 0
   index: -1
-Skyscrapers(CurrentlyUnused)
+Skyscrapers
   rotate: true
   xy: 227, 2
   size: 2223, 554
@@ -58,7 +46,106 @@ PlanetsBackground
   offset: 0, 0
   index: -1
 
-MainCreatureScreen1.png
+Buttons2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+BtnSettingsUnpressed
+  rotate: false
+  xy: 2, 2
+  size: 256, 64
+  orig: 256, 64
+  offset: 0, 0
+  index: -1
+BtnSelectUnpressed
+  rotate: false
+  xy: 260, 2
+  size: 256, 64
+  orig: 256, 64
+  offset: 0, 0
+  index: -1
+BtnPlayUnpressed
+  rotate: false
+  xy: 518, 2
+  size: 256, 64
+  orig: 256, 64
+  offset: 0, 0
+  index: -1
+BtnMemoriesUnpressed
+  rotate: false
+  xy: 776, 2
+  size: 256, 64
+  orig: 256, 64
+  offset: 0, 0
+  index: -1
+
+Buttons2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+BtnSettingsUnpressed
+  rotate: false
+  xy: 2, 2
+  size: 256, 64
+  orig: 256, 64
+  offset: 0, 0
+  index: -1
+BtnSelectUnpressed
+  rotate: false
+  xy: 260, 2
+  size: 256, 64
+  orig: 256, 64
+  offset: 0, 0
+  index: -1
+BtnPlayUnpressed
+  rotate: false
+  xy: 518, 2
+  size: 256, 64
+  orig: 256, 64
+  offset: 0, 0
+  index: -1
+BtnMemoriesUnpressed
+  rotate: false
+  xy: 776, 2
+  size: 256, 64
+  orig: 256, 64
+  offset: 0, 0
+  index: -1
+
+Buttons2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+BtnSettingsUnpressed
+  rotate: false
+  xy: 2, 2
+  size: 256, 64
+  orig: 256, 64
+  offset: 0, 0
+  index: -1
+BtnSelectUnpressed
+  rotate: false
+  xy: 260, 2
+  size: 256, 64
+  orig: 256, 64
+  offset: 0, 0
+  index: -1
+BtnPlayUnpressed
+  rotate: false
+  xy: 518, 2
+  size: 256, 64
+  orig: 256, 64
+  offset: 0, 0
+  index: -1
+BtnMemoriesUnpressed
+  rotate: false
+  xy: 776, 2
+  size: 256, 64
+  orig: 256, 64
+  offset: 0, 0
+  index: -1
+
+Buttons2.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -112,40 +199,7 @@ LeftSwipeArrow
   offset: 0, 0
   index: -1
 
-MainMenu1.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-BtnSettingsUnpressed
-  rotate: false
-  xy: 2, 2
-  size: 256, 64
-  orig: 256, 64
-  offset: 0, 0
-  index: -1
-BtnSelectUnpressed
-  rotate: false
-  xy: 260, 2
-  size: 256, 64
-  orig: 256, 64
-  offset: 0, 0
-  index: -1
-BtnPlayUnpressed
-  rotate: false
-  xy: 518, 2
-  size: 256, 64
-  orig: 256, 64
-  offset: 0, 0
-  index: -1
-BtnMemoriesUnpressed
-  rotate: false
-  xy: 776, 2
-  size: 256, 64
-  orig: 256, 64
-  offset: 0, 0
-  index: -1
-
-Creatures1.png
+Creatures2.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -192,7 +246,7 @@ PetDefault
   offset: 0, 0
   index: -1
 
-Overlays1.png
+Overlays2.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -223,18 +277,18 @@ SpeechHunger
   offset: 0, 0
   index: -1
 
-Unsorted1.png
+Unsorted2.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-SpeechStinky(UseWithPetNotPoop)
+SpeechStinky
   rotate: false
   xy: 2, 2
   size: 156, 135
   orig: 156, 135
   offset: 0, 0
   index: -1
-Poop(PoorlyDrawn)
+Poop
   rotate: false
   xy: 160, 2
   size: 75, 77

@@ -1,9 +1,12 @@
 
 package com.redditandroiddevelopers.tamagotchi;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.redditandroiddevelopers.tamagotchi.screens.MainGameScreen;
+import com.redditandroiddevelopers.tamagotchi.screens.MainMenuScreen;
 
 /**
  * Collect all assets referenced throughout the game.
@@ -11,6 +14,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
  * @author Santoso Wijaya
  */
 public class TamagotchiAssets {
+
+    private static final String TAG = "Tamagotchi:Assets";
 
     private final AssetManager assetManager;
 
@@ -24,7 +29,8 @@ public class TamagotchiAssets {
 
     public enum TextureAtlasAsset implements Asset<TextureAtlas> {
 
-        TEXTURES("pack");
+        MAIN_MENU(MainMenuScreen.ID + "/pack"),
+        MAIN_GAME(MainGameScreen.ID + "/pack");
 
         private final String textureFile;
 
@@ -75,6 +81,31 @@ public class TamagotchiAssets {
     }
 
     /**
+     * Asynchronously load an individual asset. Test for completion by calling
+     * {@link TamagotchiAssets#update()} or
+     * {@link TamagotchiAssets#getProgress()}.
+     * 
+     * @param asset the asset to load
+     */
+    public <T> void loadAsset(Asset<T> asset) {
+        final String fd = asset.getFileDescriptor();
+        final Class<T> type = asset.getAssetType();
+        Gdx.app.log(TAG, "Loading asset:<" + fd + "> type:<" + type.toString() + ">");
+        assetManager.load(fd, type);
+    }
+
+    /**
+     * Asynchronously unload an individual asset.
+     * 
+     * @param asset the asset to unload
+     */
+    public <T> void unloadAsset(Asset<T> asset) {
+        final String fd = asset.getFileDescriptor();
+        Gdx.app.log(TAG, "Unloading asset:<" + fd + ">");
+        assetManager.unload(fd);
+    }
+
+    /**
      * Asynchronously load all assets. Test for completion by calling
      * {@link TamagotchiAssets#update()} or
      * {@link TamagotchiAssets#getProgress()}.
@@ -82,15 +113,31 @@ public class TamagotchiAssets {
     public void loadAssets() {
         // load texture atlases
         for (TextureAtlasAsset textureAtlasAsset : TextureAtlasAsset.values()) {
-            assetManager.load(textureAtlasAsset.textureFile, textureAtlasAsset.getAssetType());
+            loadAsset(textureAtlasAsset);
         }
-
         // load fonts
         for (FontAsset fontAsset : FontAsset.values()) {
             if (fontAsset == FontAsset.DEFAULT) {
                 continue;
             }
-            assetManager.load(fontAsset.fontFile, fontAsset.getAssetType());
+            loadAsset(fontAsset);
+        }
+    }
+
+    /**
+     * Asynchronously unload all assets.
+     */
+    public void unloadAssets() {
+        // unload texture atlases
+        for (TextureAtlasAsset textureAtlasAsset : TextureAtlasAsset.values()) {
+            unloadAsset(textureAtlasAsset);
+        }
+        // load fonts
+        for (FontAsset fontAsset : FontAsset.values()) {
+            if (fontAsset == FontAsset.DEFAULT) {
+                continue;
+            }
+            unloadAsset(fontAsset);
         }
     }
 
@@ -111,16 +158,17 @@ public class TamagotchiAssets {
     }
 
     public <T> T getAsset(Asset<T> asset) {
+        final Class<T> assetType = asset.getAssetType();
         if (asset == FontAsset.DEFAULT) {
-            assert asset.getAssetType() == BitmapFont.class;
-            return asset.getAssetType().cast(new BitmapFont());
+            assert assetType == BitmapFont.class;
+            return assetType.cast(new BitmapFont());
         }
-
         if (assetManager.isLoaded(asset.getFileDescriptor())) {
-            return assetManager.get(asset.getFileDescriptor(), asset.getAssetType());
+            return assetManager.get(asset.getFileDescriptor(), assetType);
         } else {
             assert false;
             throw new RuntimeException("Asset " + asset.getFileDescriptor() + " is not yet loaded");
         }
     }
+
 }
