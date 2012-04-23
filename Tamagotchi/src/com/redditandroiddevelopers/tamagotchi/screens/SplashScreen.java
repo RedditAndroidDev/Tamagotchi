@@ -30,7 +30,7 @@ public class SplashScreen extends CommonScreen {
         super.show();
 
         // load Reddit alien texture
-        Image splashLogo = new Image(new Texture(Gdx.files.internal("Reddit-alien.png")));
+        Image splashLogo = new Image(new Texture(Gdx.files.internal("RedditAlien.png")));
         splashLogo.x = getCenterX(splashLogo.getRegion().getTexture());
         splashLogo.y = getCenterY(splashLogo.getRegion().getTexture());
         stage.addActor(splashLogo);

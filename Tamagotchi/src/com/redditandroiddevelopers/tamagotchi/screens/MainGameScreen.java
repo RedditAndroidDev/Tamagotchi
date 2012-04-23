@@ -3,8 +3,8 @@ package com.redditandroiddevelopers.tamagotchi.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiAssets.FontAsset;
-import com.redditandroiddevelopers.tamagotchi.TamagotchiAssets.TextureAsset;
+import com.redditandroiddevelopers.tamagotchi.TamagotchiAssets.TextureAtlasAsset;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
 import com.redditandroiddevelopers.tamagotchi.ui.DragListener;
 import com.redditandroiddevelopers.tamagotchi.ui.DraggableImage;
@@ -69,16 +69,15 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
         // prepare texture regions from the loaded textures
         // TODO: group the images into ONE Texture, and then create individual
         // TextureRegions from that
-        final Texture buttonTexture = game.assets.getAsset(TextureAsset.BTN_STATUS);
-        final Texture arrowTexture = game.assets.getAsset(TextureAsset.DRG_ARROW);
-        final TextureRegion buttonTextureRegion = new TextureRegion(buttonTexture);
-        final TextureRegion arrowTextureRegion = new TextureRegion(arrowTexture);
+        final TextureAtlas textureAtlas = game.assets.getAsset(TextureAtlasAsset.TEXTURES);
+        final TextureRegion buttonTextureRegion = textureAtlas.findRegion("MainButtonFood");
+        final TextureRegion arrowTextureRegion = textureAtlas.findRegion("LeftSwipeArrow");
 
         // set margin between buttons
         final int marginBetweenButtons = 10;
         // buttons have the same width and height. using this value allows
         // precise placement of the buttons
-        final int width = buttonTexture.getWidth() + marginBetweenButtons;
+        final int width = buttonTextureRegion.getRegionWidth() + marginBetweenButtons;
         buttons = new Button[NUM_BUTTONS];
         for (int i = 0; i < NUM_BUTTONS; i++) {
             final Button button = new Button(buttonTextureRegion);
@@ -96,7 +95,7 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
 
         // add status panel
         btnDragDown = new DraggableImage(arrowTextureRegion);
-        btnDragDown.y = stage.top() - 64;
+        btnDragDown.y = stage.top() - arrowTextureRegion.getRegionHeight();
         btnDragDown.setClickListener(this);
         btnDragDown.setDragListener(this);
         statusPanel.addActor(btnDragDown);

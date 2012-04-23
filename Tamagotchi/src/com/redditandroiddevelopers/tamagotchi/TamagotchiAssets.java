@@ -2,8 +2,8 @@
 package com.redditandroiddevelopers.tamagotchi;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 /**
  * Collect all assets referenced throughout the game.
@@ -22,19 +22,13 @@ public class TamagotchiAssets {
 
     }
 
-    public enum TextureAsset implements Asset<Texture> {
+    public enum TextureAtlasAsset implements Asset<TextureAtlas> {
 
-        APP_NAME("MainMenu/AppName.png"),
-        BTN_PLAY_UNPRESSED("MainMenu/btn_play_unpressed.png"),
-        BTN_SELECT_UNPRESSED("MainMenu/btn_select_unpressed.png"),
-        BTN_MEMORIES_UNPRESSED("MainMenu/btn_memories_unpressed.png"),
-        BTN_SETTINGS_UNPRESSED("MainMenu/btn_settings_unpressed.png"),
-        BTN_STATUS("InGame/button.png"),
-        DRG_ARROW("InGame/arrow.png");
+        TEXTURES("pack");
 
         private final String textureFile;
 
-        private TextureAsset(String textureFile) {
+        private TextureAtlasAsset(String textureFile) {
             this.textureFile = textureFile;
         }
 
@@ -44,8 +38,8 @@ public class TamagotchiAssets {
         }
 
         @Override
-        public Class<Texture> getAssetType() {
-            return Texture.class;
+        public Class<TextureAtlas> getAssetType() {
+            return TextureAtlas.class;
         }
 
     }
@@ -86,15 +80,16 @@ public class TamagotchiAssets {
      * {@link TamagotchiAssets#getProgress()}.
      */
     public void loadAssets() {
-        // load textures
-        for (TextureAsset textureAsset : TextureAsset.values()) {
-            assetManager.load(textureAsset.textureFile, textureAsset.getAssetType());
+        // load texture atlases
+        for (TextureAtlasAsset textureAtlasAsset : TextureAtlasAsset.values()) {
+            assetManager.load(textureAtlasAsset.textureFile, textureAtlasAsset.getAssetType());
         }
 
         // load fonts
         for (FontAsset fontAsset : FontAsset.values()) {
-            if (fontAsset == FontAsset.DEFAULT)
+            if (fontAsset == FontAsset.DEFAULT) {
                 continue;
+            }
             assetManager.load(fontAsset.fontFile, fontAsset.getAssetType());
         }
     }

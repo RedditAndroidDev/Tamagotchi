@@ -3,13 +3,13 @@ package com.redditandroiddevelopers.tamagotchi.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.redditandroiddevelopers.tamagotchi.TamagotchiAssets.TextureAsset;
+import com.redditandroiddevelopers.tamagotchi.TamagotchiAssets.TextureAtlasAsset;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
 
 public class MainMenuScreen extends CommonScreen implements ClickListener {
@@ -34,8 +34,10 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
     public final void show() {
         super.show();
 
+        final TextureAtlas textureAtlas = game.assets.getAsset(TextureAtlasAsset.TEXTURES);
+
         // adding the game name
-        Image imgAppName = new Image(game.assets.getAsset(TextureAsset.APP_NAME));
+        Image imgAppName = new Image(textureAtlas.findRegion("AppName"));
         imgAppName.x = 10;
         imgAppName.y = 325;
         stage.addActor(imgAppName);
@@ -44,32 +46,28 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
         // involved here
 
         // adding the Play button
-        btnPlay = new Button(new TextureRegion(
-                game.assets.getAsset(TextureAsset.BTN_PLAY_UNPRESSED)));
+        btnPlay = new Button(textureAtlas.findRegion("BtnPlayUnpressed"));
         btnPlay.x = 10;
         btnPlay.y = 235;
         btnPlay.setClickListener(this);
         stage.addActor(btnPlay);
 
         // adding the Select button
-        btnSelect = new Button(new TextureRegion(
-                game.assets.getAsset(TextureAsset.BTN_SELECT_UNPRESSED)));
+        btnSelect = new Button(textureAtlas.findRegion("BtnSelectUnpressed"));
         btnSelect.x = 10;
         btnSelect.y = 160;
         btnSelect.setClickListener(this);
         stage.addActor(btnSelect);
 
         // adding the Memories button
-        btnMemories = new Button(new TextureRegion(
-                game.assets.getAsset(TextureAsset.BTN_MEMORIES_UNPRESSED)));
+        btnMemories = new Button(textureAtlas.findRegion("BtnMemoriesUnpressed"));
         btnMemories.x = 10;
         btnMemories.y = 85;
         btnMemories.setClickListener(this);
         stage.addActor(btnMemories);
 
         // adding the Settings button
-        btnSettings = new Button(new TextureRegion(
-                game.assets.getAsset(TextureAsset.BTN_SETTINGS_UNPRESSED)));
+        btnSettings = new Button(textureAtlas.findRegion("BtnSettingsUnpressed"));
         btnSettings.x = 10;
         btnSettings.y = 10;
         btnSettings.setClickListener(this);
