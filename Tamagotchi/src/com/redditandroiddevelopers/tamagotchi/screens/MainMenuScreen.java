@@ -15,7 +15,6 @@ import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
 public class MainMenuScreen extends CommonScreen implements ClickListener {
 
     private static final String TAG = "Tamagotchi:MainMenuScreen";
-    public static final String ID = "main-menu";
 
     private Button btnPlay;
     private Button btnSelect;

@@ -26,7 +26,6 @@ import com.redditandroiddevelopers.tamagotchi.ui.DraggableImage;
 public class MainGameScreen extends CommonScreen implements ClickListener, DragListener {
 
     private static final String TAG = "Tamagotchi:MainGameScreen";
-    public static final String ID = "main-game";
 
     private static final String GRP_UI = "ui";
     private static final String GRP_TOP_BUTTONS = "top_buttons";

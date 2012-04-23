@@ -5,8 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.redditandroiddevelopers.tamagotchi.screens.MainGameScreen;
-import com.redditandroiddevelopers.tamagotchi.screens.MainMenuScreen;
 
 /**
  * Collect all assets referenced throughout the game.
@@ -29,8 +27,8 @@ public class TamagotchiAssets {
 
     public enum TextureAtlasAsset implements Asset<TextureAtlas> {
 
-        MAIN_MENU(MainMenuScreen.ID + "/pack"),
-        MAIN_GAME(MainGameScreen.ID + "/pack");
+        MAIN_MENU("main-menu/pack"),
+        MAIN_GAME("main-game/pack");
 
         private final String textureFile;
 
