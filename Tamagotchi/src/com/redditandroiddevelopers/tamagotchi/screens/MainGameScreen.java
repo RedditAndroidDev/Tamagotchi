@@ -73,31 +73,37 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
          * TODO: Add overlays, e.g. for speech bubbles
          */
 
-        // add groups for better readability and flexibility
+        /* add groups for better readability and flexibility */
 
-        // add main groups
+        // create main groups
         final Group backgroundGroup = new Group(GRP_BACKGROUND);
         final Group foregroundGroup = new Group(GRP_FOREGROUND);
         final Group overlayGroup = new Group(GRP_OVERLAY);
 
-        // add sub groups
+        // create sub groups
         final Group bgDistantGroup = new Group(GRP_BACKGROUND_DISTANT);
         final Group bgNearGroup = new Group(GRP_BACKGROUND_NEAR);
         final Group uiGroup = new Group(GRP_UI);
         final Group topButtonsGroup = new Group(GRP_TOP_BUTTONS);
         final Group statusPanelGroup = new Group(GRP_STATUS_PANEL);
 
-        // get texture regions from a loaded texture atlas
+        /* load textures */
+
+        // load texture atlas
         final TextureAtlas textureAtlas = game.assets.getAsset(TextureAtlasAsset.MAIN_GAME);
+
+        // get texture regions from loaded texture atlas
         final TextureRegion spaceBackdropTextureRegion = textureAtlas.findRegion("SpaceBackdrop");
         final TextureRegion planetsBackgroundTextureRegion = textureAtlas
                 .findRegion("PlanetsBackground");
         final TextureRegion hillsMidgroundTextureRegion = textureAtlas.findRegion("HillsMidground");
         final TextureRegion hillsForegroundTextureRegion = textureAtlas
                 .findRegion("HillsForeground");
-        final TextureRegion creatureDefaultTextureRegion = textureAtlas.findRegion("PetDefault");
-        final TextureRegion arrowTextureRegion = textureAtlas.findRegion("LeftSwipeArrow");
         final TextureRegion groundTextureRegion = textureAtlas.findRegion("StaticGround");
+        final TextureRegion creatureDefaultTextureRegion = textureAtlas.findRegion("PetDefault");
+        final TextureRegion swipeArrowTextureRegion = textureAtlas.findRegion("LeftSwipeArrow");
+
+        /* prepare layout */
 
         // add background
         Image bgSpaceBackdrop = new Image(spaceBackdropTextureRegion);
@@ -113,21 +119,24 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
         creature.x = 400;
         creature.y = 50;
 
-        // add buttons
+        // create buttons names
         final String[] interactButtonIDs = new String[] {
                 "MainButtonFood",
                 "MainButtonToilet",
                 "MainButtonShower",
                 "MainButtonSleepOff"
         };
+
+        // load texture regions for buttons in top right corner
         final TextureRegion[] interactButtonTextureRegions = new TextureRegion[interactButtonIDs.length];
         for (int i = 0; i < interactButtonIDs.length; i++) {
             interactButtonTextureRegions[i] = textureAtlas.findRegion(interactButtonIDs[i]);
         }
 
+        // set margin between buttons
         final int marginBetweenButtons = 10;
-        // buttons have the same width and height. using this value allows
-        // precise placement of the buttons
+
+        // position buttons within group and add them to the 'topButtonsGroup'
         final int width = interactButtonTextureRegions[0].getRegionWidth() + marginBetweenButtons;
         buttons = new Button[NUM_BUTTONS];
         for (int i = 0; i < NUM_BUTTONS; i++) {
@@ -138,15 +147,15 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
             buttons[i] = button;
         }
 
-        // adjust width of 'topButtons'
+        // adjust width of 'topButtons' group
         topButtonsGroup.width = width * topButtonsGroup.getActors().size();
         // position topButtons in top right corner
         topButtonsGroup.x = stage.right() - topButtonsGroup.width;
         topButtonsGroup.y = stage.top() - width;
 
-        // add status panel
-        btnDragDown = new DraggableImage(arrowTextureRegion);
-        btnDragDown.y = stage.top() - arrowTextureRegion.getRegionHeight();
+        // add drag down status panel button
+        btnDragDown = new DraggableImage(swipeArrowTextureRegion);
+        btnDragDown.y = stage.top() - swipeArrowTextureRegion.getRegionHeight();
         btnDragDown.setClickListener(this);
         btnDragDown.setDragListener(this);
         statusPanelGroup.addActor(btnDragDown);
@@ -192,7 +201,6 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
         overlayGroup.addActor(uiGroup);
 
         /* Add main groups to stage */
-
         stage.addActor(backgroundGroup);
         stage.addActor(foregroundGroup);
         stage.addActor(overlayGroup);
@@ -253,5 +261,4 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
     public void unloadResources() {
         game.assets.unloadAsset(TextureAtlasAsset.MAIN_GAME);
     }
-
 }
