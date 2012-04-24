@@ -11,7 +11,7 @@ AppName
   offset: 0, 0
   index: -1
 
-Buttons2.png
+Buttons1.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -24,21 +24,21 @@ BtnSettingsUnpressed
   index: -1
 BtnSelectUnpressed
   rotate: false
-  xy: 260, 2
+  xy: 2, 68
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 BtnPlayUnpressed
   rotate: false
-  xy: 518, 2
+  xy: 2, 134
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 BtnMemoriesUnpressed
   rotate: false
-  xy: 776, 2
+  xy: 260, 2
   size: 256, 64
   orig: 256, 64
   offset: 0, 0

@@ -3,50 +3,48 @@ backgrounds1.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-HillsForeground
-  rotate: true
-  xy: 2, 2
-  size: 2626, 82
-  orig: 2626, 82
-  offset: 0, 0
-  index: -1
-HillsMidground
-  rotate: true
-  xy: 86, 2
-  size: 2361, 139
-  orig: 2361, 139
-  offset: 0, 0
-  index: -1
-Skyscrapers
-  rotate: true
-  xy: 227, 2
-  size: 2223, 554
-  orig: 2223, 554
-  offset: 0, 0
-  index: -1
-StaticGround
-  rotate: true
-  xy: 783, 2
-  size: 1281, 156
-  orig: 1281, 156
-  offset: 0, 0
-  index: -1
 SpaceBackdrop
-  rotate: true
-  xy: 2, 2630
-  size: 1280, 565
-  orig: 1280, 565
+  rotate: false
+  xy: 2, 2
+  size: 800, 480
+  orig: 800, 480
   offset: 0, 0
   index: -1
 PlanetsBackground
   rotate: false
-  xy: 227, 2227
-  size: 784, 328
-  orig: 784, 328
+  xy: 2, 484
+  size: 784, 287
+  orig: 784, 287
+  offset: 0, 0
+  index: -1
+StaticGround
+  rotate: false
+  xy: 2, 773
+  size: 800, 150
+  orig: 800, 150
+  offset: 0, 0
+  index: -1
+HillsMidground
+  rotate: false
+  xy: 2, 925
+  size: 800, 82
+  orig: 800, 82
   offset: 0, 0
   index: -1
 
-Buttons2.png
+backgrounds2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+HillsForeground
+  rotate: false
+  xy: 2, 2
+  size: 800, 79
+  orig: 800, 79
+  offset: 0, 0
+  index: -1
+
+Buttons1.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -59,27 +57,27 @@ BtnSettingsUnpressed
   index: -1
 BtnSelectUnpressed
   rotate: false
-  xy: 260, 2
+  xy: 2, 68
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 BtnPlayUnpressed
   rotate: false
-  xy: 518, 2
+  xy: 2, 134
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 BtnMemoriesUnpressed
   rotate: false
-  xy: 776, 2
+  xy: 260, 2
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 
-Buttons2.png
+Buttons1.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -92,27 +90,27 @@ BtnSettingsUnpressed
   index: -1
 BtnSelectUnpressed
   rotate: false
-  xy: 260, 2
+  xy: 2, 68
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 BtnPlayUnpressed
   rotate: false
-  xy: 518, 2
+  xy: 2, 134
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 BtnMemoriesUnpressed
   rotate: false
-  xy: 776, 2
+  xy: 260, 2
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 
-Buttons2.png
+Buttons1.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -125,27 +123,27 @@ BtnSettingsUnpressed
   index: -1
 BtnSelectUnpressed
   rotate: false
-  xy: 260, 2
+  xy: 2, 68
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 BtnPlayUnpressed
   rotate: false
-  xy: 518, 2
+  xy: 2, 134
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 BtnMemoriesUnpressed
   rotate: false
-  xy: 776, 2
+  xy: 260, 2
   size: 256, 64
   orig: 256, 64
   offset: 0, 0
   index: -1
 
-Buttons2.png
+Buttons1.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -199,62 +197,27 @@ LeftSwipeArrow
   offset: 0, 0
   index: -1
 
-Creatures2.png
+Creatures1.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-PetEvolved
-  rotate: false
-  xy: 2, 2
-  size: 334, 275
-  orig: 334, 275
-  offset: 0, 0
-  index: -1
-PetUpset
-  rotate: false
-  xy: 2, 279
-  size: 334, 253
-  orig: 334, 253
-  offset: 0, 0
-  index: -1
-PetSleeping
-  rotate: false
-  xy: 2, 534
-  size: 334, 253
-  orig: 334, 253
-  offset: 0, 0
-  index: -1
-PetInjured
-  rotate: false
-  xy: 2, 789
-  size: 334, 253
-  orig: 334, 253
-  offset: 0, 0
-  index: -1
-PetHappy
-  rotate: false
-  xy: 2, 1044
-  size: 334, 253
-  orig: 334, 253
-  offset: 0, 0
-  index: -1
 PetDefault
   rotate: false
-  xy: 2, 1299
-  size: 334, 253
-  orig: 334, 253
+  xy: 2, 2
+  size: 167, 127
+  orig: 167, 127
   offset: 0, 0
   index: -1
 
-Overlays2.png
+Overlays1.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
 SleepDarknessOverlay
-  rotate: true
+  rotate: false
   xy: 2, 2
-  size: 1281, 721
-  orig: 1281, 721
+  size: 800, 480
+  orig: 800, 480
   offset: 0, 0
   index: -1
 
@@ -277,7 +240,7 @@ SpeechHunger
   offset: 0, 0
   index: -1
 
-Unsorted2.png
+Unsorted1.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none

@@ -19,10 +19,10 @@ public class Main {
         // TODO: Only pack textures during development, disable for release
         final Settings texturePackerSettings = new Settings();
         texturePackerSettings.padding = 2;
-        texturePackerSettings.maxWidth = 4096;
-        texturePackerSettings.maxHeight = 4096;
+        texturePackerSettings.maxWidth = 1024;
+        texturePackerSettings.maxHeight = 1024;
         texturePackerSettings.incremental = true;
-        texturePackerSettings.rotate = true;
+        texturePackerSettings.rotate = false;
         texturePackerSettings.stripWhitespace = true;
 
         // create a texture atlas per screen
