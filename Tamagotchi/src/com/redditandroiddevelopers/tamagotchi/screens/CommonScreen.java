@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -46,8 +47,10 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
         camera.update();
         if (!Gdx.graphics.isGL20Available())
             camera.apply(Gdx.gl10);
-        else
+        else {
             assert false; // not supporting GL20 yet
+            throw new UnsupportedOperationException("OpenGL ES 2.0");
+        }
     }
 
     /**
@@ -82,6 +85,8 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
     @Override
     public final void render(float delta) {
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+        final Color bgColor = game.config.backgroundColor;
+        Gdx.gl.glClearColor(bgColor.r, bgColor.g, bgColor.b, 1);
         update(delta);
         draw();
     }

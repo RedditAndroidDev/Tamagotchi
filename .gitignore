@@ -17,7 +17,11 @@
 */local.properties
 Tamagotchi-android/libs/gdx.jar
 
+# Links
+Tamagotchi-desktop/assets/*
+
 # Mischellaneous trash
 *~
 *.swp
 .DS_Store
+
