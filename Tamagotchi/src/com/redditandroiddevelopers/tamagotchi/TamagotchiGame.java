@@ -16,7 +16,7 @@ import com.redditandroiddevelopers.tamagotchi.screens.MainMenuScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.PauseScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.SplashScreen;
 
-import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * The main activity for our game. This will be the only activity running in our
@@ -25,15 +25,18 @@ import java.util.ArrayList;
  */
 public class TamagotchiGame extends Game {
 
+    private static final String TAG = "Tamagotchi:TamagotchiGame";
+
     public static final int STATE_MAIN_MENU = 0;
     public static final int STATE_MAIN_GAME = 1;
     public static final int STATE_PAUSED = 2;
     public static final int STATE_SELECT_PET = 3;
     public static final int STATE_MEMORIES = 4;
     public static final int STATE_SETTINGS = 5;
+    public static final int NUM_SCREENS = 6;
 
     private CommonScreen[] screens;
-    private static ArrayList<Integer> screenHistory = new ArrayList<Integer>();
+    private Stack<CommonScreen> screenHistory;
 
     public final TamagotchiConfiguration config;
     public InputMultiplexer inputMultiplexer;
@@ -59,6 +62,8 @@ public class TamagotchiGame extends Game {
                 new PauseScreen(this), // TODO: implement MemoriesScreen
                 new PauseScreen(this), // TODO: implement SettingsScreen
         };
+
+        screenHistory = new Stack<CommonScreen>();
 
         final Resolution resolution = new Resolution(Gdx.graphics.getWidth(),
                 Gdx.graphics.getHeight(), "");
@@ -91,19 +96,34 @@ public class TamagotchiGame extends Game {
      * @param state The int val of the new state
      */
     public void updateState(int state) {
-        if (state < 0 || state >= 6) {
+        if (state < 0 || state >= NUM_SCREENS) {
             assert false;
             throw new IllegalArgumentException("Invalid state value");
         }
-        screenHistory.add(state);
-        setScreen(screens[state]);
+        final CommonScreen screen = screens[state];
+        Gdx.app.debug(TAG, "Setting screen to " + screen.getClass().getSimpleName());
+        screenHistory.push(screen);
+        setScreen(screen);
     }
 
     public void goToPreviousScreen() {
-        if (screenHistory.size() > 1) {
-            screenHistory.remove(screenHistory.size() - 1);
-            updateState(screenHistory.get(screenHistory.size() - 1));
+        if (screenHistory.empty()) {
+            Gdx.app.log(TAG, "Screen history is empty!");
+            return;
         }
+
+        Gdx.app.debug(TAG, "Going to a previous screen");
+
+        // first, pop the current screen
+        screenHistory.pop();
+        if (screenHistory.empty()) {
+            Gdx.app.log(TAG, "No more screen to go back to");
+            return;
+        }
+
+        // finally, pop the previous screen
+        final CommonScreen prevScreen = screenHistory.pop();
+        setScreen(prevScreen);
     }
 
     @Override
