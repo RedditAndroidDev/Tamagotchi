@@ -2,7 +2,6 @@
 package com.redditandroiddevelopers.tamagotchi.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.graphics.Camera;
@@ -59,9 +58,6 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
      * way, do so <em>prior</em> to calling {@code super.update()}.
      */
     public void update(float delta) {
-        if (Gdx.input.isKeyPressed(Keys.BACK) || Gdx.input.isKeyPressed(Keys.ESCAPE)) {
-            game.goToPreviousScreen();
-        }
         camera.update();
         if (!Gdx.graphics.isGL20Available()) {
             camera.apply(Gdx.gl10);

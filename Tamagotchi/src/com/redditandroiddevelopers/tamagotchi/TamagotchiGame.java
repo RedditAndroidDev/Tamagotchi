@@ -3,6 +3,8 @@ package com.redditandroiddevelopers.tamagotchi;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.TextureLoader;
@@ -37,6 +39,8 @@ public class TamagotchiGame extends Game {
 
     private CommonScreen[] screens;
     private Stack<CommonScreen> screenHistory;
+
+    private GameInput gameInput;
 
     public final TamagotchiConfiguration config;
     public InputMultiplexer inputMultiplexer;
@@ -74,9 +78,11 @@ public class TamagotchiGame extends Game {
 
         assets = new TamagotchiAssets(assetManager);
 
+        gameInput = new GameInput();
         inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(gameInput);
+        Gdx.input.setCatchBackKey(true);
         Gdx.input.setInputProcessor(inputMultiplexer);
-        Gdx.app.getInput().setCatchBackKey(true);
 
         setScreen(new SplashScreen(this));
     }
@@ -112,17 +118,19 @@ public class TamagotchiGame extends Game {
             return;
         }
 
-        Gdx.app.debug(TAG, "Going to a previous screen");
-
         // first, pop the current screen
-        screenHistory.pop();
+        final CommonScreen curScreen = screenHistory.pop();
         if (screenHistory.empty()) {
             Gdx.app.log(TAG, "No more screen to go back to");
+            // we need to push the currently only screen back into the stack
+            screenHistory.push(curScreen);
+            // and do nothing
             return;
         }
 
-        // finally, pop the previous screen
-        final CommonScreen prevScreen = screenHistory.pop();
+        // finally, only peek into the previous screen
+        final CommonScreen prevScreen = screenHistory.peek();
+        Gdx.app.debug(TAG, "Going to a previous screen " + prevScreen.getClass().getSimpleName());
         setScreen(prevScreen);
     }
 
@@ -135,4 +143,23 @@ public class TamagotchiGame extends Game {
         Gdx.input.setInputProcessor(null);
         inputMultiplexer = null;
     }
+
+    public class GameInput extends InputAdapter {
+
+        @Override
+        public boolean keyDown(int keycode) {
+            switch (keycode) {
+                case Keys.BACK:
+                case Keys.ESCAPE:
+                    goToPreviousScreen();
+                    break;
+                default:
+                    break;
+            }
+
+            return false;
+        }
+
+    }
+
 }
