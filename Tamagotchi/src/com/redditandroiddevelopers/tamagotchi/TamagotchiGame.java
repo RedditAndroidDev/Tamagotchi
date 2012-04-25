@@ -100,8 +100,10 @@ public class TamagotchiGame extends Game {
     }
 
     public void goToPreviousScreen() {
-        screenHistory.remove(screenHistory.size() - 1);
-        updateState(screenHistory.get(screenHistory.size() - 1));
+        if (screenHistory.size() > 1) {
+            screenHistory.remove(screenHistory.size() - 1);
+            updateState(screenHistory.get(screenHistory.size() - 1));
+        }
     }
 
     @Override
