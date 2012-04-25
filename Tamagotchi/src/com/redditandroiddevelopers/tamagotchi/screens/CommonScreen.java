@@ -103,8 +103,7 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
     @Override
     public final void render(float delta) {
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-        final Color bgColor = game.config.backgroundColor;
-        Gdx.gl.glClearColor(bgColor.r, bgColor.g, bgColor.b, 1);
+        drawBackground();
         update(delta);
         draw();
     }
@@ -141,6 +140,11 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
      * @return a {@link Stage} object
      */
     protected abstract Stage createStage(SpriteBatch batch);
+
+    protected void drawBackground() {
+        final Color bgColor = game.config.backgroundColor;
+        Gdx.gl.glClearColor(bgColor.r, bgColor.g, bgColor.b, 1);
+    }
 
     @Override
     public void error(String fileName, @SuppressWarnings("rawtypes")

@@ -3,42 +3,30 @@ Backgrounds1.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-SpaceBackdrop
-  rotate: false
-  xy: 2, 2
-  size: 800, 480
-  orig: 800, 480
-  offset: 0, 0
-  index: -1
 PlanetsBackground
   rotate: false
-  xy: 2, 484
+  xy: 2, 2
   size: 784, 287
   orig: 784, 287
   offset: 0, 0
   index: -1
 StaticGround
   rotate: false
-  xy: 2, 773
+  xy: 2, 291
   size: 800, 150
   orig: 800, 150
   offset: 0, 0
   index: -1
 HillsMidground
   rotate: false
-  xy: 2, 925
+  xy: 2, 443
   size: 800, 82
   orig: 800, 82
   offset: 0, 0
   index: -1
-
-Backgrounds2.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
 HillsForeground
   rotate: false
-  xy: 2, 2
+  xy: 2, 527
   size: 800, 79
   orig: 800, 79
   offset: 0, 0

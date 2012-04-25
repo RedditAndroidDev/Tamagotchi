@@ -93,7 +93,6 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
         final TextureAtlas textureAtlas = game.assets.getAsset(TextureAtlasAsset.MAIN_GAME);
 
         // get texture regions from loaded texture atlas
-        final TextureRegion spaceBackdropTextureRegion = textureAtlas.findRegion("SpaceBackdrop");
         final TextureRegion planetsBackgroundTextureRegion = textureAtlas
                 .findRegion("PlanetsBackground");
         final TextureRegion hillsMidgroundTextureRegion = textureAtlas.findRegion("HillsMidground");
@@ -106,7 +105,6 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
         /* prepare layout */
 
         // add background
-        Image bgSpaceBackdrop = new Image(spaceBackdropTextureRegion);
         Image bgPlanetsBackground = new Image(planetsBackgroundTextureRegion);
         Image bgHillsMidground = new Image(hillsMidgroundTextureRegion);
         Image bgHillsForeground = new Image(hillsForegroundTextureRegion);
@@ -176,7 +174,6 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
         uiGroup.addActor(topButtonsGroup);
 
         // sub groups to the 'background' group
-        bgDistantGroup.addActor(bgSpaceBackdrop);
         bgDistantGroup.addActor(bgPlanetsBackground);
         bgDistantGroup.addActor(bgHillsMidground);
         bgDistantGroup.addActor(bgHillsForeground);
@@ -250,6 +247,11 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
              */
             stage.findActor(GRP_STATUS_PANEL).y += y;
         }
+    }
+
+    @Override
+    protected void drawBackground() {
+        Gdx.gl10.glClearColor((226f / 255), (232f / 255), (254f / 255), 1f);
     }
 
     @Override
