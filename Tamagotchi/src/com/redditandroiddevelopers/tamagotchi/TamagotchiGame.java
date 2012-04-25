@@ -16,6 +16,8 @@ import com.redditandroiddevelopers.tamagotchi.screens.MainMenuScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.PauseScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.SplashScreen;
 
+import java.util.ArrayList;
+
 /**
  * The main activity for our game. This will be the only activity running in our
  * app, it will delegate what screen instance will render to the display based
@@ -31,6 +33,7 @@ public class TamagotchiGame extends Game {
     public static final int STATE_SETTINGS = 5;
 
     private CommonScreen[] screens;
+    private static ArrayList<Integer> screenHistory = new ArrayList<Integer>();
 
     public final TamagotchiConfiguration config;
     public InputMultiplexer inputMultiplexer;
@@ -91,7 +94,13 @@ public class TamagotchiGame extends Game {
             assert false;
             throw new IllegalArgumentException("Invalid state value");
         }
+        screenHistory.add(state);
         setScreen(screens[state]);
+    }
+
+    public void goToPreviousScreen() {
+        screenHistory.remove(screenHistory.size() - 1);
+        updateState(screenHistory.get(screenHistory.size() - 1));
     }
 
     @Override
@@ -103,5 +112,4 @@ public class TamagotchiGame extends Game {
         Gdx.input.setInputProcessor(null);
         inputMultiplexer = null;
     }
-
 }
