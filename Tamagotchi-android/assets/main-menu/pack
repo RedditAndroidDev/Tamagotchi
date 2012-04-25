@@ -11,7 +11,7 @@ AppName
   offset: 0, 0
   index: -1
 
-Buttons1.png
+MMButtons1.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none

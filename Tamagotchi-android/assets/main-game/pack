@@ -1,5 +1,5 @@
 
-backgrounds1.png
+Backgrounds1.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -32,7 +32,7 @@ HillsMidground
   offset: 0, 0
   index: -1
 
-backgrounds2.png
+Backgrounds2.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -44,106 +44,19 @@ HillsForeground
   offset: 0, 0
   index: -1
 
-Buttons1.png
+Creatures1.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-BtnSettingsUnpressed
+PetDefault
   rotate: false
   xy: 2, 2
-  size: 256, 64
-  orig: 256, 64
-  offset: 0, 0
-  index: -1
-BtnSelectUnpressed
-  rotate: false
-  xy: 2, 68
-  size: 256, 64
-  orig: 256, 64
-  offset: 0, 0
-  index: -1
-BtnPlayUnpressed
-  rotate: false
-  xy: 2, 134
-  size: 256, 64
-  orig: 256, 64
-  offset: 0, 0
-  index: -1
-BtnMemoriesUnpressed
-  rotate: false
-  xy: 260, 2
-  size: 256, 64
-  orig: 256, 64
+  size: 167, 127
+  orig: 167, 127
   offset: 0, 0
   index: -1
 
-Buttons1.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-BtnSettingsUnpressed
-  rotate: false
-  xy: 2, 2
-  size: 256, 64
-  orig: 256, 64
-  offset: 0, 0
-  index: -1
-BtnSelectUnpressed
-  rotate: false
-  xy: 2, 68
-  size: 256, 64
-  orig: 256, 64
-  offset: 0, 0
-  index: -1
-BtnPlayUnpressed
-  rotate: false
-  xy: 2, 134
-  size: 256, 64
-  orig: 256, 64
-  offset: 0, 0
-  index: -1
-BtnMemoriesUnpressed
-  rotate: false
-  xy: 260, 2
-  size: 256, 64
-  orig: 256, 64
-  offset: 0, 0
-  index: -1
-
-Buttons1.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-BtnSettingsUnpressed
-  rotate: false
-  xy: 2, 2
-  size: 256, 64
-  orig: 256, 64
-  offset: 0, 0
-  index: -1
-BtnSelectUnpressed
-  rotate: false
-  xy: 2, 68
-  size: 256, 64
-  orig: 256, 64
-  offset: 0, 0
-  index: -1
-BtnPlayUnpressed
-  rotate: false
-  xy: 2, 134
-  size: 256, 64
-  orig: 256, 64
-  offset: 0, 0
-  index: -1
-BtnMemoriesUnpressed
-  rotate: false
-  xy: 260, 2
-  size: 256, 64
-  orig: 256, 64
-  offset: 0, 0
-  index: -1
-
-Buttons1.png
+MGButtons1.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -194,18 +107,6 @@ LeftSwipeArrow
   xy: 600, 2
   size: 36, 76
   orig: 36, 76
-  offset: 0, 0
-  index: -1
-
-Creatures1.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-PetDefault
-  rotate: false
-  xy: 2, 2
-  size: 167, 127
-  orig: 167, 127
   offset: 0, 0
   index: -1
 
