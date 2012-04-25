@@ -94,4 +94,14 @@ public class TamagotchiGame extends Game {
         setScreen(screens[state]);
     }
 
+    @Override
+    public void dispose() {
+        super.dispose();
+        assetManager.dispose();
+        assetManager = null;
+        assets = null;
+        Gdx.input.setInputProcessor(null);
+        inputMultiplexer = null;
+    }
+
 }

@@ -3,17 +3,18 @@ package com.redditandroiddevelopers.tamagotchi.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiAssets.FontAsset;
-import com.redditandroiddevelopers.tamagotchi.TamagotchiAssets.TextureAsset;
+import com.redditandroiddevelopers.tamagotchi.TamagotchiAssets.TextureAtlasAsset;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
 import com.redditandroiddevelopers.tamagotchi.ui.DragListener;
 import com.redditandroiddevelopers.tamagotchi.ui.DraggableImage;
@@ -27,11 +28,15 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
 
     private static final String TAG = "Tamagotchi:MainGameScreen";
 
+    private static final String GRP_BACKGROUND = "background";
+    private static final String GRP_FOREGROUND = "foreground";
+    private static final String GRP_OVERLAY = "overlay";
+
+    private static final String GRP_BACKGROUND_DISTANT = "background_distant";
+    private static final String GRP_BACKGROUND_NEAR = "background_near";
     private static final String GRP_UI = "ui";
     private static final String GRP_TOP_BUTTONS = "top_buttons";
     private static final String GRP_STATUS_PANEL = "status_panel";
-    private static final String GRP_CREATURE = "creature";
-    private static final String GRP_BACKGROUND = "background";
 
     private static final int FOOD = 0;
     private static final int TOILET = 1;
@@ -59,47 +64,101 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
     }
 
     private void layout() {
-        // add groups for better readability and flexibility
-        final Group ui = new Group(GRP_UI);
-        final Group topButtons = new Group(GRP_TOP_BUTTONS);
-        final Group statusPanel = new Group(GRP_STATUS_PANEL);
-        final Group creature = new Group(GRP_CREATURE);
-        final Group background = new Group(GRP_BACKGROUND);
 
-        // prepare texture regions from the loaded textures
-        // TODO: group the images into ONE Texture, and then create individual
-        // TextureRegions from that
-        final Texture buttonTexture = game.assets.getAsset(TextureAsset.BTN_STATUS);
-        final Texture arrowTexture = game.assets.getAsset(TextureAsset.DRG_ARROW);
-        final TextureRegion buttonTextureRegion = new TextureRegion(buttonTexture);
-        final TextureRegion arrowTextureRegion = new TextureRegion(arrowTexture);
+        /*
+         * TODO: Add basic status mockup that can be pulled down
+         * TODO: Add creature
+         * TODO: Add background
+         * TODO: Add layers for background and the main stage
+         * TODO: Add overlays, e.g. for speech bubbles
+         */
+
+        /* add groups for better readability and flexibility */
+
+        // create main groups
+        final Group backgroundGroup = new Group(GRP_BACKGROUND);
+        final Group foregroundGroup = new Group(GRP_FOREGROUND);
+        final Group overlayGroup = new Group(GRP_OVERLAY);
+
+        // create sub groups
+        final Group bgDistantGroup = new Group(GRP_BACKGROUND_DISTANT);
+        final Group bgNearGroup = new Group(GRP_BACKGROUND_NEAR);
+        final Group uiGroup = new Group(GRP_UI);
+        final Group topButtonsGroup = new Group(GRP_TOP_BUTTONS);
+        final Group statusPanelGroup = new Group(GRP_STATUS_PANEL);
+
+        /* load textures */
+
+        // load texture atlas
+        final TextureAtlas textureAtlas = game.assets.getAsset(TextureAtlasAsset.MAIN_GAME);
+
+        // get texture regions from loaded texture atlas
+        final TextureRegion spaceBackdropTextureRegion = textureAtlas.findRegion("SpaceBackdrop");
+        final TextureRegion planetsBackgroundTextureRegion = textureAtlas
+                .findRegion("PlanetsBackground");
+        final TextureRegion hillsMidgroundTextureRegion = textureAtlas.findRegion("HillsMidground");
+        final TextureRegion hillsForegroundTextureRegion = textureAtlas
+                .findRegion("HillsForeground");
+        final TextureRegion groundTextureRegion = textureAtlas.findRegion("StaticGround");
+        final TextureRegion creatureDefaultTextureRegion = textureAtlas.findRegion("PetDefault");
+        final TextureRegion swipeArrowTextureRegion = textureAtlas.findRegion("LeftSwipeArrow");
+
+        /* prepare layout */
+
+        // add background
+        Image bgSpaceBackdrop = new Image(spaceBackdropTextureRegion);
+        Image bgPlanetsBackground = new Image(planetsBackgroundTextureRegion);
+        Image bgHillsMidground = new Image(hillsMidgroundTextureRegion);
+        Image bgHillsForeground = new Image(hillsForegroundTextureRegion);
+
+        Image bgGround = new Image(groundTextureRegion);
+
+        // add creature
+        // TODO: Replace with custom creature class
+        Image creature = new Image(creatureDefaultTextureRegion);
+        creature.x = 400;
+        creature.y = 50;
+
+        // create buttons names
+        final String[] interactButtonIDs = new String[] {
+                "MainButtonFood",
+                "MainButtonToilet",
+                "MainButtonShower",
+                "MainButtonSleepOff"
+        };
+
+        // load texture regions for buttons in top right corner
+        final TextureRegion[] interactButtonTextureRegions = new TextureRegion[interactButtonIDs.length];
+        for (int i = 0; i < interactButtonIDs.length; i++) {
+            interactButtonTextureRegions[i] = textureAtlas.findRegion(interactButtonIDs[i]);
+        }
 
         // set margin between buttons
         final int marginBetweenButtons = 10;
-        // buttons have the same width and height. using this value allows
-        // precise placement of the buttons
-        final int width = buttonTexture.getWidth() + marginBetweenButtons;
+
+        // position buttons within group and add them to the 'topButtonsGroup'
+        final int width = interactButtonTextureRegions[0].getRegionWidth() + marginBetweenButtons;
         buttons = new Button[NUM_BUTTONS];
         for (int i = 0; i < NUM_BUTTONS; i++) {
-            final Button button = new Button(buttonTextureRegion);
+            final Button button = new Button(interactButtonTextureRegions[i]);
             button.x = width * i;
             button.setClickListener(this);
-            topButtons.addActor(button);
+            topButtonsGroup.addActor(button);
             buttons[i] = button;
         }
 
-        // adjust width of 'topButtons'
-        topButtons.width = width * topButtons.getActors().size();
+        // adjust width of 'topButtons' group
+        topButtonsGroup.width = width * topButtonsGroup.getActors().size();
         // position topButtons in top right corner
-        topButtons.x = stage.right() - topButtons.width;
-        topButtons.y = stage.top() - width;
+        topButtonsGroup.x = stage.right() - topButtonsGroup.width;
+        topButtonsGroup.y = stage.top() - width;
 
-        // add status panel
-        btnDragDown = new DraggableImage(arrowTextureRegion);
-        btnDragDown.y = stage.top() - 64;
+        // add drag down status panel button
+        btnDragDown = new DraggableImage(swipeArrowTextureRegion);
+        btnDragDown.y = stage.top() - swipeArrowTextureRegion.getRegionHeight();
         btnDragDown.setClickListener(this);
         btnDragDown.setDragListener(this);
-        statusPanel.addActor(btnDragDown);
+        statusPanelGroup.addActor(btnDragDown);
 
         // add an FPS label (subject to configuration)
         if (game.config.logFps) {
@@ -107,25 +166,44 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
                     game.assets.getAsset(FontAsset.DEFAULT),
                     Color.RED);
             fpsLabel = new Label("FPS: " + Gdx.graphics.getFramesPerSecond(), labelStyle);
-            background.addActor(fpsLabel);
+            overlayGroup.addActor(fpsLabel);
         }
 
-        // TODO: Add basic status mockup that can be pulled down
-        // TODO: Position statusPanel in top left corner
+        /* Prepare sub groups */
 
-        // TODO: Add creature
-        // TODO: Add background
-        // TODO: Add layers for background and the main stage
-        // TODO: Add overlays, e.g. for speech bubbles
+        // add sub groups to the 'ui' group
+        uiGroup.addActor(statusPanelGroup);
+        uiGroup.addActor(topButtonsGroup);
 
-        // add various groups to the 'ui' group
-        ui.addActor(background);
-        ui.addActor(creature);
-        ui.addActor(statusPanel);
-        ui.addActor(topButtons);
+        // sub groups to the 'background' group
+        bgDistantGroup.addActor(bgSpaceBackdrop);
+        bgDistantGroup.addActor(bgPlanetsBackground);
+        bgDistantGroup.addActor(bgHillsMidground);
+        bgDistantGroup.addActor(bgHillsForeground);
 
-        // add the 'ui' group to the stage
-        stage.addActor(ui);
+        bgNearGroup.y = -50;
+        bgDistantGroup.y = bgNearGroup.y + bgGround.height;
+
+        bgNearGroup.addActor(bgGround);
+
+        /* Prepare main groups */
+
+        // add groups to 'background'
+        backgroundGroup.addActor(bgDistantGroup);
+        backgroundGroup.addActor(bgNearGroup);
+
+        // add groups to 'foreground'
+
+        // add creature to main group
+        foregroundGroup.addActor(creature);
+
+        // add groups to 'overlay'
+        overlayGroup.addActor(uiGroup);
+
+        /* Add main groups to stage */
+        stage.addActor(backgroundGroup);
+        stage.addActor(foregroundGroup);
+        stage.addActor(overlayGroup);
     }
 
     @Override
@@ -174,4 +252,13 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
         }
     }
 
+    @Override
+    public void loadResources() {
+        game.assets.loadAsset(TextureAtlasAsset.MAIN_GAME);
+    }
+
+    @Override
+    public void unloadResources() {
+        game.assets.unloadAsset(TextureAtlasAsset.MAIN_GAME);
+    }
 }
