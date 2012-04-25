@@ -71,6 +71,7 @@ public class TamagotchiGame extends Game {
 
         inputMultiplexer = new InputMultiplexer();
         Gdx.input.setInputProcessor(inputMultiplexer);
+        Gdx.app.getInput().setCatchBackKey(true);
 
         setScreen(new SplashScreen(this));
     }
