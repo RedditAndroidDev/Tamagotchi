@@ -140,6 +140,8 @@ public class TamagotchiGame extends Game {
         assetManager.dispose();
         assetManager = null;
         assets = null;
+        inputMultiplexer.removeProcessor(gameInput);
+        gameInput = null;
         Gdx.input.setInputProcessor(null);
         inputMultiplexer = null;
     }
