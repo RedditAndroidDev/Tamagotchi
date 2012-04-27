@@ -13,6 +13,7 @@ import com.badlogic.gdx.assets.loaders.resolvers.ResolutionFileResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.ResolutionFileResolver.Resolution;
 import com.badlogic.gdx.graphics.Texture;
 import com.redditandroiddevelopers.tamagotchi.screens.CommonScreen;
+import com.redditandroiddevelopers.tamagotchi.screens.CreatureCreationScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.MainGameScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.MainMenuScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.PauseScreen;
@@ -62,7 +63,8 @@ public class TamagotchiGame extends Game {
                 new MainMenuScreen(this),
                 new MainGameScreen(this),
                 new PauseScreen(this),
-                new PauseScreen(this), // TODO: implement PetSelectionScreen
+                new CreatureCreationScreen(this), // TODO: implement
+                                                  // PetSelectionScreen
                 new PauseScreen(this), // TODO: implement MemoriesScreen
                 new PauseScreen(this), // TODO: implement SettingsScreen
         };
