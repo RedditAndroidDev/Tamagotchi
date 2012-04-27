@@ -258,11 +258,6 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
     }
 
     @Override
-    protected void drawBackground() {
-        Gdx.gl10.glClearColor((226f / 255), (232f / 255), (254f / 255), 1f);
-    }
-
-    @Override
     public void loadResources() {
         game.assets.loadAsset(TextureAtlasAsset.MAIN_GAME);
     }

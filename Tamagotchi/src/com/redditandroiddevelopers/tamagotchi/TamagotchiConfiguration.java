@@ -25,7 +25,7 @@ public class TamagotchiConfiguration {
     public int logLevel = Application.LOG_DEBUG;
     public float stageWidth = 800;
     public float stageHeight = 480;
-    public Color backgroundColor = Color.WHITE;
+    public Color backgroundColor = new Color((226f / 255), (232f / 255), (254f / 255), 1f);
 
     // Persistence
     public CreatureDao creatureDao;

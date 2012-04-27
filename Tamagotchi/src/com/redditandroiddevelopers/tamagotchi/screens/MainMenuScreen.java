@@ -101,4 +101,9 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
     public void unloadResources() {
         game.assets.unloadAsset(TextureAtlasAsset.MAIN_MENU);
     }
+
+    @Override
+    protected void drawBackground() {
+        Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
+    }
 }
