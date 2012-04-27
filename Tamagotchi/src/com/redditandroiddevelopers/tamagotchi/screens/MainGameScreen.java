@@ -48,6 +48,11 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
     private DraggableImage btnDragDown;
     private Label fpsLabel;
 
+    /**
+     * Creates a new instance of the MainGameScreen.
+     * 
+     * @param game Needs a TamagotchiGame instance.
+     */
     public MainGameScreen(TamagotchiGame game) {
         super(game);
     }
@@ -63,6 +68,9 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
         layout();
     }
 
+    /**
+     * Creates the basic layout of the screen.
+     */
     private void layout() {
 
         /*
