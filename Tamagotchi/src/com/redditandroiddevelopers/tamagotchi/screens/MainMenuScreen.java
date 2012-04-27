@@ -81,6 +81,7 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
             game.updateState(TamagotchiGame.STATE_MAIN_GAME);
         } else if (actor == btnSelect) {
             Gdx.app.debug(TAG, "Touch on Select");
+            game.updateState(TamagotchiGame.STATE_SELECT_PET);
         } else if (actor == btnMemories) {
             Gdx.app.debug(TAG, "Touch on Memories");
         } else if (actor == btnSettings) {
@@ -101,4 +102,8 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
         game.assets.unloadAsset(TextureAtlasAsset.MAIN_MENU);
     }
 
+    @Override
+    protected void drawBackground() {
+        Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
+    }
 }
