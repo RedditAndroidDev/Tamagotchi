@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiAssets.FontAsset;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiAssets.TextureAtlasAsset;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
+import com.redditandroiddevelopers.tamagotchi.creatures.Creature1;
 import com.redditandroiddevelopers.tamagotchi.ui.DragListener;
 import com.redditandroiddevelopers.tamagotchi.ui.DraggableImage;
 
@@ -47,6 +48,7 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
     private Button[] buttons;
     private DraggableImage btnDragDown;
     private Label fpsLabel;
+    private Creature1 creature;
 
     /**
      * Creates a new instance of the MainGameScreen.
@@ -120,8 +122,7 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
         Image bgGround = new Image(groundTextureRegion);
 
         // add creature
-        // TODO: Replace with custom creature class
-        Image creature = new Image(creatureDefaultTextureRegion);
+        creature = new Creature1(creatureDefaultTextureRegion);
         creature.x = 400;
         creature.y = 50;
 
