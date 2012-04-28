@@ -12,7 +12,7 @@ public class Creature1 extends CommonCreature {
     }
 
     @Override
-    public Creature getCreatureParameters() {
+    protected Creature getCreatureParameters() {
         return Creature.createCreature("Creature1", Gender.FEMALE, null);
     }
 
