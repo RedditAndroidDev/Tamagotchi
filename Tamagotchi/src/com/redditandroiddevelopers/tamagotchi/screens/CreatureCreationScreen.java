@@ -3,17 +3,16 @@ package com.redditandroiddevelopers.tamagotchi.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.stbtt.TrueTypeFontFactory;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiAssets.TextureAtlasAsset;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
+import com.redditandroiddevelopers.tamagotchi.utils.FontHelper;
 
 public class CreatureCreationScreen extends CommonScreen {
 
@@ -71,10 +70,10 @@ public class CreatureCreationScreen extends CommonScreen {
         // add text ("select creature")
 
         final Label.LabelStyle labelStyle80 = new Label.LabelStyle(
-                createBitmapFont("fonts/Roboto-Regular.ttf", 80f),
+                FontHelper.createBitmapFont("fonts/Roboto-Regular.ttf", 80f, stage),
                 Color.WHITE);
         final Label.LabelStyle labelStyle20 = new Label.LabelStyle(
-                createBitmapFont("fonts/Roboto-Regular.ttf", 40f),
+                FontHelper.createBitmapFont("fonts/Roboto-Regular.ttf", 40f, stage),
                 Color.WHITE);
         Label labelFirstLine = new Label("Choose a pet", labelStyle80);
         labelFirstLine.x = Gdx.graphics.getWidth() / 2 - labelFirstLine.width / 2;
@@ -103,14 +102,6 @@ public class CreatureCreationScreen extends CommonScreen {
         stage.addActor(creatureGroup);
         stage.addActor(overlayGroup);
         stage.addActor(textGroup);
-    }
-
-    public BitmapFont createBitmapFont(String fontFile, float size) {
-        final String FONT_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.:;,{}\"´`'<>";
-        return TrueTypeFontFactory.createBitmapFont(
-                Gdx.files.internal(fontFile),
-                FONT_CHARACTERS, stage.width(), stage.height(), size, Gdx.graphics.getWidth(),
-                Gdx.graphics.getHeight());
     }
 
     @Override
