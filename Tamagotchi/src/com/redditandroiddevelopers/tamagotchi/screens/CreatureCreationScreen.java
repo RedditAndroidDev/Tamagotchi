@@ -7,8 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.input.GestureDetector.GestureListener;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.input.GestureDetector.GestureAdapter;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Align;
@@ -29,22 +28,25 @@ public class CreatureCreationScreen extends CommonScreen {
     private static final String GRP_OVERLAY = "overlay";
     private static final String GRP_TEXT = "text";
 
-    float leftMark = 250;
-    float rightMark = Gdx.graphics.getWidth() - 250;
+    private final ArrayList<Image> creatureList;
+    private final GestureDetector gestureDetector;
 
-    ArrayList<Image> creatureList = new ArrayList<Image>();
-
-    GestureDetector gestureDetector = new GestureDetector(new SwipeHandler());
-
-    float scaleFactor = 0.75f;
+    private float leftMark, rightMark;
+    private float scaleFactor;
 
     public CreatureCreationScreen(TamagotchiGame game) {
         super(game);
+        creatureList = new ArrayList<Image>();
+        gestureDetector = new GestureDetector(new SwipeHandler());
     }
 
     @Override
     public void show() {
         super.show();
+        final float padding = 250;
+        leftMark = padding;
+        rightMark = Gdx.graphics.getWidth() - padding;
+        scaleFactor = 0.75f;
         initLayout();
         initInput();
     }
@@ -194,27 +196,7 @@ public class CreatureCreationScreen extends CommonScreen {
         return new Stage(game.config.stageWidth, game.config.stageHeight, false, batch);
     }
 
-    class SwipeHandler implements GestureListener {
-
-        @Override
-        public boolean touchDown(int x, int y, int pointer) {
-            return false;
-        }
-
-        @Override
-        public boolean tap(int x, int y, int count) {
-            return false;
-        }
-
-        @Override
-        public boolean longPress(int x, int y) {
-            return false;
-        }
-
-        @Override
-        public boolean fling(float velocityX, float velocityY) {
-            return false;
-        }
+    class SwipeHandler extends GestureAdapter {
 
         @Override
         public boolean pan(int x, int y, int deltaX, int deltaY) {
@@ -233,15 +215,5 @@ public class CreatureCreationScreen extends CommonScreen {
             return true;
         }
 
-        @Override
-        public boolean zoom(float originalDistance, float currentDistance) {
-            return false;
-        }
-
-        @Override
-        public boolean pinch(Vector2 initialFirstPointer, Vector2 initialSecondPointer,
-                Vector2 firstPointer, Vector2 secondPointer) {
-            return false;
-        }
     }
 }

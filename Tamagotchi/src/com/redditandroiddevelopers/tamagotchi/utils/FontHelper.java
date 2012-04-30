@@ -8,11 +8,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class FontHelper {
 
+    public static final String FONT_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.:;,{}\"´`'<>";
+
     public static BitmapFont createBitmapFont(String fontFile, float size, Stage stage) {
-        final String FONT_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.:;,{}\"´`'<>";
         return TrueTypeFontFactory.createBitmapFont(
                 Gdx.files.internal(fontFile),
-                FONT_CHARACTERS, stage.width(), stage.height(), size, Gdx.graphics.getWidth(),
-                Gdx.graphics.getHeight());
+                FONT_CHARACTERS, stage.width(), stage.height(), size,
+                Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 }
