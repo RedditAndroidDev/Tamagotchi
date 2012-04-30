@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.input.GestureDetector.GestureListener;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -31,7 +34,18 @@ public class CreatureCreationScreen extends CommonScreen {
     @Override
     public void show() {
         super.show();
+        initLayout();
+        initInput();
+    }
 
+    private void initInput() {
+        GestureDetector gestureDetector = new GestureDetector(new SwipeHandler());
+        game.inputMultiplexer.removeProcessor(stage);
+        game.inputMultiplexer.addProcessor(gestureDetector);
+        game.inputMultiplexer.addProcessor(stage);
+    }
+
+    private void initLayout() {
         /* add groups for better readability and flexibility */
 
         // create main groups
@@ -49,6 +63,7 @@ public class CreatureCreationScreen extends CommonScreen {
         final TextureRegion overlayGrayTextureRegion = textureAtlas.findRegion("OverlayGray");
 
         // create creatures
+
         Image creature = new Image(creatureTextureRegion);
         creature.x = camera.viewportWidth / 2 - creature.width / 2;
         creature.y = camera.viewportHeight / 2 - creature.height / 2;
@@ -117,5 +132,52 @@ public class CreatureCreationScreen extends CommonScreen {
     @Override
     protected Stage createStage(SpriteBatch batch) {
         return new Stage(game.config.stageWidth, game.config.stageHeight, false, batch);
+    }
+
+    class SwipeHandler implements GestureListener {
+
+        @Override
+        public boolean touchDown(int x, int y, int pointer) {
+            return false;
+        }
+
+        @Override
+        public boolean tap(int x, int y, int count) {
+            return false;
+        }
+
+        @Override
+        public boolean longPress(int x, int y) {
+            return false;
+        }
+
+        @Override
+        public boolean fling(float velocityX, float velocityY) {
+            return false;
+        }
+
+        @Override
+        public boolean pan(int x, int y, int deltaX, int deltaY) {
+            Gdx.app.log(TAG, "x: " + x + " y: " + y + " deltaX: " + deltaX + " deltaY: " + deltaY);
+            Group creatureGroup = (Group) stage.findActor(GRP_CREATURES);
+            if (deltaX != 0) {
+                creatureGroup.x += deltaX;
+            }
+            else {
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public boolean zoom(float originalDistance, float currentDistance) {
+            return false;
+        }
+
+        @Override
+        public boolean pinch(Vector2 initialFirstPointer, Vector2 initialSecondPointer,
+                Vector2 firstPointer, Vector2 secondPointer) {
+            return false;
+        }
     }
 }
