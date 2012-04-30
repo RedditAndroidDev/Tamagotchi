@@ -34,6 +34,8 @@ public class CreatureCreationScreen extends CommonScreen {
 
     ArrayList<Image> creatureList = new ArrayList<Image>();
 
+    GestureDetector gestureDetector = new GestureDetector(new SwipeHandler());
+
     float scaleFactor = 0.75f;
 
     public CreatureCreationScreen(TamagotchiGame game) {
@@ -48,7 +50,6 @@ public class CreatureCreationScreen extends CommonScreen {
     }
 
     private void initInput() {
-        GestureDetector gestureDetector = new GestureDetector(new SwipeHandler());
         game.inputMultiplexer.removeProcessor(stage);
         game.inputMultiplexer.addProcessor(gestureDetector);
         game.inputMultiplexer.addProcessor(stage);
@@ -185,6 +186,7 @@ public class CreatureCreationScreen extends CommonScreen {
     public void unloadResources() {
         creatureList.clear();
         game.assets.unloadAsset(TextureAtlasAsset.CREATE_CREATURE);
+        game.inputMultiplexer.removeProcessor(gestureDetector);
     }
 
     @Override
