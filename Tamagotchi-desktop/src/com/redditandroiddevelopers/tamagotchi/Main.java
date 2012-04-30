@@ -28,7 +28,8 @@ public class Main {
         // create a texture atlas per screen
         final String[] screens = new String[] {
                 "main-menu",
-                "main-game"
+                "main-game",
+                "create-creature"
         };
         for (String screen : screens) {
             final String srcdir = "../Texture-assets/" + screen;

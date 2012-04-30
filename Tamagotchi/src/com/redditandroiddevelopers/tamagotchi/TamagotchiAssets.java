@@ -28,7 +28,8 @@ public class TamagotchiAssets {
     public enum TextureAtlasAsset implements Asset<TextureAtlas> {
 
         MAIN_MENU("main-menu/pack"),
-        MAIN_GAME("main-game/pack");
+        MAIN_GAME("main-game/pack"),
+        CREATE_CREATURE("create-creature/pack");
 
         private final String textureFile;
 
@@ -50,7 +51,7 @@ public class TamagotchiAssets {
 
     public enum FontAsset implements Asset<BitmapFont> {
 
-        DEFAULT("");
+        ROBOTO("fonts/Roboto.fnt");
         // TODO: need moar fonts!
 
         /**
@@ -115,9 +116,6 @@ public class TamagotchiAssets {
         }
         // load fonts
         for (FontAsset fontAsset : FontAsset.values()) {
-            if (fontAsset == FontAsset.DEFAULT) {
-                continue;
-            }
             loadAsset(fontAsset);
         }
     }
@@ -132,9 +130,6 @@ public class TamagotchiAssets {
         }
         // load fonts
         for (FontAsset fontAsset : FontAsset.values()) {
-            if (fontAsset == FontAsset.DEFAULT) {
-                continue;
-            }
             unloadAsset(fontAsset);
         }
     }
@@ -157,10 +152,6 @@ public class TamagotchiAssets {
 
     public <T> T getAsset(Asset<T> asset) {
         final Class<T> assetType = asset.getAssetType();
-        if (asset == FontAsset.DEFAULT) {
-            assert assetType == BitmapFont.class;
-            return assetType.cast(new BitmapFont());
-        }
         if (assetManager.isLoaded(asset.getFileDescriptor())) {
             return assetManager.get(asset.getFileDescriptor(), assetType);
         } else {

@@ -1,0 +1,19 @@
+
+create-creature1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+OverlayGray
+  rotate: false
+  xy: 2, 2
+  size: 800, 480
+  orig: 800, 480
+  offset: 0, 0
+  index: -1
+PetDefault
+  rotate: false
+  xy: 804, 2
+  size: 167, 127
+  orig: 167, 127
+  offset: 0, 0
+  index: -1
