@@ -3,9 +3,11 @@ package com.redditandroiddevelopers.tamagotchi.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.stbtt.TrueTypeFontFactory;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -13,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.redditandroiddevelopers.tamagotchi.TamagotchiAssets.FontAsset;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiAssets.TextureAtlasAsset;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
 import com.redditandroiddevelopers.tamagotchi.creatures.Creature1;
@@ -169,10 +170,16 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
 
         // add an FPS label (subject to configuration)
         if (game.config.logFps) {
+            final String FONT_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.:;,{}\"´`'<>";
+            BitmapFont font = TrueTypeFontFactory.createBitmapFont(
+                    Gdx.files.internal("fonts/Roboto-Regular.ttf"),
+                    FONT_CHARACTERS, stage.width(), stage.height(), 25.0f, Gdx.graphics.getWidth(),
+                    Gdx.graphics.getHeight());
             final Label.LabelStyle labelStyle = new Label.LabelStyle(
-                    game.assets.getAsset(FontAsset.DEFAULT),
+                    font,
                     Color.RED);
             fpsLabel = new Label("FPS: " + Gdx.graphics.getFramesPerSecond(), labelStyle);
+            fpsLabel.y = -15;
             overlayGroup.addActor(fpsLabel);
         }
 
