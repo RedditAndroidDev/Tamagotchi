@@ -156,11 +156,10 @@ public class TamagotchiGame extends Game {
                 case Keys.BACK:
                 case Keys.ESCAPE:
                     goToPreviousScreen();
-                    break;
+                    return true;
                 default:
                     break;
             }
-
             return false;
         }
 
