@@ -11,11 +11,15 @@ import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Align;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Scaling;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiAssets.TextureAtlasAsset;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
 import com.redditandroiddevelopers.tamagotchi.utils.FontHelper;
+
+import java.util.ArrayList;
 
 public class CreatureCreationScreen extends CommonScreen {
 
@@ -24,6 +28,11 @@ public class CreatureCreationScreen extends CommonScreen {
     private static final String GRP_CREATURES = "creatures";
     private static final String GRP_OVERLAY = "overlay";
     private static final String GRP_TEXT = "text";
+
+    float leftMark = 250;
+    float rightMark = Gdx.graphics.getWidth() - 250;
+
+    ArrayList<Image> creatureList = new ArrayList<Image>();
 
     float scaleFactor = 0.75f;
 
@@ -53,6 +62,8 @@ public class CreatureCreationScreen extends CommonScreen {
         final Group overlayGroup = new Group(GRP_OVERLAY);
         final Group textGroup = new Group(GRP_TEXT);
 
+        overlayGroup.touchable = false;
+
         /* load textures */
 
         // load texture atlas
@@ -64,19 +75,27 @@ public class CreatureCreationScreen extends CommonScreen {
 
         // create creatures
 
-        Image creature = new Image(creatureTextureRegion);
+        Image creature = new Image(creatureTextureRegion, Scaling.stretch, Align.CENTER,
+                "creature1");
         creature.x = camera.viewportWidth / 2 - creature.width / 2;
         creature.y = camera.viewportHeight / 2 - creature.height / 2;
 
-        Image creature2 = new Image(creatureTextureRegion);
-        creature2.x = camera.viewportWidth - (3f / 4) * creature2.width * scaleFactor;
-        creature2.y = camera.viewportHeight / 2 - creature.height / 2 + 100;
-        creature2.scaleX = creature2.scaleY = scaleFactor;
+        Image creature2 = new Image(creatureTextureRegion, Scaling.stretch, Align.CENTER,
+                "creature2");
 
-        Image creature3 = new Image(creatureTextureRegion);
-        creature3.x = -creature3.width + (3f / 4) * creature3.width * scaleFactor;
-        creature3.y = camera.viewportHeight / 2 - creature.height / 2 + 100;
-        creature3.scaleX = creature3.scaleY = scaleFactor;
+        Image creature3 = new Image(creatureTextureRegion, Scaling.stretch, Align.CENTER,
+                "creature3");
+
+        creatureList.add(creature);
+        creatureList.add(creature2);
+        creatureList.add(creature3);
+
+        // adjust left and right mark
+
+        leftMark = leftMark - creature.width / 2;
+        rightMark = rightMark - creature.width / 2;
+
+        initializeCreaturePositions();
 
         // create overlay
 
@@ -119,6 +138,44 @@ public class CreatureCreationScreen extends CommonScreen {
         stage.addActor(textGroup);
     }
 
+    private float getYforX(float x) {
+        // x = x + creatureList.get(0).getImageWidth() / 2;
+        float t = 0.8f;
+        if (x <= leftMark) {
+            int leftOfLeftMark = (int) (leftMark - x);
+            return getYforX(leftMark + 1) + t * leftOfLeftMark;
+        }
+        else if (x > leftMark && x < rightMark) {
+            return Gdx.graphics.getHeight() / 2 - creatureList.get(0).height / 2;
+        }
+        else if (x >= rightMark) {
+            int rightOfRightMark = (int) (x - rightMark);
+            return getYforX(leftMark + 1) + t * rightOfRightMark;
+        }
+        return 0;
+    }
+
+    private void initializeCreaturePositions() {
+        for (Image c : creatureList) {
+            int i = creatureList.indexOf(c);
+            if (i == 0) {
+                c.x = camera.viewportWidth / 2 - c.width / 2;
+                c.y = camera.viewportHeight / 2 - c.height / 2;
+            }
+            else if (i == 1) {
+                c.x = camera.viewportWidth - (3f / 4) * c.width * c.scaleX;
+                c.y = getYforX(c.x);
+                c.scaleX = c.scaleY = scaleFactor;
+            }
+            else {
+                c.x = creatureList.get(i - 1).x + (creatureList.get(1).x - creatureList.get(0).x);
+                c.y = getYforX(c.x);
+                ;
+                c.scaleX = c.scaleY = scaleFactor;
+            }
+        }
+    }
+
     @Override
     public void loadResources() {
         game.assets.loadAsset(TextureAtlasAsset.CREATE_CREATURE);
@@ -126,6 +183,7 @@ public class CreatureCreationScreen extends CommonScreen {
 
     @Override
     public void unloadResources() {
+        creatureList.clear();
         game.assets.unloadAsset(TextureAtlasAsset.CREATE_CREATURE);
     }
 
@@ -158,13 +216,17 @@ public class CreatureCreationScreen extends CommonScreen {
 
         @Override
         public boolean pan(int x, int y, int deltaX, int deltaY) {
-            Gdx.app.log(TAG, "x: " + x + " y: " + y + " deltaX: " + deltaX + " deltaY: " + deltaY);
-            Group creatureGroup = (Group) stage.findActor(GRP_CREATURES);
-            if (deltaX != 0) {
-                creatureGroup.x += deltaX;
+            // Gdx.app.log(TAG, "x: " + x + " y: " + y + " deltaX: " + deltaX +
+            // " deltaY: " + deltaY);
+            if (deltaX == 0) {
+                return false; // not sure if this should be considered 'handled'
             }
-            else {
-                return false;
+            for (Image c : creatureList) {
+                c.x += deltaX;
+                c.y = getYforX(c.x);
+                if (c.name.compareTo("creature2") == 0) {
+                    Gdx.app.log(TAG, "Creature " + c.name + " placed at X: " + c.x + " Y: " + c.y);
+                }
             }
             return true;
         }
