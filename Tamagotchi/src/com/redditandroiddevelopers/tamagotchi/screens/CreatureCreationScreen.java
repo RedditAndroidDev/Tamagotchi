@@ -9,9 +9,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.FadeOut;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveTo;
+import com.badlogic.gdx.scenes.scene2d.actions.Parallel;
+import com.badlogic.gdx.scenes.scene2d.actions.RotateBy;
 import com.badlogic.gdx.scenes.scene2d.ui.Align;
+import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Scaling;
@@ -21,49 +27,92 @@ import com.redditandroiddevelopers.tamagotchi.utils.FontHelper;
 
 import java.util.ArrayList;
 
-public class CreatureCreationScreen extends CommonScreen {
+public class CreatureCreationScreen extends CommonScreen implements ClickListener {
 
     private static final String TAG = "Tamagotchi:CreatureCreationScreen";
 
+    // group names
     private static final String GRP_CREATURES = "creatures";
     private static final String GRP_OVERLAY = "overlay";
     private static final String GRP_TEXT = "text";
 
-    float leftMark = 250;
-    float rightMark = Gdx.graphics.getWidth() - 250;
+    // the x coordinates at which the creatures start moving up/down
+    private float leftMark = 250;
+    private float rightMark = Gdx.graphics.getWidth() - 250;
 
-    ArrayList<Image> creatureList = new ArrayList<Image>();
+    // list of all displayed creatures
+    private final ArrayList<Image> creatureList = new ArrayList<Image>();
 
-    GestureDetector gestureDetector = new GestureDetector(new SwipeHandler());
+    // GestureDetector to handle swipes
+    private final GestureDetector gestureDetector = new GestureDetector(new SwipeHandler());
 
-    float scaleFactor = 0.75f;
+    // scale factor for smaller creatures
+    private final float scaleFactor = 0.75f;
+
+    // fonts
+    private final String ROBOTO_REGULAR = "fonts/Roboto-Regular.ttf";
+
+    // font styles
+    private Label.LabelStyle labelStyle80;
+    private Label.LabelStyle labelStyle40;
+
+    // number of creatures to create
+    final private int NUM_OF_CREATURES = 25;
 
     public CreatureCreationScreen(TamagotchiGame game) {
         super(game);
     }
 
     @Override
-    public void show() {
-        super.show();
-        initLayout();
-        initInput();
+    protected Stage createStage(SpriteBatch batch) {
+        return new Stage(game.config.stageWidth, game.config.stageHeight, false, batch);
     }
 
-    private void initInput() {
+    @Override
+    public void show() {
+        super.show();
+        initializeInput();
+        initializeFonts();
+        initializeLayouts();
+    }
+
+    /**
+     * Adds a GestureDetector to the InputMultiplexer to listen to swipes
+     */
+    private void initializeInput() {
         game.inputMultiplexer.removeProcessor(stage);
         game.inputMultiplexer.addProcessor(gestureDetector);
         game.inputMultiplexer.addProcessor(stage);
     }
 
-    private void initLayout() {
+    /**
+     * Generates fonts based on TTF files.
+     */
+    private void initializeFonts() {
+        labelStyle80 = new Label.LabelStyle(FontHelper.createBitmapFont(
+                ROBOTO_REGULAR, 80f, stage), Color.WHITE);
+        labelStyle40 = new Label.LabelStyle(FontHelper.createBitmapFont(
+                ROBOTO_REGULAR, 40f, stage), Color.WHITE);
+    }
+
+    /**
+     * Prepares all layouts.
+     */
+    private void initializeLayouts() {
+        initializeFirstLayout();
+        initializeSecondLayout();
+    }
+
+    /**
+     * Prepares the creature selection screen
+     */
+    private void initializeFirstLayout() {
         /* add groups for better readability and flexibility */
 
         // create main groups
         final Group creatureGroup = new Group(GRP_CREATURES);
         final Group overlayGroup = new Group(GRP_OVERLAY);
         final Group textGroup = new Group(GRP_TEXT);
-
-        overlayGroup.touchable = false;
 
         /* load textures */
 
@@ -76,55 +125,54 @@ public class CreatureCreationScreen extends CommonScreen {
 
         // create creatures
 
-        Image creature = new Image(creatureTextureRegion, Scaling.stretch, Align.CENTER,
-                "creature1");
-        creature.x = camera.viewportWidth / 2 - creature.width / 2;
-        creature.y = camera.viewportHeight / 2 - creature.height / 2;
+        for (int i = 0; i < NUM_OF_CREATURES; i++) {
+            creatureList.add(new Image(creatureTextureRegion, Scaling.stretch, Align.CENTER,
+                    "creature" + (i + 1)));
+            creatureList.get(i).setClickListener(this);
+            Gdx.app.log(TAG, "Creature created: " + creatureList.get(i).name);
+        }
 
-        Image creature2 = new Image(creatureTextureRegion, Scaling.stretch, Align.CENTER,
-                "creature2");
+        assert creatureList.size() > 0;
 
-        Image creature3 = new Image(creatureTextureRegion, Scaling.stretch, Align.CENTER,
-                "creature3");
-
-        creatureList.add(creature);
-        creatureList.add(creature2);
-        creatureList.add(creature3);
+        creatureList.get(0).x = camera.viewportWidth / 2 - creatureList.get(0).width / 2;
+        creatureList.get(0).y = camera.viewportHeight / 2 - creatureList.get(0).height / 2;
 
         // adjust left and right mark
 
-        leftMark = leftMark - creature.width / 2;
-        rightMark = rightMark - creature.width / 2;
+        leftMark = leftMark - creatureList.get(0).width / 2;
+        rightMark = rightMark - creatureList.get(0).width / 2;
 
         initializeCreaturePositions();
 
         // create overlay
+        Image overlay = new Image(overlayGrayTextureRegion, Scaling.stretch, Align.CENTER,
+                "overlay");
 
-        Image overlay = new Image(overlayGrayTextureRegion);
-
-        // add text ("select creature")
-
-        final Label.LabelStyle labelStyle80 = new Label.LabelStyle(
-                FontHelper.createBitmapFont("fonts/Roboto-Regular.ttf", 80f, stage),
-                Color.WHITE);
-        final Label.LabelStyle labelStyle20 = new Label.LabelStyle(
-                FontHelper.createBitmapFont("fonts/Roboto-Regular.ttf", 40f, stage),
-                Color.WHITE);
-        Label labelFirstLine = new Label("Choose a pet", labelStyle80);
+        // add text ("Choose a pet")
+        Label labelFirstLine = new Label("Choose a pet", labelStyle80, "labelFirstLine");
         labelFirstLine.x = Gdx.graphics.getWidth() / 2 - labelFirstLine.width / 2;
-        labelFirstLine.y = -10;
+        labelFirstLine.y = 35 - labelFirstLine.height;
+
+        // add text ("Swipe either left or right to select a pet")
         Label labelSecondLine = new Label("Swipe either left or right to select a pet",
-                labelStyle20);
+                labelStyle40, "labelSecondLine");
         labelSecondLine.x = Gdx.graphics.getWidth() / 2 - labelSecondLine.width / 2;
-        labelSecondLine.y = -20;
+        labelSecondLine.y = 5 - labelSecondLine.height;
+
+        // START TEMPORARY CODE
+        Image img = new Image(textureAtlas.findRegion("PetDefault"), Scaling.stretch, Align.CENTER,
+                "button");
+        img.setClickListener(this);
+        creatureGroup.addActor(img);
+        // END TEMPORARY CODE
 
         /* Prepare main groups */
 
         // add creatures to the 'creature' group
 
-        creatureGroup.addActor(creature);
-        creatureGroup.addActor(creature2);
-        creatureGroup.addActor(creature3);
+        for (Image creature : creatureList) {
+            creatureGroup.addActor(creature);
+        }
 
         // add overlay to the 'overlay' group
         overlayGroup.addActor(overlay);
@@ -139,42 +187,78 @@ public class CreatureCreationScreen extends CommonScreen {
         stage.addActor(textGroup);
     }
 
-    private float getYforX(float x) {
-        // x = x + creatureList.get(0).getImageWidth() / 2;
-        float t = 0.8f;
-        if (x <= leftMark) {
-            int leftOfLeftMark = (int) (leftMark - x);
-            return getYforX(leftMark + 1) + t * leftOfLeftMark;
-        }
-        else if (x > leftMark && x < rightMark) {
-            return Gdx.graphics.getHeight() / 2 - creatureList.get(0).height / 2;
-        }
-        else if (x >= rightMark) {
-            int rightOfRightMark = (int) (x - rightMark);
-            return getYforX(leftMark + 1) + t * rightOfRightMark;
-        }
-        return 0;
+    /**
+     * Prepares the second layout.
+     */
+    private void initializeSecondLayout() {
+        // TODO: initializeLayout
     }
 
+    /**
+     * Places the creatures at the correct positions.
+     */
     private void initializeCreaturePositions() {
         for (Image c : creatureList) {
             int i = creatureList.indexOf(c);
-            if (i == 0) {
+            if (i == 0) { // one creature
                 c.x = camera.viewportWidth / 2 - c.width / 2;
                 c.y = camera.viewportHeight / 2 - c.height / 2;
             }
-            else if (i == 1) {
+            else if (i == 1) { // two creatures
                 c.x = camera.viewportWidth - (3f / 4) * c.width * c.scaleX;
-                c.y = getYforX(c.x);
-                c.scaleX = c.scaleY = scaleFactor;
+                c.y = getYPositionBasedOnXValue(c.x);
+                // c.scaleX = c.scaleY = scaleFactor;
             }
-            else {
+            else { // more than two creatures
                 c.x = creatureList.get(i - 1).x + (creatureList.get(1).x - creatureList.get(0).x);
-                c.y = getYforX(c.x);
-                ;
-                c.scaleX = c.scaleY = scaleFactor;
+                c.y = getYPositionBasedOnXValue(c.x);
+                // c.scaleX = c.scaleY = scaleFactor;
             }
+            Gdx.app.debug(TAG, "Creature moved to: X: " + c.x + " Y: " + c.y);
         }
+    }
+
+    private void startTransition1() {
+        // START TEMPORARY CODE
+        Parallel parallel = Parallel.$(
+                MoveTo.$(200, 200, 0.5f),
+                RotateBy.$(360f, 1f)
+                );
+        stage.findActor("creature1").action(parallel);
+        // END TEMPORARY CODE
+
+        // fade out text in 0.5 seconds
+        stage.findActor("labelFirstLine").action(FadeOut.$(0.5f));
+        stage.findActor("labelSecondLine").action(FadeOut.$(0.5f));
+    }
+
+    /**
+     * Finds correct Y value for corresponding X value to position creatures
+     * 
+     * @param x the X coordinate of the creature that should be positioned
+     * @return int y
+     */
+    private float getYPositionBasedOnXValue(float x) {
+        // the slope (how fast the creatures will move upwards)
+        float m = 0.8f;
+
+        // creature is left of marked area
+        if (x <= leftMark) {
+            int leftOfLeftMark = (int) (leftMark - x);
+            return getYPositionBasedOnXValue(leftMark + 1) + m * leftOfLeftMark;
+        }
+        // creature is inside of marked area
+        else if (x > leftMark && x < rightMark) {
+            return Gdx.graphics.getHeight() / 2 - creatureList.get(0).height / 2;
+        }
+        // creature is right of marked area
+        else if (x >= rightMark) {
+            int rightOfRightMark = (int) (x - rightMark);
+            return getYPositionBasedOnXValue(leftMark + 1) + m * rightOfRightMark;
+        }
+        // something went wrong, this code shouldn't be reachable
+        assert false;
+        return 0;
     }
 
     @Override
@@ -190,10 +274,18 @@ public class CreatureCreationScreen extends CommonScreen {
     }
 
     @Override
-    protected Stage createStage(SpriteBatch batch) {
-        return new Stage(game.config.stageWidth, game.config.stageHeight, false, batch);
+    public void click(Actor actor, float x, float y) {
+        if (creatureList.contains(actor)) {
+            Gdx.app.debug(TAG, "Hit on " + actor.name + " detected");
+        }
+        else {
+            startTransition1();
+        }
     }
 
+    /**
+     * Basic GestureListener that handles the swiping motion.
+     */
     class SwipeHandler implements GestureListener {
 
         @Override
@@ -218,17 +310,14 @@ public class CreatureCreationScreen extends CommonScreen {
 
         @Override
         public boolean pan(int x, int y, int deltaX, int deltaY) {
-            // Gdx.app.log(TAG, "x: " + x + " y: " + y + " deltaX: " + deltaX +
-            // " deltaY: " + deltaY);
             if (deltaX == 0) {
-                return false; // not sure if this should be considered 'handled'
+                return true;
             }
             for (Image c : creatureList) {
                 c.x += deltaX;
-                c.y = getYforX(c.x);
-                if (c.name.compareTo("creature2") == 0) {
-                    Gdx.app.log(TAG, "Creature " + c.name + " placed at X: " + c.x + " Y: " + c.y);
-                }
+                c.y = getYPositionBasedOnXValue(c.x);
+                // Gdx.app.log(TAG, "Creature " + c.name + " placed at X: " +
+                // c.x + " Y: " + c.y);
             }
             return true;
         }
@@ -243,5 +332,6 @@ public class CreatureCreationScreen extends CommonScreen {
                 Vector2 firstPointer, Vector2 secondPointer) {
             return false;
         }
+
     }
 }
