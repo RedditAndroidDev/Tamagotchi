@@ -12,18 +12,22 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.FadeIn;
 import com.badlogic.gdx.scenes.scene2d.actions.FadeOut;
+import com.badlogic.gdx.scenes.scene2d.actions.FadeTo;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveBy;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveTo;
-import com.badlogic.gdx.scenes.scene2d.actions.Parallel;
-import com.badlogic.gdx.scenes.scene2d.actions.RotateBy;
+import com.badlogic.gdx.scenes.scene2d.actions.Sequence;
 import com.badlogic.gdx.scenes.scene2d.ui.Align;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.utils.Scaling;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiAssets.TextureAtlasAsset;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
 import com.redditandroiddevelopers.tamagotchi.utils.FontHelper;
+import com.redditandroiddevelopers.tamagotchi.utils.TextUtils;
 
 import java.util.ArrayList;
 
@@ -53,11 +57,14 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     private final String ROBOTO_REGULAR = "fonts/Roboto-Regular.ttf";
 
     // font styles
-    private Label.LabelStyle labelStyle80;
-    private Label.LabelStyle labelStyle40;
+    private LabelStyle labelStyle80;
+    private LabelStyle labelStyle40;
+    private LabelStyle labelStyle20;
 
     // number of creatures to create
-    final private int NUM_OF_CREATURES = 25;
+    final private int NUM_OF_CREATURES = 3;
+
+    final private float DEFAULT_FADE_OUT_TIME = 0.5f;
 
     public CreatureCreationScreen(TamagotchiGame game) {
         super(game);
@@ -98,6 +105,8 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
                 ROBOTO_REGULAR, 80f, stage), Color.WHITE);
         labelStyle40 = new Label.LabelStyle(FontHelper.createBitmapFont(
                 ROBOTO_REGULAR, 40f, stage), Color.WHITE);
+        labelStyle20 = new Label.LabelStyle(FontHelper.createBitmapFont(
+                ROBOTO_REGULAR, 20f, stage), Color.WHITE);
     }
 
     /**
@@ -105,7 +114,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
      */
     private void initializeLayouts() {
         initializeFirstLayout();
-        initializeSecondLayout();
+        initializeSecondLayout(false);
     }
 
     /**
@@ -170,6 +179,8 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         Image img = new Image(textureAtlas.findRegion("PetDefault"), Scaling.stretch, Align.CENTER,
                 "button");
         img.setClickListener(this);
+        img.scaleX = 0.5f;
+        img.scaleY = 0.5f;
         creatureGroup.addActor(img);
         // END TEMPORARY CODE
 
@@ -197,8 +208,14 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     /**
      * Prepares the second layout.
      */
-    private void initializeSecondLayout() {
-        // TODO: initializeLayout
+    private void initializeSecondLayout(boolean visible) {
+        String text = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+        Label summary = new Label(TextUtils.insertPeriodically(text, "\n", 30), labelStyle20,
+                "summary");
+        summary.x = 50;
+        summary.y = Gdx.graphics.getHeight() - 100 - summary.height;
+        summary.visible = visible;
+        stage.addActor(summary);
     }
 
     /**
@@ -226,17 +243,45 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     }
 
     private void startTransition1() {
-        // START TEMPORARY CODE
-        Parallel parallel = Parallel.$(
-                MoveTo.$(200, 200, 0.5f),
-                RotateBy.$(360f, 1f)
-                );
-        stage.findActor("creature1").action(parallel);
-        // END TEMPORARY CODE
+        // prevent second button press
+        stage.findActor("button").touchable = false;
 
-        // fade out text in 0.5 seconds
-        stage.findActor("labelFirstLine").action(FadeOut.$(0.5f));
-        stage.findActor("labelSecondLine").action(FadeOut.$(0.5f));
+        // get actors
+        Image spotlight = (Image) stage.findActor("spotlight");
+        Image creature = getSelectedCreature();
+
+        // move spotlight to the right
+        spotlight.action(MoveBy.$(200, 0, DEFAULT_FADE_OUT_TIME));
+
+        // get spotlight center
+        float spotlightCenterX = spotlight.x + spotlight.width / 2;
+        float spotlightCenterY = spotlight.y + spotlight.height / 2;
+
+        // move creature to center of spotlight
+        creature.action(MoveTo.$(spotlightCenterX - creature.width / 2 + 200, spotlightCenterY
+                - creature.height / 2, DEFAULT_FADE_OUT_TIME));
+
+        // fade out all other creatures
+        for (Image c : creatureList) {
+            if (c != getSelectedCreature()) {
+                c.action(FadeOut.$(DEFAULT_FADE_OUT_TIME));
+            }
+        }
+
+        // fade out bottom text
+        stage.findActor("labelFirstLine").action(FadeOut.$(DEFAULT_FADE_OUT_TIME));
+        stage.findActor("labelSecondLine").action(FadeOut.$(DEFAULT_FADE_OUT_TIME));
+
+        // fade in summary
+        // FIXME: find better way to fade in summary
+        stage.findActor("summary").visible = true;
+        stage.findActor("summary").action(
+                Sequence.$(FadeTo.$(0, 0f), FadeIn.$(DEFAULT_FADE_OUT_TIME)));
+    }
+
+    private Image getSelectedCreature() {
+        // TODO: return correct creature
+        return creatureList.get(0);
     }
 
     /**
