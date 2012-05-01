@@ -33,7 +33,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
     // group names
     private static final String GRP_CREATURES = "creatures";
-    private static final String GRP_OVERLAY = "overlay";
+    private static final String GRP_BACKGROUND = "background";
     private static final String GRP_TEXT = "text";
 
     // the x coordinates at which the creatures start moving up/down
@@ -76,6 +76,11 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         initializeLayouts();
     }
 
+    @Override
+    protected void drawBackground() {
+        Gdx.gl.glClearColor(42f / 255, 42f / 255, 42f / 255, 1f);
+    }
+
     /**
      * Adds a GestureDetector to the InputMultiplexer to listen to swipes
      */
@@ -111,7 +116,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
         // create main groups
         final Group creatureGroup = new Group(GRP_CREATURES);
-        final Group overlayGroup = new Group(GRP_OVERLAY);
+        final Group backgroundGroup = new Group(GRP_BACKGROUND);
         final Group textGroup = new Group(GRP_TEXT);
 
         /* load textures */
@@ -121,7 +126,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
         // get texture regions from loaded texture atlas
         final TextureRegion creatureTextureRegion = textureAtlas.findRegion("PetDefault");
-        final TextureRegion overlayGrayTextureRegion = textureAtlas.findRegion("OverlayGray");
+        final TextureRegion spotlightTextureRegion = textureAtlas.findRegion("Spotlight");
 
         // create creatures
 
@@ -144,9 +149,11 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
         initializeCreaturePositions();
 
-        // create overlay
-        Image overlay = new Image(overlayGrayTextureRegion, Scaling.stretch, Align.CENTER,
-                "overlay");
+        // create spotlight
+        Image spotlight = new Image(spotlightTextureRegion, Scaling.stretch, Align.CENTER,
+                "spotlight");
+        spotlight.x = Gdx.graphics.getWidth() / 2 - spotlight.width / 2;
+        spotlight.y = Gdx.graphics.getHeight() / 2 - spotlight.height / 2;
 
         // add text ("Choose a pet")
         Label labelFirstLine = new Label("Choose a pet", labelStyle80, "labelFirstLine");
@@ -168,22 +175,22 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
         /* Prepare main groups */
 
+        // add spotlight to the 'background' group
+        backgroundGroup.addActor(spotlight);
+
         // add creatures to the 'creature' group
 
         for (Image creature : creatureList) {
             creatureGroup.addActor(creature);
         }
 
-        // add overlay to the 'overlay' group
-        overlayGroup.addActor(overlay);
-
         // add labels to the 'text' group
         textGroup.addActor(labelFirstLine);
         textGroup.addActor(labelSecondLine);
 
         /* Add main groups to stage */
+        stage.addActor(backgroundGroup);
         stage.addActor(creatureGroup);
-        stage.addActor(overlayGroup);
         stage.addActor(textGroup);
     }
 

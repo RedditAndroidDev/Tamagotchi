@@ -3,16 +3,16 @@ create-creature1.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-OverlayGray
+Spotlight
   rotate: false
   xy: 2, 2
-  size: 800, 480
+  size: 318, 257
   orig: 800, 480
-  offset: 0, 0
+  offset: 241, 112
   index: -1
 PetDefault
   rotate: false
-  xy: 804, 2
+  xy: 322, 2
   size: 167, 127
   orig: 167, 127
   offset: 0, 0
