@@ -2,15 +2,18 @@
 package com.redditandroiddevelopers.tamagotchi.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiAssets.TextureAtlasAsset;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
+import com.redditandroiddevelopers.tamagotchi.utils.FontHelper;
 
 public class MainMenuScreen extends CommonScreen implements ClickListener {
 
@@ -40,10 +43,12 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
         final TextureAtlas textureAtlas = game.assets.getAsset(TextureAtlasAsset.MAIN_MENU);
 
         // adding the game name
-        Image imgAppName = new Image(textureAtlas.findRegion("AppName"));
-        imgAppName.x = 10;
-        imgAppName.y = 325;
-        stage.addActor(imgAppName);
+        LabelStyle labelstyle = new LabelStyle(FontHelper.createBitmapFont(
+                "fonts/Roboto-Regular.ttf", 120f, stage), Color.BLACK);
+        Label labelAppName = new Label("Tamagotchi", labelstyle);
+        labelAppName.x = 10;
+        labelAppName.y = 265;
+        stage.addActor(labelAppName);
 
         // adding the Play button
         btnPlay = new Button(textureAtlas.findRegion("BtnPlayUnpressed"));

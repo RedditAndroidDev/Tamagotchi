@@ -59,6 +59,7 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
      */
     public void update(float delta) {
         camera.update();
+        stage.act(delta);
         if (!Gdx.graphics.isGL20Available()) {
             camera.apply(Gdx.gl10);
         } else {
