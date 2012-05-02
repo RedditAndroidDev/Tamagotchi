@@ -54,7 +54,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     private final float scaleFactor = 0.75f;
 
     // fonts
-    private final String ROBOTO_REGULAR = "fonts/Roboto-Regular.ttf";
+    private static final String ROBOTO_REGULAR = "fonts/Roboto-Regular.ttf";
 
     // font styles
     private LabelStyle labelStyle80;
@@ -62,9 +62,9 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     private LabelStyle labelStyle20;
 
     // number of creatures to create
-    final private int NUM_OF_CREATURES = 3;
+    private static final int NUM_OF_CREATURES = 3;
 
-    final private float DEFAULT_FADE_OUT_TIME = 0.5f;
+    private static final float DEFAULT_FADE_OUT_TIME = 0.5f;
 
     public CreatureCreationScreen(TamagotchiGame game) {
         super(game);
