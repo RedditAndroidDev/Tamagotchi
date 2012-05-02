@@ -6,14 +6,14 @@ repeat: none
 Spotlight
   rotate: false
   xy: 2, 2
-  size: 318, 257
-  orig: 800, 480
-  offset: 241, 112
+  size: 380, 354
+  orig: 380, 354
+  offset: 0, 0
   index: -1
 PetDefault
   rotate: false
-  xy: 322, 2
-  size: 167, 127
-  orig: 167, 127
+  xy: 2, 358
+  size: 249, 181
+  orig: 249, 181
   offset: 0, 0
   index: -1

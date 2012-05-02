@@ -161,6 +161,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
             creatureList.add(new Image(creatureTextureRegion, Scaling.stretch, Align.CENTER,
                     "creature" + (i + 1)));
             creatureList.get(i).setClickListener(this);
+            creatureList.get(i).scaleX = creatureList.get(i).scaleY = scaleFactor;
             Gdx.app.log(TAG, "Creature created: " + creatureList.get(i).name);
         }
 
@@ -180,7 +181,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         Image spotlight = new Image(spotlightTextureRegion, Scaling.stretch, Align.CENTER,
                 "spotlight");
         spotlight.x = Gdx.graphics.getWidth() / 2 - spotlight.width / 2;
-        spotlight.y = Gdx.graphics.getHeight() / 2 - spotlight.height / 2;
+        spotlight.y = Gdx.graphics.getHeight() - spotlight.height;
 
         // add text ("Choose a pet")
         Label labelFirstLine = new Label("Choose a pet", labelStyle80, "labelFirstLine");
@@ -227,23 +228,23 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
      * Places the creatures at the correct positions.
      */
     private void initializeCreaturePositions() {
-        for (Image c : creatureList) {
-            int i = creatureList.indexOf(c);
+        for (Image creature : creatureList) {
+            int i = creatureList.indexOf(creature);
             if (i == 0) { // one creature
-                c.x = camera.viewportWidth / 2 - c.width / 2;
-                c.y = camera.viewportHeight / 2 - c.height / 2;
+                creature.x = Gdx.graphics.getWidth() / 2 - (creature.width * creature.scaleX) / 2;
+                creature.y = Gdx.graphics.getHeight() / 2 - (creature.height * creature.scaleY) / 2;
             }
             else if (i == 1) { // two creatures
-                c.x = camera.viewportWidth - (3f / 4) * c.width * c.scaleX;
-                c.y = getYPositionBasedOnXValue(c.x);
-                // c.scaleX = c.scaleY = scaleFactor;
+                creature.x = camera.viewportWidth - (3f / 4) * creature.width * creature.scaleX;
+                creature.y = getYPositionBasedOnXValue(creature.x);
             }
             else { // more than two creatures
-                c.x = creatureList.get(i - 1).x + (creatureList.get(1).x - creatureList.get(0).x);
-                c.y = getYPositionBasedOnXValue(c.x);
-                // c.scaleX = c.scaleY = scaleFactor;
+                creature.x = creatureList.get(i - 1).x
+                        + (creatureList.get(1).x - creatureList.get(0).x);
+                creature.y = getYPositionBasedOnXValue(creature.x);
             }
-            Gdx.app.debug(TAG, "Creature moved to: X: " + c.x + " Y: " + c.y);
+            creature.scaleX = creature.scaleY = scaleFactor;
+            Gdx.app.debug(TAG, "Creature moved to: X: " + creature.x + " Y: " + creature.y);
         }
     }
 
@@ -279,15 +280,15 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         Image creature = getSelectedCreature();
 
         // move spotlight to the right
-        spotlight.action(MoveBy.$(200, 0, DEFAULT_FADE_OUT_TIME));
+        spotlight.action(MoveBy.$(175, 0, DEFAULT_FADE_OUT_TIME));
 
         // get spotlight center
         float spotlightCenterX = spotlight.x + spotlight.width / 2;
-        float spotlightCenterY = spotlight.y + spotlight.height / 2;
 
         // move creature to center of spotlight
-        creature.action(MoveTo.$(spotlightCenterX - creature.width / 2 + 200, spotlightCenterY
-                - creature.height / 2, DEFAULT_FADE_OUT_TIME));
+        creature.action(MoveTo.$(spotlightCenterX - (creature.width * creature.scaleX) / 2 + 175,
+                getYPositionBasedOnXValue(leftMark + 1),
+                DEFAULT_FADE_OUT_TIME));
 
         // fade out all other creatures
         for (Image c : creatureList) {
@@ -336,7 +337,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
      */
     private float getYPositionBasedOnXValue(float x) {
         // the slope (how fast the creatures will move upwards)
-        float m = 0.8f;
+        float m = 0.5f;
 
         // creature is left of marked area
         if (x <= leftMark) {
@@ -345,7 +346,8 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         }
         // creature is inside of marked area
         else if (x > leftMark && x < rightMark) {
-            return Gdx.graphics.getHeight() / 2 - creatureList.get(0).height / 2;
+            return Gdx.graphics.getHeight() / 2
+                    - (creatureList.get(0).height * creatureList.get(0).scaleY) / 2;
         }
         // creature is right of marked area
         else if (x >= rightMark) {
@@ -396,10 +398,10 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
             // FIXME: Very fast swipes can overcome those boundaries
             boolean cannotBeSwipedFurtherLeft = lastCreature.x <= Gdx.graphics.getWidth() / 2
-                    - lastCreature.width / 2
+                    - (lastCreature.width * lastCreature.scaleX) / 2
                     && deltaX < 0;
             boolean cannotBeSwipedFurtherRight = firstCreature.x >= Gdx.graphics.getWidth() / 2
-                    - firstCreature.width / 2
+                    - (firstCreature.width * firstCreature.scaleX) / 2
                     && deltaX > 0;
 
             if (deltaX == 0 || cannotBeSwipedFurtherLeft || cannotBeSwipedFurtherRight) {
@@ -410,8 +412,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
                     c.x += deltaX;
                     c.y = getYPositionBasedOnXValue(c.x);
                     // Gdx.app.log(TAG, "Creature " + c.name + " placed at X: "
-                    // +
-                    // c.x + " Y: " + c.y);
+                    // + c.x + " Y: " + c.y);
                 }
             }
             return true;
