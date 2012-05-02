@@ -123,7 +123,8 @@ public class TamagotchiGame extends Game {
         // first, pop the current screen
         final CommonScreen curScreen = screenHistory.pop();
         if (screenHistory.empty()) {
-            Gdx.app.log(TAG, "No more screen to go back to");
+            Gdx.app.exit();
+            Gdx.app.debug(TAG, "Closing the game.");
             // we need to push the currently only screen back into the stack
             screenHistory.push(curScreen);
             // and do nothing
