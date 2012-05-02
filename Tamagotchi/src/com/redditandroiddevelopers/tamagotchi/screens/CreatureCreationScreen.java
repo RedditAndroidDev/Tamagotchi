@@ -391,17 +391,30 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
         @Override
         public boolean pan(int x, int y, int deltaX, int deltaY) {
-            if (deltaX == 0) {
+            Image firstCreature = creatureList.get(0);
+            Image lastCreature = creatureList.get(creatureList.size() - 1);
+
+            // FIXME: Very fast swipes can overcome those boundaries
+            boolean cannotBeSwipedFurtherLeft = lastCreature.x <= Gdx.graphics.getWidth() / 2
+                    - lastCreature.width / 2
+                    && deltaX < 0;
+            boolean cannotBeSwipedFurtherRight = firstCreature.x >= Gdx.graphics.getWidth() / 2
+                    - firstCreature.width / 2
+                    && deltaX > 0;
+
+            if (deltaX == 0 || cannotBeSwipedFurtherLeft || cannotBeSwipedFurtherRight) {
                 return true;
             }
-            for (Image c : creatureList) {
-                c.x += deltaX;
-                c.y = getYPositionBasedOnXValue(c.x);
-                // Gdx.app.log(TAG, "Creature " + c.name + " placed at X: " +
-                // c.x + " Y: " + c.y);
+            else {
+                for (Image c : creatureList) {
+                    c.x += deltaX;
+                    c.y = getYPositionBasedOnXValue(c.x);
+                    // Gdx.app.log(TAG, "Creature " + c.name + " placed at X: "
+                    // +
+                    // c.x + " Y: " + c.y);
+                }
             }
             return true;
         }
-
     }
 }
