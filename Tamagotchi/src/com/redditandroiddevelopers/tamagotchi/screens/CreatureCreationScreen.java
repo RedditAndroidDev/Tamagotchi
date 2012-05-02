@@ -7,8 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.input.GestureDetector.GestureListener;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.input.GestureDetector.GestureAdapter;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -54,29 +53,22 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     private static final String GRP_BACKGROUND = "background";
     private static final String GRP_TEXT = "text";
 
-    // the x coordinates at which the creatures start moving up/down
-    private float leftMark = 250;
-    private float rightMark = Gdx.graphics.getWidth() - 250;
-
-    // list of all displayed creatures
-    private final ArrayList<Image> creatureList = new ArrayList<Image>();
-
-    // GestureDetector to handle swipes
-    private final GestureDetector gestureDetector = new GestureDetector(new SwipeHandler());
-
-    // scale factor for smaller creatures
-    private final float scaleFactor = 0.75f;
-
     // fonts
     private static final String ROBOTO_REGULAR = "fonts/Roboto-Regular.ttf";
+
+    // number of creatures to create
+    private static final int NUM_OF_CREATURES = 3;
+
+    private final ArrayList<Image> creatureList;
+    private final GestureDetector gestureDetector;
+
+    private float leftMark, rightMark;
+    private float scaleFactor;
 
     // font styles
     private LabelStyle labelStyle80;
     private LabelStyle labelStyle40;
     private LabelStyle labelStyle20;
-
-    // number of creatures to create
-    private static final int NUM_OF_CREATURES = 3;
 
     private static final float DEFAULT_FADE_OUT_TIME = 0.5f;
 
@@ -87,6 +79,8 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
      */
     public CreatureCreationScreen(TamagotchiGame game) {
         super(game);
+        creatureList = new ArrayList<Image>();
+        gestureDetector = new GestureDetector(new SwipeHandler());
     }
 
     @Override
@@ -97,6 +91,10 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     @Override
     public void show() {
         super.show();
+        final float padding = 250;
+        leftMark = padding;
+        rightMark = Gdx.graphics.getWidth() - padding;
+        scaleFactor = 0.75f;
         currentState = state.SCREEN1;
         initializeInput();
         initializeFonts();
@@ -159,7 +157,6 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         final TextureRegion spotlightTextureRegion = textureAtlas.findRegion("Spotlight");
 
         // create creatures
-
         for (int i = 0; i < NUM_OF_CREATURES; i++) {
             creatureList.add(new Image(creatureTextureRegion, Scaling.stretch, Align.CENTER,
                     "creature" + (i + 1)));
@@ -272,7 +269,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
     private void startTransition1() {
         // prevent second button press
-        stage.findActor("button").touchable = false;
+        stage.findActor("button").touchable = true;
 
         // update state
         currentState = state.SCREEN2;
@@ -390,27 +387,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     /**
      * Basic GestureListener that handles the swiping motion.
      */
-    class SwipeHandler implements GestureListener {
-
-        @Override
-        public boolean touchDown(int x, int y, int pointer) {
-            return false;
-        }
-
-        @Override
-        public boolean tap(int x, int y, int count) {
-            return false;
-        }
-
-        @Override
-        public boolean longPress(int x, int y) {
-            return false;
-        }
-
-        @Override
-        public boolean fling(float velocityX, float velocityY) {
-            return false;
-        }
+    class SwipeHandler extends GestureAdapter {
 
         @Override
         public boolean pan(int x, int y, int deltaX, int deltaY) {
@@ -424,17 +401,6 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
                 // c.x + " Y: " + c.y);
             }
             return true;
-        }
-
-        @Override
-        public boolean zoom(float originalDistance, float currentDistance) {
-            return false;
-        }
-
-        @Override
-        public boolean pinch(Vector2 initialFirstPointer, Vector2 initialSecondPointer,
-                Vector2 firstPointer, Vector2 secondPointer) {
-            return false;
         }
 
     }
