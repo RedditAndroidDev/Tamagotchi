@@ -31,6 +31,10 @@ import com.redditandroiddevelopers.tamagotchi.utils.TextUtils;
 
 import java.util.ArrayList;
 
+/**
+ * This screen will allow the user to switch between multiple creatures and
+ * create a new one.
+ */
 public class CreatureCreationScreen extends CommonScreen implements ClickListener {
 
     private static final String TAG = "Tamagotchi:CreatureCreationScreen";
@@ -66,6 +70,11 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
     private static final float DEFAULT_FADE_OUT_TIME = 0.5f;
 
+    /**
+     * Creates a new instance of the CreatureCreationScreen.
+     * 
+     * @param game
+     */
     public CreatureCreationScreen(TamagotchiGame game) {
         super(game);
     }
