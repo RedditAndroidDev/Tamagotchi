@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Delay;
 import com.badlogic.gdx.scenes.scene2d.actions.FadeIn;
 import com.badlogic.gdx.scenes.scene2d.actions.FadeOut;
 import com.badlogic.gdx.scenes.scene2d.actions.FadeTo;
@@ -38,6 +39,15 @@ import java.util.ArrayList;
 public class CreatureCreationScreen extends CommonScreen implements ClickListener {
 
     private static final String TAG = "Tamagotchi:CreatureCreationScreen";
+
+    // current state
+    private enum state {
+        SCREEN1,
+        SCREEN2,
+        SCREEN3;
+    }
+
+    private state currentState;
 
     // group names
     private static final String GRP_CREATURES = "creatures";
@@ -87,6 +97,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     @Override
     public void show() {
         super.show();
+        currentState = state.SCREEN1;
         initializeInput();
         initializeFonts();
         initializeLayouts();
@@ -124,6 +135,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     private void initializeLayouts() {
         initializeFirstLayout();
         initializeSecondLayout(false);
+        initializeThirdLayout(false);
     }
 
     /**
@@ -215,19 +227,6 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     }
 
     /**
-     * Prepares the second layout.
-     */
-    private void initializeSecondLayout(boolean visible) {
-        String text = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-        Label summary = new Label(TextUtils.insertPeriodically(text, "\n", 30), labelStyle20,
-                "summary");
-        summary.x = 50;
-        summary.y = Gdx.graphics.getHeight() - 100 - summary.height;
-        summary.visible = visible;
-        stage.addActor(summary);
-    }
-
-    /**
      * Places the creatures at the correct positions.
      */
     private void initializeCreaturePositions() {
@@ -251,9 +250,32 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         }
     }
 
+    /**
+     * Prepares the second layout.
+     */
+    private void initializeSecondLayout(boolean visible) {
+        String text = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+        Label summary = new Label(TextUtils.insertPeriodically(text, "\n", 30), labelStyle20,
+                "summary");
+        summary.x = 50;
+        summary.y = Gdx.graphics.getHeight() - 100 - summary.height;
+        summary.visible = visible;
+        stage.addActor(summary);
+    }
+
+    /**
+     * Prepares the third layout.
+     */
+    private void initializeThirdLayout(boolean visible) {
+        // TODO: initialize third layout
+    }
+
     private void startTransition1() {
         // prevent second button press
         stage.findActor("button").touchable = false;
+
+        // update state
+        currentState = state.SCREEN2;
 
         // get actors
         Image spotlight = (Image) stage.findActor("spotlight");
@@ -288,8 +310,24 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
                 Sequence.$(FadeTo.$(0, 0f), FadeIn.$(DEFAULT_FADE_OUT_TIME)));
     }
 
+    private void startTransition2() {
+        // prevent second button press
+        stage.findActor("button").touchable = false;
+
+        // update state
+        currentState = state.SCREEN2;
+
+        stage.findActor("summary").action(FadeOut.$(DEFAULT_FADE_OUT_TIME));
+        stage.findActor("button").action(
+                Sequence.$(Delay.$(DEFAULT_FADE_OUT_TIME), FadeOut.$(DEFAULT_FADE_OUT_TIME)));
+    }
+
     private Image getSelectedCreature() {
-        // TODO: return correct creature
+        for (Image creature : creatureList) {
+            if (creature.x > leftMark && creature.x < rightMark) {
+                return creature;
+            }
+        }
         return creatureList.get(0);
     }
 
@@ -340,7 +378,12 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
             Gdx.app.debug(TAG, "Hit on " + actor.name + " detected");
         }
         else {
-            startTransition1();
+            if (currentState == state.SCREEN1) {
+                startTransition1();
+            }
+            else if (currentState == state.SCREEN2) {
+                startTransition2();
+            }
         }
     }
 
