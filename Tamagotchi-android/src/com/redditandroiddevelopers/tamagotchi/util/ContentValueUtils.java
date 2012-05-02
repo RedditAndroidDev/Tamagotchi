@@ -7,7 +7,7 @@ import com.redditandroiddevelopers.tamagotchi.model.CreatureEvolution;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureRaiseType;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureState;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureType;
-import com.redditandroiddevelopers.tamagotchi.model.Experience;
+import com.redditandroiddevelopers.tamagotchi.model.ExperienceAction;
 import com.redditandroiddevelopers.tamagotchi.model.Medicine;
 import com.redditandroiddevelopers.tamagotchi.model.Sickness;
 
@@ -29,8 +29,8 @@ public class ContentValueUtils {
             return buildMedicine((Medicine)modelObj);
         } else if (modelObj instanceof Sickness) {
             return buildSickness((Sickness)modelObj);
-        } else if (modelObj instanceof Experience) {
-            return buildExperience((Experience)modelObj);
+        } else if (modelObj instanceof ExperienceAction) {
+            return buildExperience((ExperienceAction)modelObj);
         } else {
             throw new IllegalArgumentException(
                     "Couldn't build content value map for class "
@@ -39,7 +39,7 @@ public class ContentValueUtils {
         }
     }
     
-    public static ContentValues buildExperience(Experience modelObj) {
+    public static ContentValues buildExperience(ExperienceAction modelObj) {
         ContentValues toReturn = new ContentValues();
         toReturn.put("E_ID", modelObj.id);
         toReturn.put("CT_ID", modelObj.type.id);
@@ -104,7 +104,7 @@ public class ContentValueUtils {
         toReturn.put("CE_MAX_DISCIPLINE", modelObj.maxDiscipline);
         toReturn.put("CE_MAX_HUNGER", modelObj.maxHunger);
         toReturn.put("CE_MAX_HAPPY", modelObj.maxHappy);
-        toReturn.put("CE_MAX_EXPERIENCE", modelObj.maxExperience);
+        toReturn.put("CE_CURRENT_XP", modelObj.currentXp);
         return toReturn;
     }
 

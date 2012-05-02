@@ -3,15 +3,15 @@ package com.redditandroiddevelopers.tamagotchi.mappers;
 import android.database.Cursor;
 
 import com.redditandroiddevelopers.tamagotchi.model.CreatureType;
-import com.redditandroiddevelopers.tamagotchi.model.Experience;
+import com.redditandroiddevelopers.tamagotchi.model.ExperienceAction;
 
-public class ExperienceMapper extends Mapper<Experience> {
+public class ExperienceMapper extends Mapper<ExperienceAction> {
 
     @Override
-    public Experience mapRow(Object obj) {
+    public ExperienceAction mapRow(Object obj) {
         if (obj instanceof Cursor) {
             Cursor c = (Cursor)obj;
-            Experience exp = new Experience();
+            ExperienceAction exp = new ExperienceAction();
             exp.id = c.getLong(c.getColumnIndex("E_ID"));
             CreatureType type = new CreatureType();
             

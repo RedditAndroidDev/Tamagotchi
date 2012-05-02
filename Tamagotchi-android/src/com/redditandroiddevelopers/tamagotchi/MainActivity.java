@@ -11,7 +11,7 @@ import com.redditandroiddevelopers.tamagotchi.dao.CreatureDatabase;
 import com.redditandroiddevelopers.tamagotchi.dao.CreatureEvolutionDao;
 import com.redditandroiddevelopers.tamagotchi.dao.CreatureRaiseTypeDao;
 import com.redditandroiddevelopers.tamagotchi.dao.CreatureStateDao;
-import com.redditandroiddevelopers.tamagotchi.dao.ExperienceDao;
+import com.redditandroiddevelopers.tamagotchi.dao.ExperienceActionDao;
 import com.redditandroiddevelopers.tamagotchi.dao.MedicineDao;
 import com.redditandroiddevelopers.tamagotchi.dao.SicknessDao;
 import com.redditandroiddevelopers.tamagotchi.mappers.CreatureEvolutionMapper;
@@ -25,7 +25,7 @@ import com.redditandroiddevelopers.tamagotchi.model.Creature;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureEvolution;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureRaiseType;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureState;
-import com.redditandroiddevelopers.tamagotchi.model.Experience;
+import com.redditandroiddevelopers.tamagotchi.model.ExperienceAction;
 import com.redditandroiddevelopers.tamagotchi.model.Medicine;
 import com.redditandroiddevelopers.tamagotchi.model.Sickness;
 
@@ -56,7 +56,7 @@ public class MainActivity extends AndroidApplication {
                         context), new CreatureRaiseTypeMapper());
         config.creatureStateDao = new CreatureStateDao(new CreatureDatabase<CreatureState>(
                 context), new CreatureStateMapper());
-        config.experienceDao = new ExperienceDao(new CreatureDatabase<Experience>(
+        config.experienceActionDao = new ExperienceActionDao(new CreatureDatabase<ExperienceAction>(
                 context), new ExperienceMapper());
         config.medicineDao = new MedicineDao(new CreatureDatabase<Medicine>(
                 context), new MedicineMapper());

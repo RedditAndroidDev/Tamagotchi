@@ -18,6 +18,6 @@ public class CreatureEvolution extends CommonModel {
     public int maxDiscipline;
     public int maxHunger;
     public int maxHappy;
-    public int maxExperience;
+    public int currentXp;
 }
 

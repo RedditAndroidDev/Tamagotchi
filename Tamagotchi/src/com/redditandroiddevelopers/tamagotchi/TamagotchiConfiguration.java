@@ -7,7 +7,7 @@ import com.redditandroiddevelopers.tamagotchi.dao.CreatureDao;
 import com.redditandroiddevelopers.tamagotchi.dao.CreatureEvolutionDao;
 import com.redditandroiddevelopers.tamagotchi.dao.CreatureRaiseTypeDao;
 import com.redditandroiddevelopers.tamagotchi.dao.CreatureStateDao;
-import com.redditandroiddevelopers.tamagotchi.dao.ExperienceDao;
+import com.redditandroiddevelopers.tamagotchi.dao.ExperienceActionDao;
 import com.redditandroiddevelopers.tamagotchi.dao.MedicineDao;
 import com.redditandroiddevelopers.tamagotchi.dao.SicknessDao;
 
@@ -32,7 +32,7 @@ public class TamagotchiConfiguration {
     public CreatureEvolutionDao creatureEvolutionDao;
     public CreatureRaiseTypeDao creatureRaiseTypeDao;
     public CreatureStateDao creatureStateDao;
-    public ExperienceDao experienceDao;
+    public ExperienceActionDao experienceActionDao;
     public MedicineDao medicineDao;
     public SicknessDao sicknessDay;
 
