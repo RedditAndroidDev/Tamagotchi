@@ -18,7 +18,7 @@ import com.redditandroiddevelopers.tamagotchi.mappers.CreatureEvolutionMapper;
 import com.redditandroiddevelopers.tamagotchi.mappers.CreatureMapper;
 import com.redditandroiddevelopers.tamagotchi.mappers.CreatureRaiseTypeMapper;
 import com.redditandroiddevelopers.tamagotchi.mappers.CreatureStateMapper;
-import com.redditandroiddevelopers.tamagotchi.mappers.ExperienceMapper;
+import com.redditandroiddevelopers.tamagotchi.mappers.ExperienceActionMapper;
 import com.redditandroiddevelopers.tamagotchi.mappers.MedicineMapper;
 import com.redditandroiddevelopers.tamagotchi.mappers.SicknessMapper;
 import com.redditandroiddevelopers.tamagotchi.model.Creature;
@@ -57,7 +57,7 @@ public class MainActivity extends AndroidApplication {
         config.creatureStateDao = new CreatureStateDao(new CreatureDatabase<CreatureState>(
                 context), new CreatureStateMapper());
         config.experienceActionDao = new ExperienceActionDao(new CreatureDatabase<ExperienceAction>(
-                context), new ExperienceMapper());
+                context), new ExperienceActionMapper());
         config.medicineDao = new MedicineDao(new CreatureDatabase<Medicine>(
                 context), new MedicineMapper());
         config.sicknessDay = new SicknessDao(new CreatureDatabase<Sickness>(

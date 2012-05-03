@@ -23,9 +23,11 @@ public class CreatureDatabase<T extends CommonModel> implements
     public static final String TYPE_TABLE_NAME = "CREATURE_TYPE";
     public static final String RAISE_TYPE_TABLE_NAME = "CREATURE_RAISE_TYPE";
     public static final String ACTION_TABLE_NAME = "CREATURE_ACTION";
+    public static final String DEBUFF_TABLE_NAME = "CREATURE_DEBUFF";
     public static final String MEDICINE_TABLE_NAME = "MEDICINE";
     public static final String SICKNESS_TABLE_NAME = "SICKNESS";
     public static final String EXPERIENCE_ACTION_TABLE_NAME = "EXPERIENCE_ACTION";
+    public static final String EXPERIENCE_DEBUFF_TABLE_NAME = "EXPERIENCE_DEBUFF";
 
     private final DatabaseHelper databaseHelper;
 
@@ -165,11 +167,23 @@ public class CreatureDatabase<T extends CommonModel> implements
         db.insert(ACTION_TABLE_NAME, null, vals);
         
         vals = new ContentValues();
+        vals.put("CD_ID", 1);
+        vals.put("CD_NAME", "Debuff1");
+        db.insert(DEBUFF_TABLE_NAME, null, vals);
+        
+        vals = new ContentValues();
         vals.put("EA_ID", 1);
         vals.put("CT_ID", 1);
         vals.put("CA_ID", 1);
         vals.put("EA_MODIFIER", 1.5);
         db.insert(EXPERIENCE_ACTION_TABLE_NAME, null, vals);
+        
+        vals = new ContentValues();
+        vals.put("ED_ID", 1);
+        vals.put("CT_ID", 1);
+        vals.put("CD_ID", 1);
+        vals.put("ED_MODIFIER", 0.8);
+        db.insert(EXPERIENCE_DEBUFF_TABLE_NAME, null, vals);
     }
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
@@ -228,11 +242,20 @@ public class CreatureDatabase<T extends CommonModel> implements
         private static final String CREATE_CREATURE_ACTION = "" + "CREATE TABLE "
                 + ACTION_TABLE_NAME + " (" + "CA_ID INTEGER PRIMARY KEY, "
                 + "CA_NAME TEXT " + ");";
+        private static final String CREATE_CREATURE_DEBUFF = "" + "CREATE TABLE "
+                + DEBUFF_TABLE_NAME + " (" + "CD_ID INTEGER PRIMARY KEY, "
+                + "CD_NAME TEXT " + ");";
         private static final String CREATE_EXPERIENCE_ACTION = "" + "CREATE TABLE "
                 + EXPERIENCE_ACTION_TABLE_NAME + " (" + "EA_ID INTEGER PRIMARY KEY, "
                 + "CT_ID INTEGER, " + "CA_ID INTEGER, " + "EA_MODIFIER REAL, "
                 + "FOREIGN KEY (CT_ID) REFERENCES " + TYPE_TABLE_NAME + "(CT_ID), "
                 + "FOREIGN KEY (CA_ID) REFERENCES " + ACTION_TABLE_NAME + "(CA_ID) "+ ");";
+
+        private static final String CREATE_EXPERIENCE_DEBUFF = "" + "CREATE TABLE "
+                + EXPERIENCE_DEBUFF_TABLE_NAME + " (" + "ED_ID INTEGER PRIMARY KEY, "
+                + "CT_ID INTEGER, " + "CD_ID INTEGER, " + "ED_MODIFIER REAL, "
+                + "FOREIGN KEY (CT_ID) REFERENCES " + TYPE_TABLE_NAME + "(CT_ID), "
+                + "FOREIGN KEY (CD_ID) REFERENCES " + DEBUFF_TABLE_NAME + "(CD_ID) "+ ");";
 
         private Context mContext;
 
@@ -251,7 +274,9 @@ public class CreatureDatabase<T extends CommonModel> implements
             db.execSQL(CREATE_STATE);
             db.execSQL(CREATE_EVOLUTION);
             db.execSQL(CREATE_CREATURE_ACTION);
+            db.execSQL(CREATE_CREATURE_DEBUFF);
             db.execSQL(CREATE_EXPERIENCE_ACTION);
+            db.execSQL(CREATE_EXPERIENCE_DEBUFF);
             // turn on foreign keys
             db.execSQL("PRAGMA foreign_keys=ON;");
         }

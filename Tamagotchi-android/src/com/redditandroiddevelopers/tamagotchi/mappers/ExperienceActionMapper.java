@@ -6,7 +6,7 @@ import com.redditandroiddevelopers.tamagotchi.model.CreatureAction;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureType;
 import com.redditandroiddevelopers.tamagotchi.model.ExperienceAction;
 
-public class ExperienceMapper extends Mapper<ExperienceAction> {
+public class ExperienceActionMapper extends Mapper<ExperienceAction> {
 
     @Override
     public ExperienceAction mapRow(Object obj) {

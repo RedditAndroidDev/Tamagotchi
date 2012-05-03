@@ -4,11 +4,13 @@ import android.content.ContentValues;
 
 import com.redditandroiddevelopers.tamagotchi.model.Creature;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureAction;
+import com.redditandroiddevelopers.tamagotchi.model.CreatureDebuff;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureEvolution;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureRaiseType;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureState;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureType;
 import com.redditandroiddevelopers.tamagotchi.model.ExperienceAction;
+import com.redditandroiddevelopers.tamagotchi.model.ExperienceDebuff;
 import com.redditandroiddevelopers.tamagotchi.model.Medicine;
 import com.redditandroiddevelopers.tamagotchi.model.Sickness;
 
@@ -32,8 +34,12 @@ public class ContentValueUtils {
             return buildSickness((Sickness)modelObj);
         } else if (modelObj instanceof CreatureAction) {
             return buildCreatureAction((CreatureAction)modelObj);
+        } else if(modelObj instanceof CreatureDebuff) {
+            return buildCreatureDebuff((CreatureDebuff)modelObj);
         } else if (modelObj instanceof ExperienceAction) {
-            return buildExperience((ExperienceAction)modelObj);
+            return buildExperienceAction((ExperienceAction)modelObj);
+        } else if (modelObj instanceof ExperienceDebuff) {
+            return buildExperienceDebuff((ExperienceDebuff)modelObj);
         } else {
             throw new IllegalArgumentException(
                     "Couldn't build content value map for class "
@@ -42,7 +48,16 @@ public class ContentValueUtils {
         }
     }
     
-    public static ContentValues buildExperience(ExperienceAction modelObj) {
+    public static ContentValues buildExperienceDebuff(ExperienceDebuff modelObj) {
+        ContentValues toReturn = new ContentValues();
+        toReturn.put("ED_ID", modelObj.id);
+        toReturn.put("CT_ID", modelObj.type.id);
+        toReturn.put("CD_ID", modelObj.debuff.id);
+        toReturn.put("ED_MODIFIER", modelObj.modifier);
+        return toReturn;
+    }
+    
+    public static ContentValues buildExperienceAction(ExperienceAction modelObj) {
         ContentValues toReturn = new ContentValues();
         toReturn.put("EA_ID", modelObj.id);
         toReturn.put("CT_ID", modelObj.type.id);
@@ -51,6 +66,13 @@ public class ContentValueUtils {
         return toReturn;
     }
 
+    private static ContentValues buildCreatureDebuff(CreatureDebuff modelObj) {
+        ContentValues toReturn = new ContentValues();
+        toReturn.put("CD_ID", modelObj.id);
+        toReturn.put("CD_NAME", modelObj.name);
+        return toReturn;
+    }
+    
     private static ContentValues buildCreatureAction(CreatureAction modelObj) {
         ContentValues toReturn = new ContentValues();
         toReturn.put("CA_ID", modelObj.id);
