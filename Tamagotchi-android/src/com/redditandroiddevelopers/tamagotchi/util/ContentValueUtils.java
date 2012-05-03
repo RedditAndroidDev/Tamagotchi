@@ -3,6 +3,7 @@ package com.redditandroiddevelopers.tamagotchi.util;
 import android.content.ContentValues;
 
 import com.redditandroiddevelopers.tamagotchi.model.Creature;
+import com.redditandroiddevelopers.tamagotchi.model.CreatureAction;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureEvolution;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureRaiseType;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureState;
@@ -29,6 +30,8 @@ public class ContentValueUtils {
             return buildMedicine((Medicine)modelObj);
         } else if (modelObj instanceof Sickness) {
             return buildSickness((Sickness)modelObj);
+        } else if (modelObj instanceof CreatureAction) {
+            return buildCreatureAction((CreatureAction)modelObj);
         } else if (modelObj instanceof ExperienceAction) {
             return buildExperience((ExperienceAction)modelObj);
         } else {
@@ -41,13 +44,20 @@ public class ContentValueUtils {
     
     public static ContentValues buildExperience(ExperienceAction modelObj) {
         ContentValues toReturn = new ContentValues();
-        toReturn.put("E_ID", modelObj.id);
+        toReturn.put("EA_ID", modelObj.id);
         toReturn.put("CT_ID", modelObj.type.id);
-        toReturn.put("E_MIN_XP", modelObj.minXp);
-        toReturn.put("E_MAX_XP", modelObj.maxXp);
+        toReturn.put("CA_ID", modelObj.action.id);
+        toReturn.put("EA_MODIFIER", modelObj.modifier);
         return toReturn;
     }
 
+    private static ContentValues buildCreatureAction(CreatureAction modelObj) {
+        ContentValues toReturn = new ContentValues();
+        toReturn.put("CA_ID", modelObj.id);
+        toReturn.put("CA_NAME", modelObj.name);
+        return toReturn;
+    }
+    
     private static ContentValues buildSickness(Sickness modelObj) {
         ContentValues toReturn = new ContentValues();
         toReturn.put("S_ID", modelObj.id);
