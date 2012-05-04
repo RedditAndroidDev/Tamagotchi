@@ -18,6 +18,8 @@ import com.redditandroiddevelopers.tamagotchi.model.Creature;
 
 public abstract class CommonCreature extends Image {
 
+    private static final String TAG = "Tamagotchi:CommonCreature";
+
     public Creature creatureModel;
     public boolean textureIsFlipped = false;
 
@@ -42,11 +44,21 @@ public abstract class CommonCreature extends Image {
     // movement
 
     public void moveBy(float x, float duration) {
-        // FIXME: Creature becomes larger if this command is run
-        Sequence scaling = Sequence.$(ScaleTo.$(scaleX, scaleY - 0.05f, 0.2f),
-                ScaleTo.$(scaleX, scaleY + 0.05f, 0.2f));
-        Repeat wobble = Repeat.$(scaling, Math.round(duration / 0.4f));
+        // single wobble
+        Sequence scaling = Sequence.$(ScaleTo.$(scaleX, scaleY + 0.25f, 0.25f),
+                ScaleTo.$(scaleX, scaleY, 0.25f));
+
+        // temporary dirty fix to prevent creature from "growing"
+        scaleY = (int) scaleY;
+
+        // calculates how often the animation should be played
+        int times = Math.round(duration / 0.5f);
+
+        // chain wobbles together
+        Repeat wobble = Repeat.$(scaling, times);
         Parallel parallel = Parallel.$(MoveBy.$(x, 0, duration), wobble);
+
+        // make sure the creature is facing the right way
         if (x > 0) {
             if (!textureIsFlipped) {
                 this.getRegion().flip(true, false);
