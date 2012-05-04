@@ -163,7 +163,6 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
 
         // add drag down status panel button
         btnDragDown = new DraggableImage(swipeArrowTextureRegion);
-        btnDragDown.y = stage.top() - swipeArrowTextureRegion.getRegionHeight();
         btnDragDown.setClickListener(this);
         btnDragDown.setDragListener(this);
         statusPanelGroup.addActor(btnDragDown);
@@ -180,7 +179,6 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
                     Color.RED);
             fpsLabel = new Label("FPS: " + Gdx.graphics.getFramesPerSecond(), labelStyle);
             fpsLabel.y = -15;
-            overlayGroup.addActor(fpsLabel);
         }
 
         /* Prepare sub groups */
@@ -212,6 +210,7 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
 
         // add groups to 'overlay'
         overlayGroup.addActor(uiGroup);
+        overlayGroup.addActor(fpsLabel);
 
         /* Add main groups to stage */
         stage.addActor(backgroundGroup);
@@ -261,7 +260,7 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
              * dragging starts. In order to make it look better, we need to
              * apply an offset for the correct touch point.
              */
-            stage.findActor(GRP_STATUS_PANEL).y += y;
+            stage.findActor(GRP_STATUS_PANEL).x += x;
         }
     }
 
