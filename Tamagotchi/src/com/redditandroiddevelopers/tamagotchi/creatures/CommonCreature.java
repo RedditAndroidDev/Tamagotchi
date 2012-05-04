@@ -45,14 +45,14 @@ public abstract class CommonCreature extends Image {
 
     public void moveBy(float x, float duration) {
         // single wobble
-        Sequence scaling = Sequence.$(ScaleTo.$(scaleX, scaleY + 0.25f, 0.25f),
-                ScaleTo.$(scaleX, scaleY, 0.25f));
+        Sequence scaling = Sequence.$(ScaleTo.$(scaleX, scaleY + 0.05f, 0.1f),
+                ScaleTo.$(scaleX, scaleY, 0.1f));
 
         // temporary dirty fix to prevent creature from "growing"
         scaleY = (int) scaleY;
 
         // calculates how often the animation should be played
-        int times = Math.round(duration / 0.5f);
+        int times = Math.round(duration / 0.2f);
 
         // chain wobbles together
         Repeat wobble = Repeat.$(scaling, times);
