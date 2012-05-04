@@ -7,8 +7,8 @@ import com.redditandroiddevelopers.tamagotchi.model.Gender;
 
 public class Creature1 extends CommonCreature {
 
-    public Creature1(TextureRegion creatureDefaultTextureRegion) {
-        super(creatureDefaultTextureRegion);
+    public Creature1(TextureRegion creatureDefaultTextureRegion, String name) {
+        super(creatureDefaultTextureRegion, name);
     }
 
     @Override

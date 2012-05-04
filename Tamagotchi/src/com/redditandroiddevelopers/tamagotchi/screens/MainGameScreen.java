@@ -123,7 +123,8 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
         Image bgGround = new Image(groundTextureRegion);
 
         // add creature
-        creature = new Creature1(creatureDefaultTextureRegion);
+        creature = new Creature1(creatureDefaultTextureRegion, "creature");
+        creature.setClickListener(this);
         creature.x = 400;
         creature.y = 50;
 
@@ -232,16 +233,18 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
         // touch input was received, time to find the culprit
         if (actor == buttons[FOOD]) {
             Gdx.app.debug(TAG, "Touch on food button");
-            camera.rotate(1, 0, 0, 1);
+            creature.moveBy(-100f, 1f);
         } else if (actor == buttons[TOILET]) {
             Gdx.app.debug(TAG, "Touch on toilet button");
-            camera.rotate(-1, 0, 0, 1);
+            creature.moveBy(100f, 1f);
         } else if (actor == buttons[SHOWER]) {
             Gdx.app.debug(TAG, "Touch on shower button");
-            camera.zoom += 0.02;
+            creature.roll(-200, 1f);
         } else if (actor == buttons[LIGHT]) {
             Gdx.app.debug(TAG, "Touch on light button");
-            camera.zoom -= 0.02;
+            creature.roll(200, 1f);
+        } else if (actor == creature) {
+            creature.jump(50, 0.25f);
         } else if (actor == btnDragDown) {
             Gdx.app.debug(TAG, "Touch on arrow");
             // do nothing, handle in drag()
