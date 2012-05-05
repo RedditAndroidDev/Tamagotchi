@@ -244,7 +244,7 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
             Gdx.app.debug(TAG, "Touch on light button");
             creature.roll(200, 1f);
         } else if (actor == creature) {
-            creature.jump(50, 0.25f);
+            creature.jump();
         } else if (actor == btnDragDown) {
             Gdx.app.debug(TAG, "Touch on arrow");
             // do nothing, handle in drag()

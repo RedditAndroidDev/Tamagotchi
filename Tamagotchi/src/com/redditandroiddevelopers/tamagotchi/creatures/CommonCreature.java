@@ -16,6 +16,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Scaling;
 import com.redditandroiddevelopers.tamagotchi.model.Creature;
 
+/**
+ * Class to handle methods common to all creatures.
+ */
 public abstract class CommonCreature extends Image {
 
     private static final String TAG = "Tamagotchi:CommonCreature";
@@ -23,13 +26,28 @@ public abstract class CommonCreature extends Image {
     public Creature creatureModel;
     public boolean textureIsFlipped = false;
 
+    /**
+     * Creates a new CommonCreature.
+     * 
+     * @param creatureDefaultTextureRegion
+     * @param name
+     */
     public CommonCreature(TextureRegion creatureDefaultTextureRegion, String name) {
         super(creatureDefaultTextureRegion, Scaling.stretch, Align.CENTER, name);
+
+        // get creature parameters from child class
         creatureModel = getCreatureParameters();
+
+        // set origin for rotations in the center of the creature
         originX = width / 2;
         originY = height / 2;
     }
 
+    /**
+     * Gets the specific creature parameters.
+     * 
+     * @return Creature
+     */
     protected abstract Creature getCreatureParameters();
 
     @Override
@@ -43,6 +61,12 @@ public abstract class CommonCreature extends Image {
 
     // movement
 
+    /**
+     * Makes the creature walk left or right.
+     * 
+     * @param x number of pixels (negative numbers are supported)
+     * @param duration how long the animation will be
+     */
     public void moveBy(float x, float duration) {
         // single wobble
         Sequence scaling = Sequence.$(ScaleTo.$(scaleX, scaleY + 0.05f, 0.1f),
@@ -74,7 +98,20 @@ public abstract class CommonCreature extends Image {
         action(parallel);
     }
 
-    public void jump(float y, float duration) {
+    /**
+     * Makes the creature jump in the air.
+     */
+    public void jump() {
+        jump(50, 0.25f);
+    }
+
+    /**
+     * Makes the creature jump the specified height during a certain time.
+     * 
+     * @param y jump height
+     * @param duration how long the jump should be
+     */
+    private void jump(float y, float duration) {
         AccelerateDecelerateInterpolator gravity1 = AccelerateDecelerateInterpolator.$(2f);
         AccelerateInterpolator gravity2 = AccelerateInterpolator.$(1.5f);
         Sequence jump = Sequence.$(MoveBy.$(0, y, duration).setInterpolator(gravity1),
@@ -82,6 +119,12 @@ public abstract class CommonCreature extends Image {
         action(jump);
     }
 
+    /**
+     * Makes the creature roll around on the floor
+     * 
+     * @param x how far it should roll
+     * @param duration how long it will roll
+     */
     public void roll(float x, float duration) {
         Parallel rotate = Parallel.$(MoveBy.$(x, 0, duration),
                 RotateBy.$(x > 0 ? -360f : 360f, duration));
@@ -90,15 +133,35 @@ public abstract class CommonCreature extends Image {
 
     // showing speech bubbles
 
+    /**
+     * Generic method to display a speech bubble
+     * 
+     * @param textureRegionName
+     */
+    private void showBubble(String textureRegionName) {
+    }
+
+    /**
+     * Shows a speech bubble to indicate poop
+     */
     public void showPoopBubble() {
     }
 
+    /**
+     * Shows a speech bubble to indicate low health
+     */
     public void showLowHealthBubble() {
     }
 
+    /**
+     * Shows a speech bubble to indicate a general alert
+     */
     public void showAlertBubble() {
     }
 
+    /**
+     * Shows a speech bubble to indicate happiness
+     */
     public void showHappyBubble() {
     }
 
