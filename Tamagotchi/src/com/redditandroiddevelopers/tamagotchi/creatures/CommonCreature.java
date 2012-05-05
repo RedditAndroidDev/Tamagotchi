@@ -34,7 +34,7 @@ public abstract class CommonCreature extends Image {
 
     @Override
     public Actor hit(float x, float y) {
-        return this;
+        return super.hit(x, y);
     }
 
     /* Creature controller starts here */
