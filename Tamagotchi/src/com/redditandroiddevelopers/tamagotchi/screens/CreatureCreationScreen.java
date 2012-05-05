@@ -388,7 +388,6 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
     public boolean swipe(int x, int y, int deltaX, int deltay) {
         Image firstCreature = creatureList.get(0);
-        Image centerCreature = creatureList.get(0);
         Image lastCreature = creatureList.get(creatureList.size() - 1);
         int tempDeltaX = 0;
 
@@ -404,35 +403,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
             return true;
         }
         else {
-            if (deltaX == 0) {
-                for (Image c : creatureList) {
-                    if (centerCreature != c) {
-                        int dCur;
-                        int dNew;
-                        if (c.x + (c.width * c.scaleX) / 2 <= Gdx.graphics.getWidth() / 2) {
-                            dNew = (int) ((Gdx.graphics.getWidth() / 2) - (c.x + (c.width * c.scaleX) / 2));
-                        } else {
-                            dNew = (int) ((c.x + (c.width * c.scaleX) / 2) - (Gdx.graphics
-                                    .getWidth() / 2));
-                        }
-
-                        if (centerCreature.x + (centerCreature.width * centerCreature.scaleX) / 2 <= Gdx.graphics
-                                .getWidth() / 2) {
-                            dCur = (int) ((Gdx.graphics.getWidth() / 2) - (centerCreature.x + (centerCreature.width * centerCreature.scaleX) / 2));
-                        } else {
-                            dCur = (int) ((centerCreature.x + (centerCreature.width * centerCreature.scaleX) / 2) - (Gdx.graphics
-                                    .getWidth() / 2));
-                        }
-
-                        if (dNew < dCur)
-                            centerCreature = c;
-                    }
-                }
-                tempDeltaX = Math
-                        .round((Gdx.graphics.getWidth() / 2 - (centerCreature.x + centerCreature.width / 2)) / 100);
-
-            } else
-                tempDeltaX = deltaX;
+            tempDeltaX = deltaX;
             for (Image c : creatureList) {
 
                 c.x += tempDeltaX;
@@ -446,11 +417,49 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         return true;
     }
 
+    private void moveCreaturesBackIntoBoundaries() {
+        Image centerCreature = getSelectedCreature();
+        for (Image c : creatureList) {
+            if (centerCreature != c) {
+                int dCur;
+                int dNew;
+                if (c.x + (c.width * c.scaleX) / 2 <= Gdx.graphics.getWidth() / 2) {
+                    dNew = (int) ((Gdx.graphics.getWidth() / 2) - (c.x + (c.width * c.scaleX) / 2));
+                } else {
+                    dNew = (int) ((c.x + (c.width * c.scaleX) / 2) - (Gdx.graphics.getWidth() / 2));
+                }
+
+                if (centerCreature.x + (centerCreature.width * centerCreature.scaleX) / 2 <= Gdx.graphics
+                        .getWidth() / 2) {
+                    dCur = (int) ((Gdx.graphics.getWidth() / 2) - (centerCreature.x + (centerCreature.width * centerCreature.scaleX) / 2));
+                } else {
+                    dCur = (int) ((centerCreature.x + (centerCreature.width * centerCreature.scaleX) / 2) - (Gdx.graphics
+                            .getWidth() / 2));
+                }
+
+                if (dNew < dCur) {
+                    centerCreature = c;
+                }
+            }
+        }
+        int tempDeltaX = Math
+                .round((Gdx.graphics.getWidth() / 2 - (centerCreature.x + centerCreature.width / 2)) / 100);
+
+        for (Image c : creatureList) {
+
+            c.x += tempDeltaX;
+            c.y = getYPositionBasedOnXValue(c.x);
+            // Gdx.app.log(TAG, "Creature " + c.name + " placed at X: "
+            // + c.x + " Y: " + c.y);
+        }
+    }
+
     @Override
     public void update(float delta) {
         super.update(delta);
-
-        swipe(0, 0, 0, 0);
+        if (currentState == state.SCREEN1) {
+            moveCreaturesBackIntoBoundaries();
+        }
     }
 
     /**
