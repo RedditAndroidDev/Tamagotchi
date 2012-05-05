@@ -280,6 +280,72 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         }
     }
 
+    public boolean swipe(int x, int y, int deltaX, int deltay) {
+        Image firstCreature = creatureList.get(0);
+        Image centerCreature = creatureList.get(0);
+        Image lastCreature = creatureList.get(creatureList.size() - 1);
+        int tempDeltaX = 0;
+
+        // FIXME: Very fast swipes can overcome those boundaries
+        boolean cannotBeSwipedFurtherLeft = lastCreature.x <= Gdx.graphics.getWidth() / 2
+                - (lastCreature.width * lastCreature.scaleX) / 2
+                && deltaX < 0;
+        boolean cannotBeSwipedFurtherRight = firstCreature.x >= Gdx.graphics.getWidth() / 2
+                - (firstCreature.width * firstCreature.scaleX) / 2
+                && deltaX > 0;
+
+        if (cannotBeSwipedFurtherLeft || cannotBeSwipedFurtherRight) {
+            return true;
+        }
+        else {
+            if (deltaX == 0) {
+                for (Image c : creatureList) {
+                    if (centerCreature != c) {
+                        int dCur;
+                        int dNew;
+                        if (c.x + (c.width * c.scaleX) / 2 <= Gdx.graphics.getWidth() / 2) {
+                            dNew = (int) ((Gdx.graphics.getWidth() / 2) - (c.x + (c.width * c.scaleX) / 2));
+                        } else {
+                            dNew = (int) ((c.x + (c.width * c.scaleX) / 2) - (Gdx.graphics
+                                    .getWidth() / 2));
+                        }
+
+                        if (centerCreature.x + (centerCreature.width * centerCreature.scaleX) / 2 <= Gdx.graphics
+                                .getWidth() / 2) {
+                            dCur = (int) ((Gdx.graphics.getWidth() / 2) - (centerCreature.x + (centerCreature.width * centerCreature.scaleX) / 2));
+                        } else {
+                            dCur = (int) ((centerCreature.x + (centerCreature.width * centerCreature.scaleX) / 2) - (Gdx.graphics
+                                    .getWidth() / 2));
+                        }
+
+                        if (dNew < dCur)
+                            centerCreature = c;
+                    }
+                }
+                tempDeltaX = Math
+                        .round((Gdx.graphics.getWidth() / 2 - (centerCreature.x + centerCreature.width / 2)) / 100);
+
+            } else
+                tempDeltaX = deltaX;
+            for (Image c : creatureList) {
+
+                c.x += tempDeltaX;
+                c.y = getYPositionBasedOnXValue(c.x);
+                // Gdx.app.log(TAG, "Creature " + c.name + " placed at X: "
+                // + c.x + " Y: " + c.y);
+
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public void update(float delta) {
+        super.update(delta);
+        swipe(0, 0, 0, 0);
+    }
+
     /**
      * Basic GestureListener that handles the swiping motion.
      */
@@ -287,17 +353,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
         @Override
         public boolean pan(int x, int y, int deltaX, int deltaY) {
-            if (deltaX == 0) {
-                return true;
-            }
-            for (Image c : creatureList) {
-                c.x += deltaX;
-                c.y = getYPositionBasedOnXValue(c.x);
-                // Gdx.app.log(TAG, "Creature " + c.name + " placed at X: " +
-                // c.x + " Y: " + c.y);
-            }
-            return true;
+            return swipe(x, y, deltaX, deltaY);
         }
-
     }
 }
