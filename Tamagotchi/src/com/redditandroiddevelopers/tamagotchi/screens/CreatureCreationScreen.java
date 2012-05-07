@@ -135,6 +135,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         initializeFirstLayout();
         initializeSecondLayout(false);
         initializeThirdLayout(false);
+        initializeFourthLayout(false);
     }
 
     /**
@@ -278,6 +279,10 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
      */
     private void initializeThirdLayout(boolean visible) {
         // TODO: initialize third layout
+    }
+
+    private void initializeFourthLayout(boolean visible) {
+        // TODO: initialize fourth layout
     }
 
     private void startTransitionToScreen2() {
