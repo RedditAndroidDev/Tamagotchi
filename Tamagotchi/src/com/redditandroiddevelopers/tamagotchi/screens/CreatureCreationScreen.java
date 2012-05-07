@@ -41,6 +41,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
     // current state
     private enum state {
+        SCREEN_INIT,
         SCREEN1,
         SCREEN2,
         SCREEN3,
@@ -66,12 +67,15 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     private float leftMark, rightMark;
     private float scaleFactor;
 
+    private final int centerX = Gdx.graphics.getWidth() / 2;
+    private final int centerY = Gdx.graphics.getHeight() / 2;
+
     // font styles
     private LabelStyle labelStyle80;
     private LabelStyle labelStyle40;
     private LabelStyle labelStyle20;
 
-    private static final float DEFAULT_FADE_OUT_TIME = 0.5f;
+    private static final float DEFAULT_FADE_TIME = 0.5f;
 
     /**
      * Creates a new instance of the CreatureCreationScreen.
@@ -96,10 +100,11 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         leftMark = padding;
         rightMark = Gdx.graphics.getWidth() - padding;
         scaleFactor = 0.75f;
-        currentState = state.SCREEN1;
+        currentState = state.SCREEN_INIT;
         initializeInput();
         initializeFonts();
         initializeLayouts();
+        transitionToScreen1();
     }
 
     @Override
@@ -132,7 +137,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
      * Prepares all layouts.
      */
     private void initializeLayouts() {
-        initializeLayout1(true);
+        initializeLayout1(false);
         initializeLayout2(false);
         initializeLayout3(false);
         initializeLayout4(false);
@@ -164,6 +169,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
                     "Creature " + (i + 1)));
             creatureList.get(i).setClickListener(this);
             creatureList.get(i).scaleX = creatureList.get(i).scaleY = scaleFactor;
+            creatureList.get(i).visible = visible;
             Gdx.app.log(TAG, "Creature created: " + creatureList.get(i).name);
         }
 
@@ -184,26 +190,20 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
                 "spotlight");
         spotlight.x = Gdx.graphics.getWidth() / 2 - spotlight.width / 2;
         spotlight.y = Gdx.graphics.getHeight() - spotlight.height;
+        spotlight.visible = visible;
 
         // add text ("Choose a pet")
         Label labelFirstLine = new Label("Choose a pet", labelStyle80, "labelFirstLine");
         labelFirstLine.x = Gdx.graphics.getWidth() / 2 - labelFirstLine.width / 2;
         labelFirstLine.y = 35 - labelFirstLine.height;
+        labelFirstLine.visible = visible;
 
         // add text ("Swipe either left or right to select a pet")
         Label labelSecondLine = new Label("Swipe either left or right to select a pet",
                 labelStyle40, "labelSecondLine");
         labelSecondLine.x = Gdx.graphics.getWidth() / 2 - labelSecondLine.width / 2;
         labelSecondLine.y = 5 - labelSecondLine.height;
-
-        // START TEMPORARY CODE
-        Image img = new Image(textureAtlas.findRegion("PetDefault"), Scaling.stretch, Align.CENTER,
-                "button");
-        img.setClickListener(this);
-        img.scaleX = 0.5f;
-        img.scaleY = 0.5f;
-        creatureGroup.addActor(img);
-        // END TEMPORARY CODE
+        labelSecondLine.visible = visible;
 
         /* Prepare main groups */
 
@@ -286,25 +286,71 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     }
 
     private void transitionToScreen1() {
+        if (currentState == state.SCREEN1) {
+            return;
+        }
+        // set currentState to SCREEN 1
+        currentState = state.SCREEN1;
+
+        initializeInput();
+
         // TODO: Add transition to first layout
+
+        // handle spotlight
+        Image spotlight = (Image) stage.findActor("spotlight");
+        spotlight.visible = true;
+        spotlight.action(
+                Sequence.$(
+                        FadeTo.$(0, 0f),
+                        MoveTo.$(centerX - spotlight.width / 2, Gdx.graphics.getHeight()
+                                - spotlight.height, DEFAULT_FADE_TIME),
+                        FadeIn.$(DEFAULT_FADE_TIME)));
+
+        // handle second text label
+        Label labelFirstLine = (Label) stage.findActor("labelFirstLine");
+        labelFirstLine.visible = true;
+        labelFirstLine.action(
+                Sequence.$(
+                        FadeTo.$(0, 0f),
+                        MoveTo.$(centerX - labelFirstLine.width / 2, 35 - labelFirstLine.height,
+                                DEFAULT_FADE_TIME),
+                        FadeIn.$(DEFAULT_FADE_TIME)));
+
+        // handle first text label
+        Label labelSecondLine = (Label) stage.findActor("labelSecondLine");
+        labelSecondLine.visible = true;
+        labelSecondLine.action(
+                Sequence.$(
+                        FadeTo.$(0, 0f),
+                        MoveTo.$(centerX - labelSecondLine.width / 2, 5 - labelSecondLine.height,
+                                DEFAULT_FADE_TIME),
+                        FadeIn.$(DEFAULT_FADE_TIME)));
+
+        // show creatures
+        for (Image creature : creatureList) {
+            creature.visible = true;
+            creature.action(Sequence.$(FadeTo.$(0, 0f), Delay.$(DEFAULT_FADE_TIME),
+                    FadeIn.$(DEFAULT_FADE_TIME)));
+        }
+
     }
 
     private void transitionToScreen2() {
-        // prevent another button press
-        // stage.findActor("button").touchable = false;
+        if (currentState == state.SCREEN2) {
+            return;
+        }
+        // set currentState to SCREEN 2
+        currentState = state.SCREEN2;
 
         // remove gestureDetector to prevent swiping after first screen
         game.inputMultiplexer.removeProcessor(gestureDetector);
-
-        // update state
-        currentState = state.SCREEN2;
 
         // get actors
         Image spotlight = (Image) stage.findActor("spotlight");
         Image creature = getSelectedCreature();
 
         // move spotlight to the right
-        spotlight.action(MoveBy.$(175, 0, DEFAULT_FADE_OUT_TIME));
+        spotlight.action(MoveBy.$(175, 0, DEFAULT_FADE_TIME));
 
         // get spotlight center
         float spotlightCenterX = spotlight.x + spotlight.width / 2;
@@ -312,49 +358,49 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         // move creature to center of spotlight
         creature.action(MoveTo.$(spotlightCenterX - (creature.width * creature.scaleX) / 2 + 175,
                 getYPositionBasedOnXValue(leftMark + 1),
-                DEFAULT_FADE_OUT_TIME));
+                DEFAULT_FADE_TIME));
 
         // fade out all other creatures
         for (Image c : creatureList) {
             if (c != getSelectedCreature()) {
-                c.action(FadeOut.$(DEFAULT_FADE_OUT_TIME));
+                c.action(FadeOut.$(DEFAULT_FADE_TIME));
             }
         }
 
         // fade out bottom text
-        stage.findActor("labelFirstLine").action(FadeOut.$(DEFAULT_FADE_OUT_TIME));
-        stage.findActor("labelSecondLine").action(FadeOut.$(DEFAULT_FADE_OUT_TIME));
+        stage.findActor("labelFirstLine").action(FadeOut.$(DEFAULT_FADE_TIME));
+        stage.findActor("labelSecondLine").action(FadeOut.$(DEFAULT_FADE_TIME));
 
         // fade in summary
         // FIXME: find better way to fade in summary
         stage.findActor("summary").visible = true;
         stage.findActor("summary").action(
-                Sequence.$(FadeTo.$(0, 0f), FadeIn.$(DEFAULT_FADE_OUT_TIME)));
+                Sequence.$(FadeTo.$(0, 0f), FadeIn.$(DEFAULT_FADE_TIME)));
 
         // fade in and move creature name
         stage.findActor("creaturename").visible = true;
         ((Label) stage.findActor("creaturename")).setText(getSelectedCreature().name);
         stage.findActor("creaturename").action(
                 Sequence.$(FadeTo.$(0, 0f),
-                        Delay.$(MoveBy.$(175, 0, DEFAULT_FADE_OUT_TIME), DEFAULT_FADE_OUT_TIME),
-                        FadeIn.$(DEFAULT_FADE_OUT_TIME)));
+                        Delay.$(MoveBy.$(175, 0, DEFAULT_FADE_TIME), DEFAULT_FADE_TIME),
+                        FadeIn.$(DEFAULT_FADE_TIME)));
     }
 
     private void transitionToScreen3() {
-        // prevent another button press
-        // stage.findActor("button").touchable = false;
-
-        // update state
+        if (currentState == state.SCREEN3) {
+            return;
+        }
+        // set currentState to SCREEN 3
         currentState = state.SCREEN3;
 
-        stage.findActor("summary").action(FadeOut.$(DEFAULT_FADE_OUT_TIME));
+        stage.findActor("summary").action(FadeOut.$(DEFAULT_FADE_TIME));
     }
 
     private void transitionToScreen4() {
-        // prevent another button press
-        // stage.findActor("button").touchable = false;
-
-        // update state
+        if (currentState == state.SCREEN4) {
+            return;
+        }
+        // set currentState to SCREEN 4
         currentState = state.SCREEN4;
 
         // TODO: Add third transition
@@ -415,8 +461,6 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     public void click(Actor actor, float x, float y) {
         if (creatureList.contains(actor)) {
             Gdx.app.debug(TAG, "Hit on " + actor.name + " detected");
-        }
-        else {
             if (currentState == state.SCREEN1) {
                 transitionToScreen2();
             }
@@ -426,6 +470,12 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
             else if (currentState == state.SCREEN3) {
                 transitionToScreen4();
             }
+        }
+    }
+
+    private void fadeOutEverything() {
+        for (Actor actor : stage.getActors()) {
+            actor.action(FadeOut.$(DEFAULT_FADE_TIME));
         }
     }
 
