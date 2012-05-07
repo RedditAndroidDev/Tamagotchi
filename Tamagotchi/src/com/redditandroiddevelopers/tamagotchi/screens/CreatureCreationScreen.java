@@ -132,16 +132,16 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
      * Prepares all layouts.
      */
     private void initializeLayouts() {
-        initializeFirstLayout();
-        initializeSecondLayout(false);
-        initializeThirdLayout(false);
-        initializeFourthLayout(false);
+        initializeLayout1(true);
+        initializeLayout2(false);
+        initializeLayout3(false);
+        initializeLayout4(false);
     }
 
     /**
      * Prepares the creature selection screen
      */
-    private void initializeFirstLayout() {
+    private void initializeLayout1(boolean visible) {
         /* add groups for better readability and flexibility */
 
         // create main groups
@@ -227,33 +227,9 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     }
 
     /**
-     * Places the creatures at the correct positions.
-     */
-    private void initializeCreaturePositions() {
-        for (Image creature : creatureList) {
-            int i = creatureList.indexOf(creature);
-            if (i == 0) { // one creature
-                creature.x = Gdx.graphics.getWidth() / 2 - (creature.width * creature.scaleX) / 2;
-                creature.y = Gdx.graphics.getHeight() / 2 - (creature.height * creature.scaleY) / 2;
-            }
-            else if (i == 1) { // two creatures
-                creature.x = camera.viewportWidth - (3f / 4) * creature.width * creature.scaleX;
-                creature.y = getYPositionBasedOnXValue(creature.x);
-            }
-            else { // more than two creatures
-                creature.x = creatureList.get(i - 1).x
-                        + (creatureList.get(1).x - creatureList.get(0).x);
-                creature.y = getYPositionBasedOnXValue(creature.x);
-            }
-            creature.scaleX = creature.scaleY = scaleFactor;
-            Gdx.app.debug(TAG, "Creature moved to: X: " + creature.x + " Y: " + creature.y);
-        }
-    }
-
-    /**
      * Prepares the second layout.
      */
-    private void initializeSecondLayout(boolean visible) {
+    private void initializeLayout2(boolean visible) {
 
         // create summary text
         String text = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
@@ -277,15 +253,43 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     /**
      * Prepares the third layout.
      */
-    private void initializeThirdLayout(boolean visible) {
+    private void initializeLayout3(boolean visible) {
         // TODO: initialize third layout
     }
 
-    private void initializeFourthLayout(boolean visible) {
+    private void initializeLayout4(boolean visible) {
         // TODO: initialize fourth layout
     }
 
-    private void startTransitionToScreen2() {
+    /**
+     * Places the creatures at the correct positions.
+     */
+    private void initializeCreaturePositions() {
+        for (Image creature : creatureList) {
+            int i = creatureList.indexOf(creature);
+            if (i == 0) { // one creature
+                creature.x = Gdx.graphics.getWidth() / 2 - (creature.width * creature.scaleX) / 2;
+                creature.y = Gdx.graphics.getHeight() / 2 - (creature.height * creature.scaleY) / 2;
+            }
+            else if (i == 1) { // two creatures
+                creature.x = camera.viewportWidth - (3f / 4) * creature.width * creature.scaleX;
+                creature.y = getYPositionBasedOnXValue(creature.x);
+            }
+            else { // more than two creatures
+                creature.x = creatureList.get(i - 1).x
+                        + (creatureList.get(1).x - creatureList.get(0).x);
+                creature.y = getYPositionBasedOnXValue(creature.x);
+            }
+            creature.scaleX = creature.scaleY = scaleFactor;
+            Gdx.app.debug(TAG, "Creature moved to: X: " + creature.x + " Y: " + creature.y);
+        }
+    }
+
+    private void transitionToScreen1() {
+        // TODO: Add transition to first layout
+    }
+
+    private void transitionToScreen2() {
         // prevent another button press
         // stage.findActor("button").touchable = false;
 
@@ -336,7 +340,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
                         FadeIn.$(DEFAULT_FADE_OUT_TIME)));
     }
 
-    private void startTransitionToScreen3() {
+    private void transitionToScreen3() {
         // prevent another button press
         // stage.findActor("button").touchable = false;
 
@@ -346,7 +350,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         stage.findActor("summary").action(FadeOut.$(DEFAULT_FADE_OUT_TIME));
     }
 
-    private void startTransitionToScreen4() {
+    private void transitionToScreen4() {
         // prevent another button press
         // stage.findActor("button").touchable = false;
 
@@ -414,13 +418,13 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         }
         else {
             if (currentState == state.SCREEN1) {
-                startTransitionToScreen2();
+                transitionToScreen2();
             }
             else if (currentState == state.SCREEN2) {
-                startTransitionToScreen3();
+                transitionToScreen3();
             }
             else if (currentState == state.SCREEN3) {
-                startTransitionToScreen4();
+                transitionToScreen4();
             }
         }
     }
