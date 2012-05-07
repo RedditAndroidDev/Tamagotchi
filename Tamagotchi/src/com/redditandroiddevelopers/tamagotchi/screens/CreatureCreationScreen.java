@@ -11,7 +11,6 @@ import com.badlogic.gdx.input.GestureDetector.GestureAdapter;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Delay;
 import com.badlogic.gdx.scenes.scene2d.actions.FadeIn;
 import com.badlogic.gdx.scenes.scene2d.actions.FadeOut;
 import com.badlogic.gdx.scenes.scene2d.actions.FadeTo;
@@ -268,7 +267,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         // TODO: initialize third layout
     }
 
-    private void startTransition1() {
+    private void startTransitionToScreen2() {
         // prevent second button press
         stage.findActor("button").touchable = true;
 
@@ -308,16 +307,18 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
                 Sequence.$(FadeTo.$(0, 0f), FadeIn.$(DEFAULT_FADE_OUT_TIME)));
     }
 
-    private void startTransition2() {
+    private void startTransitionToScreen3() {
         // prevent second button press
-        stage.findActor("button").touchable = false;
+        stage.findActor("button").touchable = true;
 
         // update state
         currentState = state.SCREEN2;
 
         stage.findActor("summary").action(FadeOut.$(DEFAULT_FADE_OUT_TIME));
-        stage.findActor("button").action(
-                Sequence.$(Delay.$(DEFAULT_FADE_OUT_TIME), FadeOut.$(DEFAULT_FADE_OUT_TIME)));
+    }
+
+    private void startTransitionToScreen4() {
+        // TODO: Add third transition
     }
 
     private Image getSelectedCreature() {
@@ -378,10 +379,13 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         }
         else {
             if (currentState == state.SCREEN1) {
-                startTransition1();
+                startTransitionToScreen2();
             }
             else if (currentState == state.SCREEN2) {
-                startTransition2();
+                startTransitionToScreen3();
+            }
+            else if (currentState == state.SCREEN3) {
+                startTransitionToScreen4();
             }
         }
     }
