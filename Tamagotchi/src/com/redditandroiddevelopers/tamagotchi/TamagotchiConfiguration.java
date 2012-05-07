@@ -34,6 +34,6 @@ public class TamagotchiConfiguration {
     public CreatureStateDao creatureStateDao;
     public ExperienceDao experienceDao;
     public MedicineDao medicineDao;
-    public SicknessDao sicknessDay;
+    public SicknessDao sicknessDao;
 
 }

@@ -60,7 +60,7 @@ public class MainActivity extends AndroidApplication {
                 context), new ExperienceMapper());
         config.medicineDao = new MedicineDao(new CreatureDatabase<Medicine>(
                 context), new MedicineMapper());
-        config.sicknessDay = new SicknessDao(new CreatureDatabase<Sickness>(
+        config.sicknessDao = new SicknessDao(new CreatureDatabase<Sickness>(
                 context), new SicknessMapper());
     }
 }
