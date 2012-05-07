@@ -169,6 +169,7 @@ public class CreatureDatabase<T extends CommonModel> implements
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
 
+        private static final String FOREIGN_KEYS_ON = "PRAGMA foreign_keys=ON;";
         private static final String DB_NAME = "RAD_CREATURES.db";
         private static final int DB_VERSION = 2;
 
@@ -243,13 +244,18 @@ public class CreatureDatabase<T extends CommonModel> implements
             db.execSQL(CREATE_EVOLUTION);
             db.execSQL(CREATE_EXPERIENCE);
             // turn on foreign keys
-            db.execSQL("PRAGMA foreign_keys=ON;");
+            db.execSQL(FOREIGN_KEYS_ON);
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         }
 
+        @Override
+        public void onOpen(SQLiteDatabase db) {
+            db.execSQL(FOREIGN_KEYS_ON);
+        }
+        
         public void deleteDatabase() {
             mContext.deleteDatabase(DB_NAME);
         }
