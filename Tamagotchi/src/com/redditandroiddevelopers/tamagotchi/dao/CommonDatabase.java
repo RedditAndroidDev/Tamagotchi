@@ -11,9 +11,12 @@ public interface CommonDatabase<T extends CommonModel> {
     public static final String EVOLUTION_TABLE_NAME = "CREATURE_EVOLUTION";
     public static final String TYPE_TABLE_NAME = "CREATURE_TYPE";
     public static final String RAISE_TYPE_TABLE_NAME = "CREATURE_RAISE_TYPE";
+    public static final String ACTION_TABLE_NAME = "CREATURE_ACTION";
+    public static final String DEBUFF_TABLE_NAME = "CREATURE_DEBUFF";
     public static final String MEDICINE_TABLE_NAME = "MEDICINE";
     public static final String SICKNESS_TABLE_NAME = "SICKNESS";
-    public static final String EXPERIENCE_TABLE_NAME = "EXPERIENCE";
+    public static final String EXPERIENCE_ACTION_TABLE_NAME = "EXPERIENCE_ACTION";
+    public static final String EXPERIENCE_DEBUFF_TABLE_NAME = "EXPERIENCE_DEBUFF";
     
     public T queryUnique(Mapper<T> rowMapper, String table,
             String[] projectionIn, String selection, String[] selectionArgs,
