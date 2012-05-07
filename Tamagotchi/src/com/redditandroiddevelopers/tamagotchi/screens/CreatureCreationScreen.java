@@ -11,6 +11,7 @@ import com.badlogic.gdx.input.GestureDetector.GestureAdapter;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Delay;
 import com.badlogic.gdx.scenes.scene2d.actions.FadeIn;
 import com.badlogic.gdx.scenes.scene2d.actions.FadeOut;
 import com.badlogic.gdx.scenes.scene2d.actions.FadeTo;
@@ -42,7 +43,8 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     private enum state {
         SCREEN1,
         SCREEN2,
-        SCREEN3;
+        SCREEN3,
+        SCREEN4;
     }
 
     private state currentState;
@@ -251,12 +253,23 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
      * Prepares the second layout.
      */
     private void initializeSecondLayout(boolean visible) {
+
+        // create summary text
         String text = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
         Label summary = new Label(TextUtils.insertPeriodically(text, "\n", 30), labelStyle20,
                 "summary");
         summary.x = 50;
         summary.y = Gdx.graphics.getHeight() - 100 - summary.height;
         summary.visible = visible;
+
+        // create creature name
+        Label name = new Label(creatureList.get(0).name, labelStyle80, "creaturename");
+        Image spotlight = (Image) stage.findActor("spotlight");
+        name.x = (spotlight.x + spotlight.width / 2) - name.width / 2;
+        name.y = 50 - name.height;
+        name.visible = false;
+
+        stage.addActor(name);
         stage.addActor(summary);
     }
 
@@ -268,8 +281,8 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     }
 
     private void startTransitionToScreen2() {
-        // prevent second button press
-        stage.findActor("button").touchable = true;
+        // prevent another button press
+        // stage.findActor("button").touchable = false;
 
         // update state
         currentState = state.SCREEN2;
@@ -305,19 +318,33 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         stage.findActor("summary").visible = true;
         stage.findActor("summary").action(
                 Sequence.$(FadeTo.$(0, 0f), FadeIn.$(DEFAULT_FADE_OUT_TIME)));
+
+        // fade in and move creature name
+        stage.findActor("creaturename").visible = true;
+        ((Label) stage.findActor("creaturename")).setText(getSelectedCreature().name);
+        stage.findActor("creaturename").action(
+                Sequence.$(FadeTo.$(0, 0f),
+                        Delay.$(MoveBy.$(175, 0, DEFAULT_FADE_OUT_TIME), DEFAULT_FADE_OUT_TIME),
+                        FadeIn.$(DEFAULT_FADE_OUT_TIME)));
     }
 
     private void startTransitionToScreen3() {
-        // prevent second button press
-        stage.findActor("button").touchable = true;
+        // prevent another button press
+        // stage.findActor("button").touchable = false;
 
         // update state
-        currentState = state.SCREEN2;
+        currentState = state.SCREEN3;
 
         stage.findActor("summary").action(FadeOut.$(DEFAULT_FADE_OUT_TIME));
     }
 
     private void startTransitionToScreen4() {
+        // prevent another button press
+        // stage.findActor("button").touchable = false;
+
+        // update state
+        currentState = state.SCREEN4;
+
         // TODO: Add third transition
     }
 
