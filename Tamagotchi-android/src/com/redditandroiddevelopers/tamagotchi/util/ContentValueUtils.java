@@ -3,11 +3,14 @@ package com.redditandroiddevelopers.tamagotchi.util;
 import android.content.ContentValues;
 
 import com.redditandroiddevelopers.tamagotchi.model.Creature;
+import com.redditandroiddevelopers.tamagotchi.model.CreatureAction;
+import com.redditandroiddevelopers.tamagotchi.model.CreatureDebuff;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureEvolution;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureRaiseType;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureState;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureType;
-import com.redditandroiddevelopers.tamagotchi.model.Experience;
+import com.redditandroiddevelopers.tamagotchi.model.ExperienceAction;
+import com.redditandroiddevelopers.tamagotchi.model.ExperienceDebuff;
 import com.redditandroiddevelopers.tamagotchi.model.Medicine;
 import com.redditandroiddevelopers.tamagotchi.model.Sickness;
 
@@ -29,8 +32,14 @@ public class ContentValueUtils {
             return buildMedicine((Medicine)modelObj);
         } else if (modelObj instanceof Sickness) {
             return buildSickness((Sickness)modelObj);
-        } else if (modelObj instanceof Experience) {
-            return buildExperience((Experience)modelObj);
+        } else if (modelObj instanceof CreatureAction) {
+            return buildCreatureAction((CreatureAction)modelObj);
+        } else if(modelObj instanceof CreatureDebuff) {
+            return buildCreatureDebuff((CreatureDebuff)modelObj);
+        } else if (modelObj instanceof ExperienceAction) {
+            return buildExperienceAction((ExperienceAction)modelObj);
+        } else if (modelObj instanceof ExperienceDebuff) {
+            return buildExperienceDebuff((ExperienceDebuff)modelObj);
         } else {
             throw new IllegalArgumentException(
                     "Couldn't build content value map for class "
@@ -39,15 +48,38 @@ public class ContentValueUtils {
         }
     }
     
-    public static ContentValues buildExperience(Experience modelObj) {
+    public static ContentValues buildExperienceDebuff(ExperienceDebuff modelObj) {
         ContentValues toReturn = new ContentValues();
-        toReturn.put("E_ID", modelObj.id);
+        toReturn.put("ED_ID", modelObj.id);
         toReturn.put("CT_ID", modelObj.type.id);
-        toReturn.put("E_MIN_XP", modelObj.minXp);
-        toReturn.put("E_MAX_XP", modelObj.maxXp);
+        toReturn.put("CD_ID", modelObj.debuff.id);
+        toReturn.put("ED_MODIFIER", modelObj.modifier);
+        return toReturn;
+    }
+    
+    public static ContentValues buildExperienceAction(ExperienceAction modelObj) {
+        ContentValues toReturn = new ContentValues();
+        toReturn.put("EA_ID", modelObj.id);
+        toReturn.put("CT_ID", modelObj.type.id);
+        toReturn.put("CA_ID", modelObj.action.id);
+        toReturn.put("EA_MODIFIER", modelObj.modifier);
         return toReturn;
     }
 
+    private static ContentValues buildCreatureDebuff(CreatureDebuff modelObj) {
+        ContentValues toReturn = new ContentValues();
+        toReturn.put("CD_ID", modelObj.id);
+        toReturn.put("CD_NAME", modelObj.name);
+        return toReturn;
+    }
+    
+    private static ContentValues buildCreatureAction(CreatureAction modelObj) {
+        ContentValues toReturn = new ContentValues();
+        toReturn.put("CA_ID", modelObj.id);
+        toReturn.put("CA_NAME", modelObj.name);
+        return toReturn;
+    }
+    
     private static ContentValues buildSickness(Sickness modelObj) {
         ContentValues toReturn = new ContentValues();
         toReturn.put("S_ID", modelObj.id);
@@ -104,7 +136,7 @@ public class ContentValueUtils {
         toReturn.put("CE_MAX_DISCIPLINE", modelObj.maxDiscipline);
         toReturn.put("CE_MAX_HUNGER", modelObj.maxHunger);
         toReturn.put("CE_MAX_HAPPY", modelObj.maxHappy);
-        toReturn.put("CE_MAX_EXPERIENCE", modelObj.maxExperience);
+        toReturn.put("CE_CURRENT_XP", modelObj.currentXp);
         return toReturn;
     }
 

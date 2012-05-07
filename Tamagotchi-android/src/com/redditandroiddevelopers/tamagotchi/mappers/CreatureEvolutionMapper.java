@@ -22,7 +22,7 @@ public class CreatureEvolutionMapper extends Mapper<CreatureEvolution> {
             evo.maxDiscipline = c.getInt(c.getColumnIndex("CE_MAX_DISCIPLINE"));
             evo.maxHunger = c.getInt(c.getColumnIndex("CE_MAX_HUNGER"));
             evo.maxHappy = c.getInt(c.getColumnIndex("CE_MAX_HAPPY"));
-            evo.maxExperience = c.getInt(c.getColumnIndex("CE_MAX_EXPERIENCE"));
+            evo.currentXp = c.getInt(c.getColumnIndex("CE_CURRENT_XP"));
             return evo;
         }
         return null;

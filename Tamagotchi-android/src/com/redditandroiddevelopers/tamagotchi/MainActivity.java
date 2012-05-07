@@ -11,21 +11,21 @@ import com.redditandroiddevelopers.tamagotchi.dao.CreatureDatabase;
 import com.redditandroiddevelopers.tamagotchi.dao.CreatureEvolutionDao;
 import com.redditandroiddevelopers.tamagotchi.dao.CreatureRaiseTypeDao;
 import com.redditandroiddevelopers.tamagotchi.dao.CreatureStateDao;
-import com.redditandroiddevelopers.tamagotchi.dao.ExperienceDao;
+import com.redditandroiddevelopers.tamagotchi.dao.ExperienceActionDao;
 import com.redditandroiddevelopers.tamagotchi.dao.MedicineDao;
 import com.redditandroiddevelopers.tamagotchi.dao.SicknessDao;
 import com.redditandroiddevelopers.tamagotchi.mappers.CreatureEvolutionMapper;
 import com.redditandroiddevelopers.tamagotchi.mappers.CreatureMapper;
 import com.redditandroiddevelopers.tamagotchi.mappers.CreatureRaiseTypeMapper;
 import com.redditandroiddevelopers.tamagotchi.mappers.CreatureStateMapper;
-import com.redditandroiddevelopers.tamagotchi.mappers.ExperienceMapper;
+import com.redditandroiddevelopers.tamagotchi.mappers.ExperienceActionMapper;
 import com.redditandroiddevelopers.tamagotchi.mappers.MedicineMapper;
 import com.redditandroiddevelopers.tamagotchi.mappers.SicknessMapper;
 import com.redditandroiddevelopers.tamagotchi.model.Creature;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureEvolution;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureRaiseType;
 import com.redditandroiddevelopers.tamagotchi.model.CreatureState;
-import com.redditandroiddevelopers.tamagotchi.model.Experience;
+import com.redditandroiddevelopers.tamagotchi.model.ExperienceAction;
 import com.redditandroiddevelopers.tamagotchi.model.Medicine;
 import com.redditandroiddevelopers.tamagotchi.model.Sickness;
 
@@ -56,8 +56,8 @@ public class MainActivity extends AndroidApplication {
                         context), new CreatureRaiseTypeMapper());
         config.creatureStateDao = new CreatureStateDao(new CreatureDatabase<CreatureState>(
                 context), new CreatureStateMapper());
-        config.experienceDao = new ExperienceDao(new CreatureDatabase<Experience>(
-                context), new ExperienceMapper());
+        config.experienceActionDao = new ExperienceActionDao(new CreatureDatabase<ExperienceAction>(
+                context), new ExperienceActionMapper());
         config.medicineDao = new MedicineDao(new CreatureDatabase<Medicine>(
                 context), new MedicineMapper());
         config.sicknessDay = new SicknessDao(new CreatureDatabase<Sickness>(

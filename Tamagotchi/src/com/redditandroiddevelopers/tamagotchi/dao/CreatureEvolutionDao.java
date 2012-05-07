@@ -15,7 +15,7 @@ public class CreatureEvolutionDao {
         rowMapper = mapper;
     }
 
-    public CreatureEvolution creature(CreatureEvolution evo) {
+    public CreatureEvolution create(CreatureEvolution evo) {
         return db.insert(evo, CommonDatabase.EVOLUTION_TABLE_NAME);
     }
 
