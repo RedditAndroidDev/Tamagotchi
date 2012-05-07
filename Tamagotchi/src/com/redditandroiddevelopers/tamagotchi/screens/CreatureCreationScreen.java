@@ -160,7 +160,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         // create creatures
         for (int i = 0; i < NUM_OF_CREATURES; i++) {
             creatureList.add(new Image(creatureTextureRegion, Scaling.stretch, Align.CENTER,
-                    "creature" + (i + 1)));
+                    "Creature " + (i + 1)));
             creatureList.get(i).setClickListener(this);
             creatureList.get(i).scaleX = creatureList.get(i).scaleY = scaleFactor;
             Gdx.app.log(TAG, "Creature created: " + creatureList.get(i).name);
@@ -283,6 +283,9 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     private void startTransitionToScreen2() {
         // prevent another button press
         // stage.findActor("button").touchable = false;
+
+        // remove gestureDetector to prevent swiping after first screen
+        game.inputMultiplexer.removeProcessor(gestureDetector);
 
         // update state
         currentState = state.SCREEN2;
@@ -444,7 +447,6 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
             }
         }
-
         return true;
     }
 
