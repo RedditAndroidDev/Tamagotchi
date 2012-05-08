@@ -31,7 +31,7 @@ public abstract class CommonCreature extends Image {
     /**
      * Some objects/variables for creature actions.
      */
-    private Action action;
+    private Action actionT;
     private Fifo fifo = new Fifo();
 
     /**
@@ -41,9 +41,9 @@ public abstract class CommonCreature extends Image {
      * @param name
      */
     public void lifeCycle() {
-        if(action!=null)
-            if (!fifo.isEmpty() && action.isDone()) {
-                action = (Action) fifo.show();
+        if (actionT != null)
+            if (!fifo.isEmpty() && actionT.isDone()) {
+                actionT = (Action) fifo.show();
                 action((Action) fifo.get());
             }
     }
@@ -57,6 +57,8 @@ public abstract class CommonCreature extends Image {
         // set origin for rotations in the center of the creature
         originX = width / 2;
         originY = height / 2;
+        actionT = new Parallel();
+
     }
 
     /**
@@ -146,7 +148,7 @@ public abstract class CommonCreature extends Image {
     public void roll(float x, float duration) {
         Parallel parallel = Parallel.$(MoveBy.$(x, 0, duration),
                 RotateBy.$(x > 0 ? -360f : 360f, duration));
-        //action(parallel);
+        // action(parallel);
         fifo.add(parallel);
     }
 

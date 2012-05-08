@@ -77,11 +77,9 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
     private void layout() {
 
         /*
-         * TODO: Add basic status mockup that can be pulled down
-         * TODO: Add creature
-         * TODO: Add background
-         * TODO: Add layers for background and the main stage
-         * TODO: Add overlays, e.g. for speech bubbles
+         * TODO: Add basic status mockup that can be pulled down TODO: Add
+         * creature TODO: Add background TODO: Add layers for background and the
+         * main stage TODO: Add overlays, e.g. for speech bubbles
          */
 
         /* add groups for better readability and flexibility */
@@ -170,7 +168,7 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
 
         // add an FPS label (subject to configuration)
         if (game.config.logFps) {
-            final String FONT_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.:;,{}\"´`'<>";
+            final String FONT_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.:;,{}\"ï¿½`'<>";
             BitmapFont font = TrueTypeFontFactory.createBitmapFont(
                     Gdx.files.internal("fonts/Roboto-Regular.ttf"),
                     FONT_CHARACTERS, stage.width(), stage.height(), 25.0f, Gdx.graphics.getWidth(),
@@ -222,6 +220,7 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
     @Override
     public void update(float delta) {
         super.update(delta);
+        creature.lifeCycle();
         if (fpsLabel != null) {
             assert game.config.logFps;
             fpsLabel.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
