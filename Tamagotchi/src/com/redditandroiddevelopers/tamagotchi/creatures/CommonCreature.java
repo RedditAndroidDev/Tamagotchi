@@ -25,7 +25,12 @@ public abstract class CommonCreature extends Image {
 
     public Creature creatureModel;
     public boolean textureIsFlipped = false;
-    Parallel rotate = new Parallel();
+
+    /**
+     * Some objects/variables for creature actions.
+     */
+    private Parallel parallel = new Parallel();
+
     /**
      * Creates a new CommonCreature.
      * 
@@ -68,34 +73,35 @@ public abstract class CommonCreature extends Image {
      * @param duration how long the animation will be
      */
     public void moveBy(float x, float duration) {
-        // single wobble
-        Sequence scaling = Sequence.$(ScaleTo.$(scaleX, scaleY + 0.05f, 0.1f),
-                ScaleTo.$(scaleX, scaleY, 0.1f));
+        if (parallel.isDone()) {
+            // single wobble
 
-        // temporary dirty fix to prevent creature from "growing"
-        scaleY = (int) scaleY;
+            Sequence scaling = Sequence.$(ScaleTo.$(scaleX, scaleY + 0.05f, 0.1f),
+                    ScaleTo.$(scaleX, scaleY, 0.1f));
 
-        // calculates how often the animation should be played
-        int times = Math.round(duration / 0.2f);
+            // calculates how often the animation should be played
+            int times = Math.round(duration / 0.2f);
 
-        // chain wobbles together
-        Repeat wobble = Repeat.$(scaling, times);
-        Parallel parallel = Parallel.$(MoveBy.$(x, 0, duration), wobble);
+            // chain wobbles together
 
-        // make sure the creature is facing the right way
-        if (x > 0) {
-            if (!textureIsFlipped) {
-                this.getRegion().flip(true, false);
-                textureIsFlipped = textureIsFlipped == false ? true : false;
+            Repeat wobble = Repeat.$(scaling, times);
+            parallel = Parallel.$(MoveBy.$(x, 0, duration), wobble);
+
+            // make sure the creature is facing the right way
+            if (x > 0) {
+                if (!textureIsFlipped) {
+                    this.getRegion().flip(true, false);
+                    textureIsFlipped = textureIsFlipped == false ? true : false;
+                }
             }
-        }
-        else if (x < 0) {
-            if (textureIsFlipped) {
-                this.getRegion().flip(true, false);
-                textureIsFlipped = textureIsFlipped == true ? false : true;
+            else if (x < 0) {
+                if (textureIsFlipped) {
+                    this.getRegion().flip(true, false);
+                    textureIsFlipped = textureIsFlipped == true ? false : true;
+                }
             }
+            action(parallel);
         }
-        action(parallel);
     }
 
     /**
@@ -126,11 +132,11 @@ public abstract class CommonCreature extends Image {
      * @param duration how long it will roll
      */
     public void roll(float x, float duration) {
-    	if(rotate.isDone()) {
-        	rotate = Parallel.$(MoveBy.$(x, 0, duration),
-        			RotateBy.$(x > 0 ? -360f : 360f, duration));
-        	action(rotate);
-    	}
+        if (parallel.isDone()) {
+            parallel = Parallel.$(MoveBy.$(x, 0, duration),
+                    RotateBy.$(x > 0 ? -360f : 360f, duration));
+            action(parallel);
+        }
     }
 
     // showing speech bubbles
