@@ -40,13 +40,6 @@ public abstract class CommonCreature extends Image {
      * @param creatureDefaultTextureRegion
      * @param name
      */
-    public void lifeCycle() {
-        if (actionT != null)
-            if (!fifo.isEmpty() && actionT.isDone()) {
-                actionT = (Action) fifo.show();
-                action((Action) fifo.get());
-            }
-    }
 
     public CommonCreature(TextureRegion creatureDefaultTextureRegion, String name) {
         super(creatureDefaultTextureRegion, Scaling.stretch, Align.CENTER, name);
@@ -59,6 +52,16 @@ public abstract class CommonCreature extends Image {
         originY = height / 2;
         actionT = new Parallel();
 
+    }
+
+    /**
+     * Function checking for creature actions, called in MainGameScreen Update()
+     */
+    public void lifeCycle() {
+        if (!fifo.isEmpty() && actionT.isDone()) {
+            actionT = (Action) fifo.show(0);
+            action((Action) fifo.get());
+        }
     }
 
     /**
@@ -113,8 +116,6 @@ public abstract class CommonCreature extends Image {
             }
         }
         fifo.add(parallel);
-        // action(parallel);
-
     }
 
     /**
@@ -148,7 +149,6 @@ public abstract class CommonCreature extends Image {
     public void roll(float x, float duration) {
         Parallel parallel = Parallel.$(MoveBy.$(x, 0, duration),
                 RotateBy.$(x > 0 ? -360f : 360f, duration));
-        // action(parallel);
         fifo.add(parallel);
     }
 
