@@ -2,6 +2,7 @@
 package com.redditandroiddevelopers.tamagotchi.creatures;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveBy;
 import com.badlogic.gdx.scenes.scene2d.actions.Parallel;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.interpolators.AccelerateInterpolator;
 import com.badlogic.gdx.scenes.scene2d.ui.Align;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Scaling;
+import com.redditandroiddevelopers.tamagotchi.Fifo;
 import com.redditandroiddevelopers.tamagotchi.model.Creature;
 
 /**
@@ -29,7 +31,8 @@ public abstract class CommonCreature extends Image {
     /**
      * Some objects/variables for creature actions.
      */
-    private Parallel parallel = new Parallel();
+    private Action action;
+    private Fifo fifo = new Fifo();
 
     /**
      * Creates a new CommonCreature.
@@ -37,6 +40,14 @@ public abstract class CommonCreature extends Image {
      * @param creatureDefaultTextureRegion
      * @param name
      */
+    public void lifeCycle() {
+        if(action!=null)
+            if (!fifo.isEmpty() && action.isDone()) {
+                action = (Action) fifo.show();
+                action((Action) fifo.get());
+            }
+    }
+
     public CommonCreature(TextureRegion creatureDefaultTextureRegion, String name) {
         super(creatureDefaultTextureRegion, Scaling.stretch, Align.CENTER, name);
 
@@ -73,35 +84,35 @@ public abstract class CommonCreature extends Image {
      * @param duration how long the animation will be
      */
     public void moveBy(float x, float duration) {
-        if (parallel.isDone()) {
-            // single wobble
+        // single wobble
 
-            Sequence scaling = Sequence.$(ScaleTo.$(scaleX, scaleY + 0.05f, 0.1f),
-                    ScaleTo.$(scaleX, scaleY, 0.1f));
+        Sequence scaling = Sequence.$(ScaleTo.$(scaleX, scaleY + 0.05f, 0.1f),
+                ScaleTo.$(scaleX, scaleY, 0.1f));
 
-            // calculates how often the animation should be played
-            int times = Math.round(duration / 0.2f);
+        // calculates how often the animation should be played
+        int times = Math.round(duration / 0.2f);
 
-            // chain wobbles together
+        // chain wobbles together
 
-            Repeat wobble = Repeat.$(scaling, times);
-            parallel = Parallel.$(MoveBy.$(x, 0, duration), wobble);
+        Repeat wobble = Repeat.$(scaling, times);
+        Parallel parallel = Parallel.$(MoveBy.$(x, 0, duration), wobble);
 
-            // make sure the creature is facing the right way
-            if (x > 0) {
-                if (!textureIsFlipped) {
-                    this.getRegion().flip(true, false);
-                    textureIsFlipped = textureIsFlipped == false ? true : false;
-                }
+        // make sure the creature is facing the right way
+        if (x > 0) {
+            if (!textureIsFlipped) {
+                this.getRegion().flip(true, false);
+                textureIsFlipped = textureIsFlipped == false ? true : false;
             }
-            else if (x < 0) {
-                if (textureIsFlipped) {
-                    this.getRegion().flip(true, false);
-                    textureIsFlipped = textureIsFlipped == true ? false : true;
-                }
-            }
-            action(parallel);
         }
+        else if (x < 0) {
+            if (textureIsFlipped) {
+                this.getRegion().flip(true, false);
+                textureIsFlipped = textureIsFlipped == true ? false : true;
+            }
+        }
+        fifo.add(parallel);
+        // action(parallel);
+
     }
 
     /**
@@ -122,7 +133,8 @@ public abstract class CommonCreature extends Image {
         AccelerateInterpolator gravity2 = AccelerateInterpolator.$(1.5f);
         Sequence jump = Sequence.$(MoveBy.$(0, y, duration).setInterpolator(gravity1),
                 MoveBy.$(0, -y, duration).setInterpolator(gravity2));
-        action(jump);
+        // action(jump);
+        fifo.add(jump);
     }
 
     /**
@@ -132,11 +144,10 @@ public abstract class CommonCreature extends Image {
      * @param duration how long it will roll
      */
     public void roll(float x, float duration) {
-        if (parallel.isDone()) {
-            parallel = Parallel.$(MoveBy.$(x, 0, duration),
-                    RotateBy.$(x > 0 ? -360f : 360f, duration));
-            action(parallel);
-        }
+        Parallel parallel = Parallel.$(MoveBy.$(x, 0, duration),
+                RotateBy.$(x > 0 ? -360f : 360f, duration));
+        //action(parallel);
+        fifo.add(parallel);
     }
 
     // showing speech bubbles
