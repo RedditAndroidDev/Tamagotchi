@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveBy;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveTo;
 import com.badlogic.gdx.scenes.scene2d.actions.Sequence;
 import com.badlogic.gdx.scenes.scene2d.ui.Align;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -54,6 +55,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     private static final String GRP_CREATURES = "creatures";
     private static final String GRP_BACKGROUND = "background";
     private static final String GRP_TEXT = "text";
+    private static final String GRP_TOP_BUTTONS = "top_buttons";
 
     // fonts
     private static final String ROBOTO_REGULAR = "fonts/Roboto-Regular.ttf";
@@ -66,6 +68,11 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
     private float leftMark, rightMark;
     private float scaleFactor;
+    
+    // buttons
+    private static final int ACCEPT = 0;
+    private static final int REMOVE = 1;
+    private static final int NUM_BUTTONS = 2;
 
     private final int centerX = Gdx.graphics.getWidth() / 2;
     private final int centerY = Gdx.graphics.getHeight() / 2;
@@ -74,7 +81,9 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     private LabelStyle labelStyle80;
     private LabelStyle labelStyle40;
     private LabelStyle labelStyle20;
-
+    
+    private Button[] buttons;
+    
     private static final float DEFAULT_FADE_TIME = 0.5f;
 
     /**
@@ -153,6 +162,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         final Group creatureGroup = new Group(GRP_CREATURES);
         final Group backgroundGroup = new Group(GRP_BACKGROUND);
         final Group textGroup = new Group(GRP_TEXT);
+        final Group topButtonsGroup = new Group(GRP_TOP_BUTTONS);
 
         /* load textures */
 
@@ -219,8 +229,41 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         // add labels to the 'text' group
         textGroup.addActor(labelFirstLine);
         textGroup.addActor(labelSecondLine);
+        
+        // create buttons names
+        final String[] interactButtonIDs = new String[] {
+                "MainButtonAccept",
+                "MainButtonRemove",
+        };
+        
+        // load texture regions for buttons in top right corner
+        final TextureRegion[] interactButtonTextureRegions = new TextureRegion[interactButtonIDs.length];
+        for (int i = 0; i < interactButtonIDs.length; i++) {
+            interactButtonTextureRegions[i] = textureAtlas.findRegion(interactButtonIDs[i]);
+        }
+
+        // set margin between buttons
+        final int marginBetweenButtons = 10;
+
+        // position buttons within group and add them to the 'topButtonsGroup'
+        final int width = interactButtonTextureRegions[0].getRegionWidth() + marginBetweenButtons;
+        buttons = new Button[NUM_BUTTONS];
+        for (int i = 0; i < NUM_BUTTONS; i++) {
+            final Button button = new Button(interactButtonTextureRegions[i]);
+            button.x = width * i;
+            button.setClickListener(this);
+            topButtonsGroup.addActor(button);
+            buttons[i] = button;
+        }
+
+        // adjust width of 'topButtons' group
+        topButtonsGroup.width = width * topButtonsGroup.getActors().size();
+        // position topButtons in top right corner
+        topButtonsGroup.x = stage.centerX() - (topButtonsGroup.width/2);
+        topButtonsGroup.y = stage.top() - width;
 
         /* Add main groups to stage */
+        stage.addActor(topButtonsGroup);
         stage.addActor(backgroundGroup);
         stage.addActor(creatureGroup);
         stage.addActor(textGroup);
@@ -459,7 +502,11 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
     @Override
     public void click(Actor actor, float x, float y) {
-        if (creatureList.contains(actor)) {
+    	if (actor == buttons[ACCEPT]) {
+            Gdx.app.debug(TAG, "Touch on Accept button");
+        } else if (actor == buttons[REMOVE]) {
+            Gdx.app.debug(TAG, "Touch on Remove button");
+        } else if (creatureList.contains(actor)) {
             Gdx.app.debug(TAG, "Hit on " + actor.name + " detected");
             if (currentState == state.SCREEN1) {
                 transitionToScreen2();
