@@ -68,7 +68,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
     private float leftMark, rightMark;
     private float scaleFactor;
-    
+
     // buttons
     private static final int ACCEPT = 0;
     private static final int REMOVE = 1;
@@ -81,9 +81,9 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     private LabelStyle labelStyle80;
     private LabelStyle labelStyle40;
     private LabelStyle labelStyle20;
-    
+
     private Button[] buttons;
-    
+
     private static final float DEFAULT_FADE_TIME = 0.5f;
 
     /**
@@ -229,13 +229,13 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         // add labels to the 'text' group
         textGroup.addActor(labelFirstLine);
         textGroup.addActor(labelSecondLine);
-        
+
         // create buttons names
         final String[] interactButtonIDs = new String[] {
                 "MainButtonAccept",
                 "MainButtonRemove",
         };
-        
+
         // load texture regions for buttons in top right corner
         final TextureRegion[] interactButtonTextureRegions = new TextureRegion[interactButtonIDs.length];
         for (int i = 0; i < interactButtonIDs.length; i++) {
@@ -259,7 +259,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         // adjust width of 'topButtons' group
         topButtonsGroup.width = width * topButtonsGroup.getActors().size();
         // position topButtons in top right corner
-        topButtonsGroup.x = stage.centerX() - (topButtonsGroup.width/2);
+        topButtonsGroup.x = stage.centerX() - (topButtonsGroup.width / 2);
         topButtonsGroup.y = stage.top() - width;
 
         /* Add main groups to stage */
@@ -502,21 +502,38 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
     @Override
     public void click(Actor actor, float x, float y) {
-    	if (actor == buttons[ACCEPT]) {
+        if (actor == buttons[ACCEPT]) {
             Gdx.app.debug(TAG, "Touch on Accept button");
+            goToPreviousScreen();
         } else if (actor == buttons[REMOVE]) {
             Gdx.app.debug(TAG, "Touch on Remove button");
+            goToNextScreen();
         } else if (creatureList.contains(actor)) {
             Gdx.app.debug(TAG, "Hit on " + actor.name + " detected");
-            if (currentState == state.SCREEN1) {
-                transitionToScreen2();
-            }
-            else if (currentState == state.SCREEN2) {
-                transitionToScreen3();
-            }
-            else if (currentState == state.SCREEN3) {
-                transitionToScreen4();
-            }
+        }
+    }
+
+    private void goToPreviousScreen() {
+        if (currentState == state.SCREEN2) {
+            transitionToScreen1();
+        }
+        else if (currentState == state.SCREEN3) {
+            transitionToScreen2();
+        }
+        else if (currentState == state.SCREEN4) {
+            transitionToScreen3();
+        }
+    }
+
+    private void goToNextScreen() {
+        if (currentState == state.SCREEN1) {
+            transitionToScreen2();
+        }
+        else if (currentState == state.SCREEN2) {
+            transitionToScreen3();
+        }
+        else if (currentState == state.SCREEN3) {
+            transitionToScreen4();
         }
     }
 
