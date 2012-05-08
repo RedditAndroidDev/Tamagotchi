@@ -25,7 +25,7 @@ public abstract class CommonCreature extends Image {
 
     public Creature creatureModel;
     public boolean textureIsFlipped = false;
-
+    Parallel rotate = new Parallel();
     /**
      * Creates a new CommonCreature.
      * 
@@ -126,9 +126,11 @@ public abstract class CommonCreature extends Image {
      * @param duration how long it will roll
      */
     public void roll(float x, float duration) {
-        Parallel rotate = Parallel.$(MoveBy.$(x, 0, duration),
-                RotateBy.$(x > 0 ? -360f : 360f, duration));
-        action(rotate);
+    	if(rotate.isDone()) {
+        	rotate = Parallel.$(MoveBy.$(x, 0, duration),
+        			RotateBy.$(x > 0 ? -360f : 360f, duration));
+        	action(rotate);
+    	}
     }
 
     // showing speech bubbles
