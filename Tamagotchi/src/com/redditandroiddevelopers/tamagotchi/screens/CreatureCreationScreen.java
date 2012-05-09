@@ -139,6 +139,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
      */
     private void initializeInput() {
         game.inputMultiplexer.removeProcessor(stage);
+        game.inputMultiplexer.removeProcessor(gestureDetector);
         game.inputMultiplexer.addProcessor(gestureDetector);
         game.inputMultiplexer.addProcessor(stage);
     }
@@ -177,6 +178,11 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         final Group textGroup = new Group(GRP_TEXT);
         final Group topButtonsGroup = new Group(GRP_TOP_BUTTONS);
 
+        creatureGroup.visible = visible;
+        backgroundGroup.visible = visible;
+        textGroup.visible = visible;
+        topButtonsGroup.visible = visible;
+
         // get texture regions from loaded texture atlas
         final TextureRegion creatureTextureRegion = textureAtlas.findRegion("PetDefault");
         final TextureRegion spotlightTextureRegion = textureAtlas.findRegion("Spotlight");
@@ -187,7 +193,6 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
                     "Creature " + (i + 1)));
             creatureList.get(i).setClickListener(this);
             creatureList.get(i).scaleX = creatureList.get(i).scaleY = scaleFactor;
-            creatureList.get(i).visible = visible;
             Gdx.app.log(TAG, "Creature created: " + creatureList.get(i).name);
         }
 
@@ -208,20 +213,17 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
                 "spotlight");
         spotlight.x = Gdx.graphics.getWidth() / 2 - spotlight.width / 2;
         spotlight.y = Gdx.graphics.getHeight() - spotlight.height;
-        spotlight.visible = visible;
 
         // add text ("Choose a pet")
         Label labelFirstLine = new Label("Choose a pet", labelStyle80, "labelFirstLine");
         labelFirstLine.x = Gdx.graphics.getWidth() / 2 - labelFirstLine.width / 2;
         labelFirstLine.y = 35 - labelFirstLine.height;
-        labelFirstLine.visible = visible;
 
         // add text ("Swipe either left or right to select a pet")
         Label labelSecondLine = new Label("Swipe either left or right to select a pet",
                 labelStyle40, "labelSecondLine");
         labelSecondLine.x = Gdx.graphics.getWidth() / 2 - labelSecondLine.width / 2;
         labelSecondLine.y = 5 - labelSecondLine.height;
-        labelSecondLine.visible = visible;
 
         /* Prepare main groups */
 
@@ -310,7 +312,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         textFieldStyle1.fontColor = Color.WHITE;
 
         // nameField
-        TextField nameField = new TextField("boosh", textFieldStyle1);
+        TextField nameField = new TextField("boosh", null, textFieldStyle1, "nameField");
         nameField.x = centerX - (stage.width() / 3) - (nameField.width / 4);
         nameField.y = centerY;
         nameField.visible = false;
@@ -403,26 +405,32 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
             return;
         }
         Gdx.app.debug(TAG, "Going to Screen1");
+        fadeOutEverything();
+
+        stage.findActor("creaturename").action(FadeOut.$(DEFAULT_FADE_TIME));
+
         // set currentState to SCREEN 1
         currentState = state.SCREEN1;
 
         initializeInput();
 
         // TODO: Add transition to first layout
+        stage.findActor(GRP_BACKGROUND).visible = true;
+        stage.findActor(GRP_CREATURES).visible = true;
+        stage.findActor(GRP_TEXT).visible = true;
+        stage.findActor(GRP_TOP_BUTTONS).visible = true;
 
         // handle spotlight
         Image spotlight = (Image) stage.findActor("spotlight");
         spotlight.visible = true;
         spotlight.action(
                 Sequence.$(
-                        FadeTo.$(0, 0f),
                         MoveTo.$(centerX - spotlight.width / 2, Gdx.graphics.getHeight()
                                 - spotlight.height, DEFAULT_FADE_TIME),
                         FadeIn.$(DEFAULT_FADE_TIME)));
 
         // handle second text label
         Label labelFirstLine = (Label) stage.findActor("labelFirstLine");
-        labelFirstLine.visible = true;
         labelFirstLine.action(
                 Sequence.$(
                         FadeTo.$(0, 0f),
@@ -432,7 +440,6 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
         // handle first text label
         Label labelSecondLine = (Label) stage.findActor("labelSecondLine");
-        labelSecondLine.visible = true;
         labelSecondLine.action(
                 Sequence.$(
                         FadeTo.$(0, 0f),
@@ -446,6 +453,12 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
             creature.action(Sequence.$(FadeTo.$(0, 0f), Delay.$(DEFAULT_FADE_TIME),
                     FadeIn.$(DEFAULT_FADE_TIME)));
         }
+
+        for (Button b : topButtons) {
+            b.visible = true;
+        }
+
+        initializeCreaturePositions();
 
     }
 
@@ -499,11 +512,12 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
                 Sequence.$(FadeTo.$(0, 0f), FadeIn.$(DEFAULT_FADE_TIME)));
 
         // fade in and move creature name
-        stage.findActor("creaturename").visible = true;
-        ((Label) stage.findActor("creaturename")).setText(getSelectedCreature().name);
-        stage.findActor("creaturename").action(
-                Sequence.$(FadeTo.$(0, 0f),
-                        Delay.$(MoveBy.$(175, 0, DEFAULT_FADE_TIME), DEFAULT_FADE_TIME),
+        Label creatureName = (Label) stage.findActor("creaturename");
+        creatureName.setText(getSelectedCreature().name);
+        creatureName.action(
+                Sequence.$(
+                        Delay.$(MoveTo.$((spotlight.x + spotlight.width / 2) - creatureName.width
+                                / 2 + 175, 0, DEFAULT_FADE_TIME), DEFAULT_FADE_TIME),
                         FadeIn.$(DEFAULT_FADE_TIME)));
     }
 
@@ -516,6 +530,10 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         currentState = state.SCREEN3;
 
         stage.findActor("summary").action(FadeOut.$(DEFAULT_FADE_TIME));
+
+        // stage.findActor("nameField").visible = true;
+        // stage.findActor("nameField")
+        // .action(Delay.$(FadeIn.$(DEFAULT_FADE_TIME), DEFAULT_FADE_TIME));
     }
 
     private void transitionToScreen4() {
@@ -527,8 +545,16 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         // set currentState to SCREEN 4
         currentState = state.SCREEN4;
 
+        stage.findActor("nameField").action(FadeOut.$(DEFAULT_FADE_TIME));
+
         stage.findActor("gender").visible = true;
+        stage.findActor("gender").action(
+                Sequence.$(FadeTo.$(0f, 0), Delay.$(FadeIn.$(DEFAULT_FADE_TIME),
+                        DEFAULT_FADE_TIME)));
         stage.findActor(GRP_GENDER_BUTTONS).visible = true;
+        stage.findActor(GRP_GENDER_BUTTONS).action(
+                Sequence.$(FadeTo.$(0f, 0), Delay.$(FadeIn.$(DEFAULT_FADE_TIME),
+                        DEFAULT_FADE_TIME)));
     }
 
     private Image getSelectedCreature() {
@@ -621,12 +647,22 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         else if (currentState == state.SCREEN3) {
             transitionToScreen4();
         }
+        else if (currentState == state.SCREEN4) {
+            initializeCreaturePositions();
+            initializeInput();
+            fadeOutEverything();
+            transitionToScreen1();
+        }
     }
 
     private void fadeOutEverything() {
+        // hide all groups but ignore individual actors
         for (Actor actor : stage.getActors()) {
-            actor.action(FadeOut.$(DEFAULT_FADE_TIME));
+            if (actor.getClass() != Group.class) {
+                actor.action(FadeTo.$(0, 0));
+            }
         }
+        stage.findActor(GRP_GENDER_BUTTONS).action(FadeTo.$(0, 0));
     }
 
     public boolean swipe(int x, int y, int deltaX, int deltay) {
