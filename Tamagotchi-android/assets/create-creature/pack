@@ -36,3 +36,17 @@ MainButtonAccept
   orig: 55, 55
   offset: 0, 0
   index: -1
+CreateButtonGirl
+  rotate: false
+  xy: 2, 59
+  size: 55, 55
+  orig: 55, 55
+  offset: 0, 0
+  index: -1
+CreateButtonBoy
+  rotate: false
+  xy: 59, 59
+  size: 55, 55
+  orig: 55, 55
+  offset: 0, 0
+  index: -1
