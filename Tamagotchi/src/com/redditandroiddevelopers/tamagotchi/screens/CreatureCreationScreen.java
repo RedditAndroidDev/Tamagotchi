@@ -3,7 +3,6 @@ package com.redditandroiddevelopers.tamagotchi.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -43,7 +42,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
     private static final String TAG = "Tamagotchi:CreatureCreationScreen";
 
-    // current state
+    // define possible states
     private enum state {
         SCREEN_INIT,
         SCREEN1,
@@ -54,14 +53,14 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
     private state currentState;
 
-    // group names
+    // define group names
     private static final String GRP_CREATURES = "creatures";
     private static final String GRP_BACKGROUND = "background";
     private static final String GRP_TEXT = "text";
     private static final String GRP_TOP_BUTTONS = "top_buttons";
     private static final String GRP_GENDER_BUTTONS = "gender_buttons";
 
-    // fonts
+    // define fonts
     private static final String ROBOTO_REGULAR = "fonts/Roboto-Regular.ttf";
 
     // number of creatures to create
@@ -93,9 +92,9 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     private Button[] genderButtons;
 
     private static final float DEFAULT_FADE_TIME = 0.5f;
-    
-    private TextFieldStyle textFieldStyle1 = new TextFieldStyle();
-    
+
+    private final TextFieldStyle textFieldStyle1 = new TextFieldStyle();
+
     // load texture atlas
     TextureAtlas textureAtlas;
 
@@ -307,38 +306,40 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
      */
     private void initializeLayout3(boolean visible) {
         // TODO: initialize third layout
-    	textFieldStyle1.font = FontHelper.createBitmapFont(ROBOTO_REGULAR, 20f, stage);
-    	textFieldStyle1.fontColor = Color.WHITE;
-    	
-    	//nameField
+        textFieldStyle1.font = FontHelper.createBitmapFont(ROBOTO_REGULAR, 20f, stage);
+        textFieldStyle1.fontColor = Color.WHITE;
+
+        // nameField
         TextField nameField = new TextField("boosh", textFieldStyle1);
         nameField.x = centerX - (stage.width() / 3) - (nameField.width / 4);
         nameField.y = centerY;
         nameField.visible = false;
-        
+
         stage.addActor(nameField);
     }
 
     private void initializeLayout4(boolean visible) {
-    	
+
         final Group genderBtnGroup = new Group(GRP_GENDER_BUTTONS);
-        
-        //Gender Label
+
+        // initialize gender label
         String text = "Gender";
         Label gender = new Label(text, labelStyle80, "gender");
-        //add padding
-        //gender.width += 20;
+
+        // positions gender label
         gender.x = centerX - (stage.width() / 3) - (gender.width / 4);
         gender.y = centerY;
-        gender.visible = false;
-        
-        // create buttons names
+
+        // set gender label to specified visibility
+        gender.visible = visible;
+
+        // define buttons names
         final String[] interactButtonIDs = new String[] {
                 "CreateButtonGirl",
                 "CreateButtonBoy",
         };
 
-        // load texture regions for buttons in top right corner
+        // load texture regions for gender buttons
         final TextureRegion[] interactButtonTextureRegions = new TextureRegion[interactButtonIDs.length];
         for (int i = 0; i < interactButtonIDs.length; i++) {
             interactButtonTextureRegions[i] = textureAtlas.findRegion(interactButtonIDs[i]);
@@ -347,7 +348,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         // set margin between buttons
         final int marginBetweenButtons = 10;
 
-        // position buttons within group and add them to the 'topButtonsGroup'
+        // position buttons within group and add them to the 'genderBtnGroup'
         final int width = interactButtonTextureRegions[0].getRegionWidth() + marginBetweenButtons;
         genderButtons = new Button[GENDERBTN_NUM_BUTTONS];
         for (int i = 0; i < GENDERBTN_NUM_BUTTONS; i++) {
@@ -357,17 +358,20 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
             genderBtnGroup.addActor(button);
             genderButtons[i] = button;
         }
-        genderBtnGroup.visible = false;
 
-        // adjust width of 'topButtons' group
+        // set gender button group to specified visibility
+        genderBtnGroup.visible = visible;
+
+        // adjust width of 'genderBtnGroup' group
         genderBtnGroup.width = width * genderBtnGroup.getActors().size();
-        // position topButtons in top right corner
+
+        // position topButtons underneath gender label
         genderBtnGroup.x = gender.x + (gender.width / 4);
         genderBtnGroup.y = gender.y - (gender.height / 4);
-        
+
+        // add actors to stage
         stage.addActor(gender);
         stage.addActor(genderBtnGroup);
-
     }
 
     /**
@@ -450,16 +454,15 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
             return;
         }
         Gdx.app.debug(TAG, "Going to Screen2");
-        
+
         // set currentState to SCREEN 2
         currentState = state.SCREEN2;
 
         // fade out top buttons
-        	//:TODO Fade out
-        	//Leave this out for now so we can navigate
-        	//stage.findActor(GRP_TOP_BUTTONS).visible = false;
-        
-        
+        // :TODO Fade out
+        // Leave this out for now so we can navigate
+        // stage.findActor(GRP_TOP_BUTTONS).visible = false;
+
         // remove gestureDetector to prevent swiping after first screen
         game.inputMultiplexer.removeProcessor(gestureDetector);
 
@@ -512,8 +515,6 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         // set currentState to SCREEN 3
         currentState = state.SCREEN3;
 
-        //stage.findActor(textf)
-        
         stage.findActor("summary").action(FadeOut.$(DEFAULT_FADE_TIME));
     }
 
@@ -522,10 +523,10 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
             return;
         }
         Gdx.app.debug(TAG, "Going to Screen4");
-        
+
         // set currentState to SCREEN 4
         currentState = state.SCREEN4;
-        
+
         stage.findActor("gender").visible = true;
         stage.findActor(GRP_GENDER_BUTTONS).visible = true;
     }
