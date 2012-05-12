@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Delay;
 import com.badlogic.gdx.scenes.scene2d.actions.FadeIn;
 import com.badlogic.gdx.scenes.scene2d.actions.FadeOut;
-import com.badlogic.gdx.scenes.scene2d.actions.FadeTo;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveBy;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveTo;
 import com.badlogic.gdx.scenes.scene2d.actions.Sequence;
@@ -431,18 +430,18 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
         // handle second text label
         Label labelFirstLine = (Label) stage.findActor("labelFirstLine");
+        labelFirstLine.color.a = 0f;
         labelFirstLine.action(
                 Sequence.$(
-                        FadeTo.$(0, 0f),
                         MoveTo.$(centerX - labelFirstLine.width / 2, 35 - labelFirstLine.height,
                                 DEFAULT_FADE_TIME),
                         FadeIn.$(DEFAULT_FADE_TIME)));
 
         // handle first text label
         Label labelSecondLine = (Label) stage.findActor("labelSecondLine");
+        labelSecondLine.color.a = 0f;
         labelSecondLine.action(
                 Sequence.$(
-                        FadeTo.$(0, 0f),
                         MoveTo.$(centerX - labelSecondLine.width / 2, 5 - labelSecondLine.height,
                                 DEFAULT_FADE_TIME),
                         FadeIn.$(DEFAULT_FADE_TIME)));
@@ -450,8 +449,8 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         // show creatures
         for (Image creature : creatureList) {
             creature.visible = true;
-            creature.action(Sequence.$(FadeTo.$(0, 0f), Delay.$(DEFAULT_FADE_TIME),
-                    FadeIn.$(DEFAULT_FADE_TIME)));
+            creature.color.a = 0f;
+            creature.action(Delay.$(FadeIn.$(DEFAULT_FADE_TIME), DEFAULT_FADE_TIME));
         }
 
         for (Button b : topButtons) {
@@ -508,8 +507,8 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         // fade in summary
         // FIXME: find better way to fade in summary
         stage.findActor("summary").visible = true;
-        stage.findActor("summary").action(
-                Sequence.$(FadeTo.$(0, 0f), FadeIn.$(DEFAULT_FADE_TIME)));
+        stage.findActor("summary").color.a = 0f;
+        stage.findActor("summary").action(FadeIn.$(DEFAULT_FADE_TIME));
 
         // fade in and move creature name
         Label creatureName = (Label) stage.findActor("creaturename");
@@ -548,13 +547,11 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         stage.findActor("nameField").action(FadeOut.$(DEFAULT_FADE_TIME));
 
         stage.findActor("gender").visible = true;
-        stage.findActor("gender").action(
-                Sequence.$(FadeTo.$(0f, 0), Delay.$(FadeIn.$(DEFAULT_FADE_TIME),
-                        DEFAULT_FADE_TIME)));
+        stage.findActor("gender").color.a = 0f;
+        stage.findActor("gender").action(FadeIn.$(DEFAULT_FADE_TIME));
         stage.findActor(GRP_GENDER_BUTTONS).visible = true;
-        stage.findActor(GRP_GENDER_BUTTONS).action(
-                Sequence.$(FadeTo.$(0f, 0), Delay.$(FadeIn.$(DEFAULT_FADE_TIME),
-                        DEFAULT_FADE_TIME)));
+        stage.findActor(GRP_GENDER_BUTTONS).color.a = 0f;
+        stage.findActor(GRP_GENDER_BUTTONS).action(FadeIn.$(DEFAULT_FADE_TIME));
     }
 
     private Image getSelectedCreature() {
@@ -659,10 +656,10 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         // hide all groups but ignore individual actors
         for (Actor actor : stage.getActors()) {
             if (actor.getClass() != Group.class) {
-                actor.action(FadeTo.$(0, 0));
+                actor.color.a = 0f;
             }
         }
-        stage.findActor(GRP_GENDER_BUTTONS).action(FadeTo.$(0, 0));
+        stage.findActor(GRP_GENDER_BUTTONS).color.a = 0f;
     }
 
     public boolean swipe(int x, int y, int deltaX, int deltay) {
