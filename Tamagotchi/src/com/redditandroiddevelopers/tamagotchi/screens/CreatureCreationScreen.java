@@ -59,6 +59,15 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     private static final String GRP_TOP_BUTTONS = "top_buttons";
     private static final String GRP_GENDER_BUTTONS = "gender_buttons";
 
+    // define actor names
+    private static final String ACTOR_LABEL_SUMMARY = "summary";
+    private static final String ACTOR_LABEL_GENDER = "gender";
+    private static final String ACTOR_TEXTFIELD_NAME = "nameField";
+    private static final String ACTOR_LABEL_FIRST_LINE = "labelFirstLine";
+    private static final String ACTOR_LABEL_SECOND_LINE = "labelSecondLine";
+    private static final String ACTOR_IMAGE_SPOTLIGHT = "spotlight";
+    private static final String ACTOR_LABEL_CREATURE_NAME = "creaturename";
+
     // define fonts
     private static final String ROBOTO_REGULAR = "fonts/Roboto-Regular.ttf";
 
@@ -209,18 +218,18 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
         // create spotlight
         Image spotlight = new Image(spotlightTextureRegion, Scaling.stretch, Align.CENTER,
-                "spotlight");
+                ACTOR_IMAGE_SPOTLIGHT);
         spotlight.x = Gdx.graphics.getWidth() / 2 - spotlight.width / 2;
         spotlight.y = Gdx.graphics.getHeight() - spotlight.height;
 
         // add text ("Choose a pet")
-        Label labelFirstLine = new Label("Choose a pet", labelStyle80, "labelFirstLine");
+        Label labelFirstLine = new Label("Choose a pet", labelStyle80, ACTOR_LABEL_FIRST_LINE);
         labelFirstLine.x = Gdx.graphics.getWidth() / 2 - labelFirstLine.width / 2;
         labelFirstLine.y = 35 - labelFirstLine.height;
 
         // add text ("Swipe either left or right to select a pet")
         Label labelSecondLine = new Label("Swipe either left or right to select a pet",
-                labelStyle40, "labelSecondLine");
+                labelStyle40, ACTOR_LABEL_SECOND_LINE);
         labelSecondLine.x = Gdx.graphics.getWidth() / 2 - labelSecondLine.width / 2;
         labelSecondLine.y = 5 - labelSecondLine.height;
 
@@ -286,14 +295,14 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         // create summary text
         String text = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
         Label summary = new Label(TextUtils.insertPeriodically(text, "\n", 30), labelStyle20,
-                "summary");
+                ACTOR_LABEL_SUMMARY);
         summary.x = 50;
         summary.y = Gdx.graphics.getHeight() - 100 - summary.height;
         summary.visible = visible;
 
         // create creature name
-        Label name = new Label(creatureList.get(0).name, labelStyle80, "creaturename");
-        Image spotlight = (Image) stage.findActor("spotlight");
+        Label name = new Label(creatureList.get(0).name, labelStyle80, ACTOR_LABEL_CREATURE_NAME);
+        Image spotlight = (Image) stage.findActor(ACTOR_IMAGE_SPOTLIGHT);
         name.x = (spotlight.x + spotlight.width / 2) - name.width / 2;
         name.y = 50 - name.height;
         name.visible = false;
@@ -311,7 +320,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         textFieldStyle1.fontColor = Color.WHITE;
 
         // nameField
-        TextField nameField = new TextField("boosh", null, textFieldStyle1, "nameField");
+        TextField nameField = new TextField("boosh", null, textFieldStyle1, ACTOR_TEXTFIELD_NAME);
         nameField.x = centerX - (stage.width() / 3) - (nameField.width / 4);
         nameField.y = centerY;
         nameField.visible = false;
@@ -325,7 +334,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
         // initialize gender label
         String text = "Gender";
-        Label gender = new Label(text, labelStyle80, "gender");
+        Label gender = new Label(text, labelStyle80, ACTOR_LABEL_GENDER);
 
         // positions gender label
         gender.x = centerX - (stage.width() / 3) - (gender.width / 4);
@@ -406,7 +415,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         Gdx.app.debug(TAG, "Going to Screen1");
         fadeOutEverything();
 
-        stage.findActor("creaturename").action(FadeOut.$(DEFAULT_FADE_TIME));
+        stage.findActor(ACTOR_LABEL_CREATURE_NAME).action(FadeOut.$(DEFAULT_FADE_TIME));
 
         // set currentState to SCREEN 1
         currentState = state.SCREEN1;
@@ -420,7 +429,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         stage.findActor(GRP_TOP_BUTTONS).visible = true;
 
         // handle spotlight
-        Image spotlight = (Image) stage.findActor("spotlight");
+        Image spotlight = (Image) stage.findActor(ACTOR_IMAGE_SPOTLIGHT);
         spotlight.visible = true;
         spotlight.action(
                 Sequence.$(
@@ -429,7 +438,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
                         FadeIn.$(DEFAULT_FADE_TIME)));
 
         // handle second text label
-        Label labelFirstLine = (Label) stage.findActor("labelFirstLine");
+        Label labelFirstLine = (Label) stage.findActor(ACTOR_LABEL_FIRST_LINE);
         labelFirstLine.color.a = 0f;
         labelFirstLine.action(
                 Sequence.$(
@@ -438,7 +447,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
                         FadeIn.$(DEFAULT_FADE_TIME)));
 
         // handle first text label
-        Label labelSecondLine = (Label) stage.findActor("labelSecondLine");
+        Label labelSecondLine = (Label) stage.findActor(ACTOR_LABEL_SECOND_LINE);
         labelSecondLine.color.a = 0f;
         labelSecondLine.action(
                 Sequence.$(
@@ -479,7 +488,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         game.inputMultiplexer.removeProcessor(gestureDetector);
 
         // get actors
-        Image spotlight = (Image) stage.findActor("spotlight");
+        Image spotlight = (Image) stage.findActor(ACTOR_IMAGE_SPOTLIGHT);
         Image creature = getSelectedCreature();
 
         // move spotlight to the right
@@ -501,17 +510,17 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         }
 
         // fade out bottom text
-        stage.findActor("labelFirstLine").action(FadeOut.$(DEFAULT_FADE_TIME));
-        stage.findActor("labelSecondLine").action(FadeOut.$(DEFAULT_FADE_TIME));
+        stage.findActor(ACTOR_LABEL_FIRST_LINE).action(FadeOut.$(DEFAULT_FADE_TIME));
+        stage.findActor(ACTOR_LABEL_SECOND_LINE).action(FadeOut.$(DEFAULT_FADE_TIME));
 
         // fade in summary
         // FIXME: find better way to fade in summary
-        stage.findActor("summary").visible = true;
-        stage.findActor("summary").color.a = 0f;
-        stage.findActor("summary").action(FadeIn.$(DEFAULT_FADE_TIME));
+        stage.findActor(ACTOR_LABEL_SUMMARY).visible = true;
+        stage.findActor(ACTOR_LABEL_SUMMARY).color.a = 0f;
+        stage.findActor(ACTOR_LABEL_SUMMARY).action(FadeIn.$(DEFAULT_FADE_TIME));
 
         // fade in and move creature name
-        Label creatureName = (Label) stage.findActor("creaturename");
+        Label creatureName = (Label) stage.findActor(ACTOR_LABEL_CREATURE_NAME);
         creatureName.setText(getSelectedCreature().name);
         creatureName.action(
                 Sequence.$(
@@ -528,11 +537,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         // set currentState to SCREEN 3
         currentState = state.SCREEN3;
 
-        stage.findActor("summary").action(FadeOut.$(DEFAULT_FADE_TIME));
-
-        // stage.findActor("nameField").visible = true;
-        // stage.findActor("nameField")
-        // .action(Delay.$(FadeIn.$(DEFAULT_FADE_TIME), DEFAULT_FADE_TIME));
+        stage.findActor(ACTOR_LABEL_SUMMARY).action(FadeOut.$(DEFAULT_FADE_TIME));
     }
 
     private void transitionToScreen4() {
@@ -544,11 +549,11 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         // set currentState to SCREEN 4
         currentState = state.SCREEN4;
 
-        stage.findActor("nameField").action(FadeOut.$(DEFAULT_FADE_TIME));
+        stage.findActor(ACTOR_TEXTFIELD_NAME).action(FadeOut.$(DEFAULT_FADE_TIME));
 
-        stage.findActor("gender").visible = true;
-        stage.findActor("gender").color.a = 0f;
-        stage.findActor("gender").action(FadeIn.$(DEFAULT_FADE_TIME));
+        stage.findActor(ACTOR_LABEL_GENDER).visible = true;
+        stage.findActor(ACTOR_LABEL_GENDER).color.a = 0f;
+        stage.findActor(ACTOR_LABEL_GENDER).action(FadeIn.$(DEFAULT_FADE_TIME));
         stage.findActor(GRP_GENDER_BUTTONS).visible = true;
         stage.findActor(GRP_GENDER_BUTTONS).color.a = 0f;
         stage.findActor(GRP_GENDER_BUTTONS).action(FadeIn.$(DEFAULT_FADE_TIME));
@@ -686,7 +691,6 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
                 c.y = getYPositionBasedOnXValue(c.x);
                 // Gdx.app.log(TAG, "Creature " + c.name + " placed at X: "
                 // + c.x + " Y: " + c.y);
-
             }
         }
         return true;
