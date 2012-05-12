@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.MoveBy;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveTo;
 import com.badlogic.gdx.scenes.scene2d.actions.Sequence;
 import com.badlogic.gdx.scenes.scene2d.ui.Align;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -86,9 +85,6 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     private static final int TOPBTN_ACCEPT = 0;
     private static final int TOPBTN_REMOVE = 1;
     private static final int TOPBTN_NUM_BUTTONS = 2;
-    private static final int GENDERBTN_GIRL = 0;
-    private static final int GENDERBTN_BOY = 1;
-    private static final int GENDERBTN_NUM_BUTTONS = 2;
 
     private final int centerX = Gdx.graphics.getWidth() / 2;
     private final int centerY = Gdx.graphics.getHeight() / 2;
@@ -99,7 +95,6 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     private LabelStyle labelStyle20;
 
     private Image[] topButtons;
-    private Button[] genderButtons;
 
     private static final float DEFAULT_FADE_TIME = 0.5f;
 
