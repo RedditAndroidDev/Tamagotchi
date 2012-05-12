@@ -53,23 +53,25 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     private state currentState;
 
     // define group names
-    private static final String GRP_CREATURES = "creatures";
-    private static final String GRP_BACKGROUND = "background";
-    private static final String GRP_TEXT = "text";
-    private static final String GRP_TOP_BUTTONS = "top_buttons";
-    private static final String GRP_GENDER_BUTTONS = "gender_buttons";
+    private static final String GROUP_CREATURES = "creatures";
+    private static final String GROUP_BACKGROUND = "background";
+    private static final String GROUP_TEXT = "text";
+    private static final String GROUP_TOP_BUTTONS = "top_buttons";
+    private static final String GROUP_GENDER_BUTTONS = "gender_buttons";
 
     // define actor names
+    private static final String ACTOR_IMAGE_SPOTLIGHT = "spotlight";
+    private static final String ACTOR_IMAGE_FEMALE = "female";
+    private static final String ACTOR_IMAGE_MALE = "male";
     private static final String ACTOR_LABEL_SUMMARY = "summary";
     private static final String ACTOR_LABEL_GENDER = "gender";
-    private static final String ACTOR_TEXTFIELD_NAME = "nameField";
     private static final String ACTOR_LABEL_FIRST_LINE = "labelFirstLine";
     private static final String ACTOR_LABEL_SECOND_LINE = "labelSecondLine";
-    private static final String ACTOR_IMAGE_SPOTLIGHT = "spotlight";
     private static final String ACTOR_LABEL_CREATURE_NAME = "creaturename";
+    private static final String ACTOR_TEXTFIELD_NAME = "nameField";
 
     // define fonts
-    private static final String ROBOTO_REGULAR = "fonts/Roboto-Regular.ttf";
+    private static final String FONT_ROBOTO_REGULAR = "fonts/Roboto-Regular.ttf";
 
     // number of creatures to create
     private static final int NUM_OF_CREATURES = 3;
@@ -96,7 +98,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     private LabelStyle labelStyle40;
     private LabelStyle labelStyle20;
 
-    private Button[] topButtons;
+    private Image[] topButtons;
     private Button[] genderButtons;
 
     private static final float DEFAULT_FADE_TIME = 0.5f;
@@ -157,11 +159,11 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
      */
     private void initializeFonts() {
         labelStyle80 = new Label.LabelStyle(FontHelper.createBitmapFont(
-                ROBOTO_REGULAR, 80f, stage), Color.WHITE);
+                FONT_ROBOTO_REGULAR, 80f, stage), Color.WHITE);
         labelStyle40 = new Label.LabelStyle(FontHelper.createBitmapFont(
-                ROBOTO_REGULAR, 40f, stage), Color.WHITE);
+                FONT_ROBOTO_REGULAR, 40f, stage), Color.WHITE);
         labelStyle20 = new Label.LabelStyle(FontHelper.createBitmapFont(
-                ROBOTO_REGULAR, 20f, stage), Color.WHITE);
+                FONT_ROBOTO_REGULAR, 20f, stage), Color.WHITE);
     }
 
     /**
@@ -181,10 +183,10 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         /* add groups for better readability and flexibility */
 
         // create main groups
-        final Group creatureGroup = new Group(GRP_CREATURES);
-        final Group backgroundGroup = new Group(GRP_BACKGROUND);
-        final Group textGroup = new Group(GRP_TEXT);
-        final Group topButtonsGroup = new Group(GRP_TOP_BUTTONS);
+        final Group creatureGroup = new Group(GROUP_CREATURES);
+        final Group backgroundGroup = new Group(GROUP_BACKGROUND);
+        final Group textGroup = new Group(GROUP_TEXT);
+        final Group topButtonsGroup = new Group(GROUP_TOP_BUTTONS);
 
         creatureGroup.visible = visible;
         backgroundGroup.visible = visible;
@@ -265,9 +267,10 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
         // position buttons within group and add them to the 'topButtonsGroup'
         final int width = interactButtonTextureRegions[0].getRegionWidth() + marginBetweenButtons;
-        topButtons = new Button[TOPBTN_NUM_BUTTONS];
+        topButtons = new Image[TOPBTN_NUM_BUTTONS];
         for (int i = 0; i < TOPBTN_NUM_BUTTONS; i++) {
-            final Button button = new Button(interactButtonTextureRegions[i]);
+            final Image button = new Image(interactButtonTextureRegions[i], Scaling.stretch,
+                    Align.CENTER, interactButtonIDs[i]);
             button.x = width * i;
             button.setClickListener(this);
             topButtonsGroup.addActor(button);
@@ -276,6 +279,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
         // adjust width of 'topButtons' group
         topButtonsGroup.width = width * topButtonsGroup.getActors().size();
+
         // position topButtons in top right corner
         topButtonsGroup.x = stage.centerX() - (topButtonsGroup.width / 2);
         topButtonsGroup.y = stage.top() - width;
@@ -316,7 +320,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
      */
     private void initializeLayout3(boolean visible) {
         // TODO: initialize third layout
-        textFieldStyle1.font = FontHelper.createBitmapFont(ROBOTO_REGULAR, 20f, stage);
+        textFieldStyle1.font = FontHelper.createBitmapFont(FONT_ROBOTO_REGULAR, 20f, stage);
         textFieldStyle1.fontColor = Color.WHITE;
 
         // nameField
@@ -330,7 +334,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
     private void initializeLayout4(boolean visible) {
 
-        final Group genderBtnGroup = new Group(GRP_GENDER_BUTTONS);
+        final Group genderBtnGroup = new Group(GROUP_GENDER_BUTTONS);
 
         // initialize gender label
         String text = "Gender";
@@ -343,37 +347,37 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         // set gender label to specified visibility
         gender.visible = visible;
 
-        // define buttons names
-        final String[] interactButtonIDs = new String[] {
-                "CreateButtonGirl",
-                "CreateButtonBoy",
-        };
-
         // load texture regions for gender buttons
-        final TextureRegion[] interactButtonTextureRegions = new TextureRegion[interactButtonIDs.length];
-        for (int i = 0; i < interactButtonIDs.length; i++) {
-            interactButtonTextureRegions[i] = textureAtlas.findRegion(interactButtonIDs[i]);
-        }
+        final TextureRegion femaleTextureRegion = textureAtlas.findRegion("CreateButtonGirl");
+        final TextureRegion maleTextureRegion = textureAtlas.findRegion("CreateButtonBoy");
 
         // set margin between buttons
         final int marginBetweenButtons = 10;
 
-        // position buttons within group and add them to the 'genderBtnGroup'
-        final int width = interactButtonTextureRegions[0].getRegionWidth() + marginBetweenButtons;
-        genderButtons = new Button[GENDERBTN_NUM_BUTTONS];
-        for (int i = 0; i < GENDERBTN_NUM_BUTTONS; i++) {
-            final Button button = new Button(interactButtonTextureRegions[i]);
-            button.x = width * i;
-            button.setClickListener(this);
-            genderBtnGroup.addActor(button);
-            genderButtons[i] = button;
-        }
+        // create gender buttons
+        final Image imgFemale = new Image(femaleTextureRegion, Scaling.stretch, Align.CENTER,
+                ACTOR_IMAGE_FEMALE);
+        final Image imgMale = new Image(maleTextureRegion, Scaling.stretch, Align.CENTER,
+                ACTOR_IMAGE_MALE);
+
+        // position gender buttons
+        imgFemale.x = imgFemale.y = 0;
+        imgMale.x = imgFemale.x + imgFemale.width + marginBetweenButtons;
+        imgMale.y = 0;
+
+        // make gender buttons touchable
+        imgFemale.setClickListener(this);
+        imgMale.setClickListener(this);
+
+        // add gender buttons to stage
+        genderBtnGroup.addActor(imgFemale);
+        genderBtnGroup.addActor(imgMale);
 
         // set gender button group to specified visibility
         genderBtnGroup.visible = visible;
 
         // adjust width of 'genderBtnGroup' group
-        genderBtnGroup.width = width * genderBtnGroup.getActors().size();
+        genderBtnGroup.width = imgMale.x + imgMale.width;
 
         // position topButtons underneath gender label
         genderBtnGroup.x = gender.x + (gender.width / 4);
@@ -422,11 +426,10 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
         initializeInput();
 
-        // TODO: Add transition to first layout
-        stage.findActor(GRP_BACKGROUND).visible = true;
-        stage.findActor(GRP_CREATURES).visible = true;
-        stage.findActor(GRP_TEXT).visible = true;
-        stage.findActor(GRP_TOP_BUTTONS).visible = true;
+        stage.findActor(GROUP_BACKGROUND).visible = true;
+        stage.findActor(GROUP_CREATURES).visible = true;
+        stage.findActor(GROUP_TEXT).visible = true;
+        stage.findActor(GROUP_TOP_BUTTONS).visible = true;
 
         // handle spotlight
         Image spotlight = (Image) stage.findActor(ACTOR_IMAGE_SPOTLIGHT);
@@ -462,8 +465,8 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
             creature.action(Delay.$(FadeIn.$(DEFAULT_FADE_TIME), DEFAULT_FADE_TIME));
         }
 
-        for (Button b : topButtons) {
-            b.visible = true;
+        for (Image button : topButtons) {
+            button.visible = true;
         }
 
         initializeCreaturePositions();
@@ -480,7 +483,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         currentState = state.SCREEN2;
 
         // fade out top buttons
-        // :TODO Fade out
+        // TODO: Fade out
         // Leave this out for now so we can navigate
         // stage.findActor(GRP_TOP_BUTTONS).visible = false;
 
@@ -514,7 +517,6 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         stage.findActor(ACTOR_LABEL_SECOND_LINE).action(FadeOut.$(DEFAULT_FADE_TIME));
 
         // fade in summary
-        // FIXME: find better way to fade in summary
         stage.findActor(ACTOR_LABEL_SUMMARY).visible = true;
         stage.findActor(ACTOR_LABEL_SUMMARY).color.a = 0f;
         stage.findActor(ACTOR_LABEL_SUMMARY).action(FadeIn.$(DEFAULT_FADE_TIME));
@@ -554,9 +556,9 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         stage.findActor(ACTOR_LABEL_GENDER).visible = true;
         stage.findActor(ACTOR_LABEL_GENDER).color.a = 0f;
         stage.findActor(ACTOR_LABEL_GENDER).action(FadeIn.$(DEFAULT_FADE_TIME));
-        stage.findActor(GRP_GENDER_BUTTONS).visible = true;
-        stage.findActor(GRP_GENDER_BUTTONS).color.a = 0f;
-        stage.findActor(GRP_GENDER_BUTTONS).action(FadeIn.$(DEFAULT_FADE_TIME));
+        stage.findActor(GROUP_GENDER_BUTTONS).visible = true;
+        stage.findActor(GROUP_GENDER_BUTTONS).color.a = 0f;
+        stage.findActor(GROUP_GENDER_BUTTONS).action(FadeIn.$(DEFAULT_FADE_TIME));
     }
 
     private Image getSelectedCreature() {
@@ -618,9 +620,9 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         } else if (actor == topButtons[TOPBTN_REMOVE]) {
             Gdx.app.debug(TAG, "Touch on Remove button");
             goToNextScreen();
-        } else if (actor == genderButtons[GENDERBTN_BOY]) {
+        } else if (actor.name == ACTOR_IMAGE_MALE) {
             Gdx.app.debug(TAG, "Touch on BOY button");
-        } else if (actor == genderButtons[GENDERBTN_GIRL]) {
+        } else if (actor.name == ACTOR_IMAGE_FEMALE) {
             Gdx.app.debug(TAG, "Touch on GIRL button");
         } else if (creatureList.contains(actor)) {
             Gdx.app.debug(TAG, "Hit on " + actor.name + " detected");
@@ -664,7 +666,10 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
                 actor.color.a = 0f;
             }
         }
-        stage.findActor(GRP_GENDER_BUTTONS).color.a = 0f;
+
+        // FIXME: those actors are not inside of a group yet
+        stage.findActor(GROUP_GENDER_BUTTONS).color.a = 0f;
+        stage.findActor(ACTOR_IMAGE_SPOTLIGHT).color.a = 0f;
     }
 
     public boolean swipe(int x, int y, int deltaX, int deltay) {
@@ -672,7 +677,6 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         Image lastCreature = creatureList.get(creatureList.size() - 1);
         int tempDeltaX = 0;
 
-        // FIXME: Very fast swipes can overcome those boundaries
         boolean cannotBeSwipedFurtherLeft = lastCreature.x <= Gdx.graphics.getWidth() / 2
                 - (lastCreature.width * lastCreature.scaleX) / 2
                 && deltaX < 0;
