@@ -68,6 +68,10 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     private static final String ACTOR_LABEL_SECOND_LINE = "labelSecondLine";
     private static final String ACTOR_LABEL_CREATURE_NAME = "creaturename";
     private static final String ACTOR_TEXTFIELD_NAME = "nameField";
+    final String[] interactButtonIDs = new String[] {
+            "MainButtonAccept",
+            "MainButtonRemove",
+    };
 
     // define fonts
     private static final String FONT_ROBOTO_REGULAR = "fonts/Roboto-Regular.ttf";
@@ -245,12 +249,6 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         textGroup.addActor(labelFirstLine);
         textGroup.addActor(labelSecondLine);
 
-        // create buttons names
-        final String[] interactButtonIDs = new String[] {
-                "MainButtonAccept",
-                "MainButtonRemove",
-        };
-
         // load texture regions for buttons in top right corner
         final TextureRegion[] interactButtonTextureRegions = new TextureRegion[interactButtonIDs.length];
         for (int i = 0; i < interactButtonIDs.length; i++) {
@@ -413,8 +411,6 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         }
         Gdx.app.debug(TAG, "Going to Screen1");
         fadeOutEverything();
-
-        stage.findActor(ACTOR_LABEL_CREATURE_NAME).action(FadeOut.$(DEFAULT_FADE_TIME));
 
         // set currentState to SCREEN 1
         currentState = state.SCREEN1;
@@ -665,6 +661,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         // FIXME: those actors are not inside of a group yet
         stage.findActor(GROUP_GENDER_BUTTONS).color.a = 0f;
         stage.findActor(ACTOR_IMAGE_SPOTLIGHT).color.a = 0f;
+        stage.findActor(ACTOR_LABEL_CREATURE_NAME).color.a = 0f;
     }
 
     public boolean swipe(int x, int y, int deltaX, int deltay) {
