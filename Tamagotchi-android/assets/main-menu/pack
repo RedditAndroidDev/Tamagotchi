@@ -1,0 +1,45 @@
+
+main-menu1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+AppName
+  rotate: false
+  xy: 2, 2
+  size: 512, 116
+  orig: 512, 128
+  offset: 0, 0
+  index: -1
+
+MMButtons1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+BtnSettingsUnpressed
+  rotate: false
+  xy: 2, 2
+  size: 256, 64
+  orig: 256, 64
+  offset: 0, 0
+  index: -1
+BtnSelectUnpressed
+  rotate: false
+  xy: 2, 68
+  size: 256, 64
+  orig: 256, 64
+  offset: 0, 0
+  index: -1
+BtnPlayUnpressed
+  rotate: false
+  xy: 2, 134
+  size: 256, 64
+  orig: 256, 64
+  offset: 0, 0
+  index: -1
+BtnMemoriesUnpressed
+  rotate: false
+  xy: 260, 2
+  size: 256, 64
+  orig: 256, 64
+  offset: 0, 0
+  index: -1

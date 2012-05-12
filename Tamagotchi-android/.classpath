@@ -7,5 +7,6 @@
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/Tamagotchi"/>
 	<classpathentry exported="true" kind="lib" path="/Tamagotchi/libs/gdx.jar" sourcepath="/Tamagotchi/libs/gdx-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/gdx-backend-android.jar" sourcepath="libs/gdx-backend-android-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Tamagotchi/libs/gdx-stb-truetype.jar" sourcepath="/Tamagotchi/libs/gdx-stb-truetype-sources.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

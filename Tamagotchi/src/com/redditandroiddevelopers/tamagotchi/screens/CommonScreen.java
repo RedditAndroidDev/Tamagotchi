@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,8 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
 
 /**
- * A common, base class for all of our app's screen implementations. Common
- * functionality for methods should go here
+ * A common, base class for all of our app's screen implementations.
  */
 public abstract class CommonScreen implements Screen, AssetErrorListener {
 
@@ -25,14 +25,29 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
     protected OrthographicCamera camera;
 
     /**
-     * A CommonScreen must have a reference to a TamagotchiGame. You must
-     * override this constructor (make sure to call this super constructor).
+     * A CommonScreen must have a reference to a {@link TamagotchiGame}. You
+     * must override this constructor (make sure to call this super
+     * constructor).
      * 
-     * @param game a TamagotchiGame instance
+     * @param game a {@link TamagotchiGame} instance
      */
     public CommonScreen(TamagotchiGame game) {
         this.game = game;
     }
+
+    /**
+     * Must be overridden by a concrete screen that subclasses this class.
+     * Implement the logic to load all of the resources needed throughout the
+     * lifetime of this screen.
+     */
+    public abstract void loadResources();
+
+    /**
+     * Must be overridden by a concrete screen that subclasses this class.
+     * Implement the logic to unload all resources loaded by
+     * {@link CommonScreen#loadResources()} implementation.
+     */
+    public abstract void unloadResources();
 
     /**
      * Called when the screen should update itself, e.g. continue a simulation
@@ -44,10 +59,13 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
      */
     public void update(float delta) {
         camera.update();
-        if (!Gdx.graphics.isGL20Available())
+        stage.act(delta);
+        if (!Gdx.graphics.isGL20Available()) {
             camera.apply(Gdx.gl10);
-        else
+        } else {
             assert false; // not supporting GL20 yet
+            throw new UnsupportedOperationException("OpenGL ES 2.0");
+        }
     }
 
     /**
@@ -68,7 +86,7 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
 
     @Override
     public void hide() {
-        // TODO: clear assets
+        unloadResources();
         game.assetManager.setErrorListener(null);
         game.inputMultiplexer.removeProcessor(stage);
         stage.dispose();
@@ -82,6 +100,7 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
     @Override
     public final void render(float delta) {
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+        drawBackground();
         update(delta);
         draw();
     }
@@ -104,17 +123,25 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
         camera = (OrthographicCamera) stage.getCamera();
         game.inputMultiplexer.addProcessor(stage);
         game.assetManager.setErrorListener(this);
-        // TODO: reload assets (after clearing them in hide())
+        loadResources();
+        // XXX: TEMPORARY!
+        // wait for resources to finish loading
+        game.assetManager.finishLoading();
     }
 
     /**
-     * Create a {@link Stage} for this screen, preferrably using the supplied
+     * Create a {@link Stage} for this screen, preferably using the supplied
      * {@link SpriteBatch} object.
      * 
      * @param batch the {@link SpriteBatch} object to use
      * @return a {@link Stage} object
      */
     protected abstract Stage createStage(SpriteBatch batch);
+
+    protected void drawBackground() {
+        final Color bgColor = game.config.backgroundColor;
+        Gdx.gl.glClearColor(bgColor.r, bgColor.g, bgColor.b, 1);
+    }
 
     @Override
     public void error(String fileName, @SuppressWarnings("rawtypes")

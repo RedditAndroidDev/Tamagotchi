@@ -30,6 +30,9 @@ public class CreatureDatabase<T extends CommonModel> implements
 
     public CreatureDatabase(Context context) {
         databaseHelper = new DatabaseHelper(context);
+        // TODO: remove this call to getWritableDatabase before production
+        databaseHelper.getWritableDatabase();
+        //seedData();
     }
 
     public T queryUnique(Mapper<T> rowMapper, String table,

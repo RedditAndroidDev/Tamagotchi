@@ -2,15 +2,18 @@
 package com.redditandroiddevelopers.tamagotchi.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.redditandroiddevelopers.tamagotchi.TamagotchiAssets.TextureAsset;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.redditandroiddevelopers.tamagotchi.TamagotchiAssets.TextureAtlasAsset;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
+import com.redditandroiddevelopers.tamagotchi.utils.FontHelper;
 
 public class MainMenuScreen extends CommonScreen implements ClickListener {
 
@@ -33,43 +36,43 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
     @Override
     public final void show() {
         super.show();
+        layout();
+    }
+
+    private void layout() {
+        final TextureAtlas textureAtlas = game.assets.getAsset(TextureAtlasAsset.MAIN_MENU);
 
         // adding the game name
-        Image imgAppName = new Image(game.assets.getTexture(TextureAsset.APP_NAME));
-        imgAppName.x = 10;
-        imgAppName.y = 325;
-        stage.addActor(imgAppName);
-
-        // TODO: Set up a TextureRegion that encompasses all UI elements
-        // involved here
+        LabelStyle labelstyle = new LabelStyle(FontHelper.createBitmapFont(
+                "fonts/Roboto-Regular.ttf", 120f, stage), Color.BLACK);
+        Label labelAppName = new Label("Tamagotchi", labelstyle);
+        labelAppName.x = 10;
+        labelAppName.y = 265;
+        stage.addActor(labelAppName);
 
         // adding the Play button
-        btnPlay = new Button(new TextureRegion(
-                game.assets.getTexture(TextureAsset.BTN_PLAY_UNPRESSED)));
+        btnPlay = new Button(textureAtlas.findRegion("BtnPlayUnpressed"));
         btnPlay.x = 10;
         btnPlay.y = 235;
         btnPlay.setClickListener(this);
         stage.addActor(btnPlay);
 
         // adding the Select button
-        btnSelect = new Button(new TextureRegion(
-                game.assets.getTexture(TextureAsset.BTN_SELECT_UNPRESSED)));
+        btnSelect = new Button(textureAtlas.findRegion("BtnSelectUnpressed"));
         btnSelect.x = 10;
         btnSelect.y = 160;
         btnSelect.setClickListener(this);
         stage.addActor(btnSelect);
 
         // adding the Memories button
-        btnMemories = new Button(new TextureRegion(
-                game.assets.getTexture(TextureAsset.BTN_MEMORIES_UNPRESSED)));
+        btnMemories = new Button(textureAtlas.findRegion("BtnMemoriesUnpressed"));
         btnMemories.x = 10;
         btnMemories.y = 85;
         btnMemories.setClickListener(this);
         stage.addActor(btnMemories);
 
         // adding the Settings button
-        btnSettings = new Button(new TextureRegion(
-                game.assets.getTexture(TextureAsset.BTN_SETTINGS_UNPRESSED)));
+        btnSettings = new Button(textureAtlas.findRegion("BtnSettingsUnpressed"));
         btnSettings.x = 10;
         btnSettings.y = 10;
         btnSettings.setClickListener(this);
@@ -83,6 +86,7 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
             game.updateState(TamagotchiGame.STATE_MAIN_GAME);
         } else if (actor == btnSelect) {
             Gdx.app.debug(TAG, "Touch on Select");
+            game.updateState(TamagotchiGame.STATE_SELECT_PET);
         } else if (actor == btnMemories) {
             Gdx.app.debug(TAG, "Touch on Memories");
         } else if (actor == btnSettings) {
@@ -93,4 +97,18 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
         }
     }
 
+    @Override
+    public void loadResources() {
+        game.assets.loadAsset(TextureAtlasAsset.MAIN_MENU);
+    }
+
+    @Override
+    public void unloadResources() {
+        game.assets.unloadAsset(TextureAtlasAsset.MAIN_MENU);
+    }
+
+    @Override
+    protected void drawBackground() {
+        Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
+    }
 }

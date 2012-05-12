@@ -1,0 +1,149 @@
+
+Backgrounds1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+PlanetsBackground
+  rotate: false
+  xy: 2, 2
+  size: 784, 287
+  orig: 784, 287
+  offset: 0, 0
+  index: -1
+StaticGround
+  rotate: false
+  xy: 2, 291
+  size: 800, 150
+  orig: 800, 150
+  offset: 0, 0
+  index: -1
+HillsMidground
+  rotate: false
+  xy: 2, 443
+  size: 800, 82
+  orig: 800, 82
+  offset: 0, 0
+  index: -1
+HillsForeground
+  rotate: false
+  xy: 2, 527
+  size: 800, 79
+  orig: 800, 79
+  offset: 0, 0
+  index: -1
+
+Creatures1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+PetDefault
+  rotate: false
+  xy: 2, 2
+  size: 167, 127
+  orig: 167, 127
+  offset: 0, 0
+  index: -1
+
+MGButtons1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+MainButtonToilet
+  rotate: false
+  xy: 2, 2
+  size: 110, 110
+  orig: 110, 110
+  offset: 0, 0
+  index: -1
+MainButtonSleepOn
+  rotate: false
+  xy: 114, 2
+  size: 110, 110
+  orig: 110, 110
+  offset: 0, 0
+  index: -1
+MainButtonSleepOff
+  rotate: false
+  xy: 226, 2
+  size: 110, 110
+  orig: 110, 110
+  offset: 0, 0
+  index: -1
+MainButtonShower
+  rotate: false
+  xy: 338, 2
+  size: 110, 110
+  orig: 110, 110
+  offset: 0, 0
+  index: -1
+MainButtonFood
+  rotate: false
+  xy: 450, 2
+  size: 110, 110
+  orig: 110, 110
+  offset: 0, 0
+  index: -1
+RightSwipeArrow
+  rotate: false
+  xy: 562, 2
+  size: 36, 76
+  orig: 36, 76
+  offset: 0, 0
+  index: -1
+LeftSwipeArrow
+  rotate: false
+  xy: 600, 2
+  size: 36, 76
+  orig: 36, 76
+  offset: 0, 0
+  index: -1
+
+Overlays1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+SleepDarknessOverlay
+  rotate: false
+  xy: 2, 2
+  size: 800, 480
+  orig: 800, 480
+  offset: 0, 0
+  index: -1
+
+SpeechBubbles1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+SpeechInjured
+  rotate: false
+  xy: 2, 2
+  size: 218, 178
+  orig: 218, 178
+  offset: 0, 0
+  index: -1
+SpeechHunger
+  rotate: false
+  xy: 2, 182
+  size: 218, 178
+  orig: 218, 178
+  offset: 0, 0
+  index: -1
+
+Unsorted1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+SpeechStinky
+  rotate: false
+  xy: 2, 2
+  size: 156, 135
+  orig: 156, 135
+  offset: 0, 0
+  index: -1
+Poop
+  rotate: false
+  xy: 160, 2
+  size: 75, 77
+  orig: 75, 77
+  offset: 0, 0
+  index: -1
