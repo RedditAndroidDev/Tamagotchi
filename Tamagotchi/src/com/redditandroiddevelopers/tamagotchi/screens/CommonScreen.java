@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.redditandroiddevelopers.tamagotchi.TamagotchiConfiguration;
 import com.redditandroiddevelopers.tamagotchi.TamagotchiGame;
 
 /**
@@ -138,9 +139,15 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
      */
     protected abstract Stage createStage(SpriteBatch batch);
 
+    /**
+     * Called at the start of every {@code render()}, before {@code update()}
+     * and {@code draw()}. By default, dispatch a {@code gl} call to render a
+     * background color as specified in
+     * {@link TamagotchiConfiguration#defaultBackgroundColor}.
+     */
     protected void drawBackground() {
-        final Color bgColor = game.config.backgroundColor;
-        Gdx.gl.glClearColor(bgColor.r, bgColor.g, bgColor.b, 1);
+        final Color bgc = game.config.defaultBackgroundColor;
+        Gdx.gl.glClearColor(bgc.r, bgc.g, bgc.b, bgc.a);
     }
 
     @Override
