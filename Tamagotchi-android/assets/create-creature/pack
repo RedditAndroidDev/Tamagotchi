@@ -17,3 +17,36 @@ PetDefault
   orig: 249, 181
   offset: 0, 0
   index: -1
+
+CCButtons1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+MainButtonRemove
+  rotate: false
+  xy: 2, 2
+  size: 55, 55
+  orig: 55, 55
+  offset: 0, 0
+  index: -1
+MainButtonAccept
+  rotate: false
+  xy: 59, 2
+  size: 55, 55
+  orig: 55, 55
+  offset: 0, 0
+  index: -1
+CreateButtonGirl
+  rotate: false
+  xy: 2, 59
+  size: 55, 55
+  orig: 55, 55
+  offset: 0, 0
+  index: -1
+CreateButtonBoy
+  rotate: false
+  xy: 59, 59
+  size: 55, 55
+  orig: 55, 55
+  offset: 0, 0
+  index: -1

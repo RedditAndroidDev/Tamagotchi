@@ -7,7 +7,7 @@ import com.redditandroiddevelopers.tamagotchi.dao.CreatureDao;
 import com.redditandroiddevelopers.tamagotchi.dao.CreatureEvolutionDao;
 import com.redditandroiddevelopers.tamagotchi.dao.CreatureRaiseTypeDao;
 import com.redditandroiddevelopers.tamagotchi.dao.CreatureStateDao;
-import com.redditandroiddevelopers.tamagotchi.dao.ExperienceDao;
+import com.redditandroiddevelopers.tamagotchi.dao.ExperienceActionDao;
 import com.redditandroiddevelopers.tamagotchi.dao.MedicineDao;
 import com.redditandroiddevelopers.tamagotchi.dao.SicknessDao;
 
@@ -25,15 +25,16 @@ public class TamagotchiConfiguration {
     public int logLevel = Application.LOG_DEBUG;
     public float stageWidth = 800;
     public float stageHeight = 480;
-    public Color backgroundColor = new Color((226f / 255), (232f / 255), (254f / 255), 1f);
+    public Color defaultBackgroundColor = new Color(226f / 255f, 232f / 255f, 254f / 255f, 1f);
+    public Color creatureCreationBackgroundColor = new Color(42f / 255f, 42f / 255f, 42f / 255f, 1f);
 
     // Persistence
     public CreatureDao creatureDao;
     public CreatureEvolutionDao creatureEvolutionDao;
     public CreatureRaiseTypeDao creatureRaiseTypeDao;
     public CreatureStateDao creatureStateDao;
-    public ExperienceDao experienceDao;
+    public ExperienceActionDao experienceActionDao;
     public MedicineDao medicineDao;
-    public SicknessDao sicknessDay;
+    public SicknessDao sicknessDao;
 
 }

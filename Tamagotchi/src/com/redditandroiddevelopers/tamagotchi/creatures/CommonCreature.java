@@ -1,8 +1,11 @@
 
 package com.redditandroiddevelopers.tamagotchi.creatures;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.FadeTo;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveBy;
 import com.badlogic.gdx.scenes.scene2d.actions.Parallel;
 import com.badlogic.gdx.scenes.scene2d.actions.Repeat;
@@ -14,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.interpolators.AccelerateInterpolator;
 import com.badlogic.gdx.scenes.scene2d.ui.Align;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Scaling;
+import com.redditandroiddevelopers.tamagotchi.Fifo;
 import com.redditandroiddevelopers.tamagotchi.model.Creature;
 
 /**
@@ -27,11 +31,19 @@ public abstract class CommonCreature extends Image {
     public boolean textureIsFlipped = false;
 
     /**
+     * Some objects/variables for creature actions.
+     */
+    private Action actionT;
+    private boolean latestActionDone;
+    private Fifo fifo = new Fifo();
+
+    /**
      * Creates a new CommonCreature.
      * 
      * @param creatureDefaultTextureRegion
      * @param name
      */
+
     public CommonCreature(TextureRegion creatureDefaultTextureRegion, String name) {
         super(creatureDefaultTextureRegion, Scaling.stretch, Align.CENTER, name);
 
@@ -41,6 +53,23 @@ public abstract class CommonCreature extends Image {
         // set origin for rotations in the center of the creature
         originX = width / 2;
         originY = height / 2;
+        actionT = new Parallel();
+
+    }
+
+    /**
+     * Function checking for creature actions, called in MainGameScreen Update()
+     */
+    public void lifeCycle() {
+        if(actionT.isDone()) {
+            latestActionDone = true;
+        }
+        if (!fifo.isEmpty() && latestActionDone) {
+            latestActionDone = false;
+            Gdx.app.debug(TAG, "Action " + actionT  + " Done" );
+            actionT = (Action) fifo.show(0);
+            action((Action) fifo.get());
+        }
     }
 
     /**
@@ -69,11 +98,9 @@ public abstract class CommonCreature extends Image {
      */
     public void moveBy(float x, float duration) {
         // single wobble
+
         Sequence scaling = Sequence.$(ScaleTo.$(scaleX, scaleY + 0.05f, 0.1f),
                 ScaleTo.$(scaleX, scaleY, 0.1f));
-
-        // temporary dirty fix to prevent creature from "growing"
-        scaleY = (int) scaleY;
 
         // calculates how often the animation should be played
         int times = Math.round(duration / 0.2f);
@@ -95,7 +122,7 @@ public abstract class CommonCreature extends Image {
                 textureIsFlipped = textureIsFlipped == true ? false : true;
             }
         }
-        action(parallel);
+        fifo.add(parallel);
     }
 
     /**
@@ -116,7 +143,8 @@ public abstract class CommonCreature extends Image {
         AccelerateInterpolator gravity2 = AccelerateInterpolator.$(1.5f);
         Sequence jump = Sequence.$(MoveBy.$(0, y, duration).setInterpolator(gravity1),
                 MoveBy.$(0, -y, duration).setInterpolator(gravity2));
-        action(jump);
+        // action(jump);
+        fifo.add(jump);
     }
 
     /**
@@ -126,9 +154,9 @@ public abstract class CommonCreature extends Image {
      * @param duration how long it will roll
      */
     public void roll(float x, float duration) {
-        Parallel rotate = Parallel.$(MoveBy.$(x, 0, duration),
+        Parallel parallel = Parallel.$(MoveBy.$(x, 0, duration),
                 RotateBy.$(x > 0 ? -360f : 360f, duration));
-        action(rotate);
+        fifo.add(parallel);
     }
 
     // showing speech bubbles

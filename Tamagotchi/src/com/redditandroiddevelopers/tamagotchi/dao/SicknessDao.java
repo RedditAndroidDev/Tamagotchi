@@ -18,7 +18,7 @@ public class SicknessDao {
     /*
      * Sickness
      */
-    public Sickness creature(Sickness sickness) {
+    public Sickness create(Sickness sickness) {
         return db.insert(sickness, CommonDatabase.SICKNESS_TABLE_NAME);
     }
 
