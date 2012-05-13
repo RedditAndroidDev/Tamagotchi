@@ -24,7 +24,7 @@ import com.redditandroiddevelopers.tamagotchi.screens.MainGameScreen;
 /**
  * Class to handle methods common to all creatures.
  */
-public abstract class CommonCreature extends Image {
+public abstract class CommonCreature extends Image implements OnActionCompleted {
 
     private static final String TAG = "Tamagotchi:CommonCreature";
 
@@ -76,17 +76,16 @@ public abstract class CommonCreature extends Image {
     /* Creature controller starts here */
 
     private void offerAction(Action act) {
-        act.setCompletionListener(new OnActionCompleted() {
-
-            @Override
-            public void completed(Action action) {
-                Gdx.app.debug(TAG, "Action " + action + " done");
-                synchronized (latestActionDone) {
-                    latestActionDone = true;
-                }
-            }
-        });
+        act.setCompletionListener(this);
         actionQueue.offer(act);
+    }
+
+    @Override
+    public void completed(Action action) {
+        Gdx.app.debug(TAG, "Action " + action + " done");
+        synchronized (latestActionDone) {
+            latestActionDone = true;
+        }
     }
 
     // IMPORTANT: Animations are currently bugged. Will be fixed over time.
