@@ -230,12 +230,12 @@ public class MainGameScreen extends CommonScreen implements ClickListener, DragL
 
     @Override
     public void update(float delta) {
-        super.update(delta);
         creature.lifeCycle();
         if (fpsLabel != null) {
             assert game.config.logFps;
             fpsLabel.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
         }
+        super.update(delta);
     }
 
     @Override
