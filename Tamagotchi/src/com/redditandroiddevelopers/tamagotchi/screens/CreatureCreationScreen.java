@@ -53,9 +53,6 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     private static final String GRP_BACKGROUND = "background";
     private static final String GRP_TEXT = "text";
 
-    // fonts
-    private static final String ROBOTO_REGULAR = "fonts/Roboto-Regular.ttf";
-
     // number of creatures to create
     private static final int NUM_OF_CREATURES = 3;
 
@@ -120,11 +117,11 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
      */
     private void initializeFonts() {
         labelStyle80 = new Label.LabelStyle(FontHelper.createBitmapFont(
-                ROBOTO_REGULAR, 80f, stage), Color.WHITE);
+                FontHelper.TTF_ROBOTO_REGULAR, 80f, stage), Color.WHITE);
         labelStyle40 = new Label.LabelStyle(FontHelper.createBitmapFont(
-                ROBOTO_REGULAR, 40f, stage), Color.WHITE);
+                FontHelper.TTF_ROBOTO_REGULAR, 40f, stage), Color.WHITE);
         labelStyle20 = new Label.LabelStyle(FontHelper.createBitmapFont(
-                ROBOTO_REGULAR, 20f, stage), Color.WHITE);
+                FontHelper.TTF_ROBOTO_REGULAR, 20f, stage), Color.WHITE);
     }
 
     /**
