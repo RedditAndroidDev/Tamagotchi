@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.OnActionCompleted;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveBy;
 import com.badlogic.gdx.scenes.scene2d.actions.Parallel;
 import com.badlogic.gdx.scenes.scene2d.actions.Repeat;
@@ -31,8 +32,7 @@ public abstract class CommonCreature extends Image {
     public boolean textureIsFlipped = false;
 
     // Some objects/variables for creature actions.
-    private final Action action;
-    private boolean latestActionDone;
+    private Boolean latestActionDone = true;
     private final LinkedList<Action> actionQueue = new LinkedList<Action>();
 
     /**
@@ -51,24 +51,22 @@ public abstract class CommonCreature extends Image {
         // set origin for rotations in the center of the creature
         originX = width / 2;
         originY = height / 2;
-        action = new Parallel();
     }
 
     /**
      * Function checking for creature actions, called in {@link MainGameScreen#update(float)}.
      */
     public void lifeCycle() {
-        latestActionDone = action.isDone();
-        if (!actionQueue.isEmpty() && latestActionDone) {
-            latestActionDone = false;
-            Gdx.app.debug(TAG, "Action " + action + " done");
-            action(actionQueue.poll());
+        synchronized (latestActionDone) {
+            if (latestActionDone && !actionQueue.isEmpty()) {
+                latestActionDone = false;
+                action(actionQueue.poll());
+            }
         }
     }
 
     /**
      * Gets the specific creature parameters.
-     * 
      * This is delegated to concrete subclasses of this class.
      * 
      * @return Creature the creature model
@@ -76,6 +74,20 @@ public abstract class CommonCreature extends Image {
     protected abstract Creature getCreatureParameters();
 
     /* Creature controller starts here */
+
+    private void offerAction(Action act) {
+        act.setCompletionListener(new OnActionCompleted() {
+
+            @Override
+            public void completed(Action action) {
+                Gdx.app.debug(TAG, "Action " + action + " done");
+                synchronized (latestActionDone) {
+                    latestActionDone = true;
+                }
+            }
+        });
+        actionQueue.offer(act);
+    }
 
     // IMPORTANT: Animations are currently bugged. Will be fixed over time.
 
@@ -114,7 +126,7 @@ public abstract class CommonCreature extends Image {
             }
         }
 
-        actionQueue.offer(parallel);
+        offerAction(parallel);
     }
 
     /**
@@ -136,7 +148,7 @@ public abstract class CommonCreature extends Image {
         Sequence jump = Sequence.$(MoveBy.$(0, y, duration).setInterpolator(gravity1),
                 MoveBy.$(0, -y, duration).setInterpolator(gravity2));
 
-        actionQueue.offer(jump);
+        offerAction(jump);
     }
 
     /**
@@ -149,7 +161,7 @@ public abstract class CommonCreature extends Image {
         Parallel parallel = Parallel.$(MoveBy.$(x, 0, duration),
                 RotateBy.$(x > 0 ? -360f : 360f, duration));
 
-        actionQueue.offer(parallel);
+        offerAction(parallel);
     }
 
     // showing speech bubbles
