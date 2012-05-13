@@ -73,9 +73,6 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
             "MainButtonRemove",
     };
 
-    // define fonts
-    private static final String FONT_ROBOTO_REGULAR = "fonts/Roboto-Regular.ttf";
-
     private static final float DEFAULT_FADE_TIME = 0.5f;
 
     // number of creatures to create
@@ -167,11 +164,11 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
      */
     private void initializeFonts() {
         labelStyle80 = new Label.LabelStyle(FontHelper.createBitmapFont(
-                FONT_ROBOTO_REGULAR, 80f, stage), Color.WHITE);
+                FontHelper.TTF_ROBOTO_REGULAR, 80f, stage), Color.WHITE);
         labelStyle40 = new Label.LabelStyle(FontHelper.createBitmapFont(
-                FONT_ROBOTO_REGULAR, 40f, stage), Color.WHITE);
+                FontHelper.TTF_ROBOTO_REGULAR, 40f, stage), Color.WHITE);
         labelStyle20 = new Label.LabelStyle(FontHelper.createBitmapFont(
-                FONT_ROBOTO_REGULAR, 20f, stage), Color.WHITE);
+                FontHelper.TTF_ROBOTO_REGULAR, 20f, stage), Color.WHITE);
     }
 
     /**
@@ -322,7 +319,8 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
      */
     private void initializeLayout3(boolean visible) {
         // TODO: initialize third layout
-        textFieldStyle1.font = FontHelper.createBitmapFont(FONT_ROBOTO_REGULAR, 20f, stage);
+        textFieldStyle1.font = FontHelper.createBitmapFont(FontHelper.TTF_ROBOTO_REGULAR,
+                20f, stage);
         textFieldStyle1.fontColor = Color.WHITE;
 
         // nameField
