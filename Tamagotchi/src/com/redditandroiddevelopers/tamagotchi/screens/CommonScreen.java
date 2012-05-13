@@ -53,8 +53,9 @@ public abstract class CommonScreen implements Screen, AssetErrorListener {
     /**
      * Called when the screen should update itself, e.g. continue a simulation
      * etc. By default, the {@link Camera} object of the associated
-     * {@link Stage} of this {@code Screen} is updated. Override this method for
-     * a game state update (make it brief!) but don't forget to call
+     * {@link Stage} of this {@code Screen} is updated and all actors within the
+     * stage are sent their outstanding actions. Override this method for
+     * additional game state update (make it brief!) but don't forget to call
      * {@code super.update()}. If you are manipulating the {@link Camera} in any
      * way, do so <em>prior</em> to calling {@code super.update()}.
      */

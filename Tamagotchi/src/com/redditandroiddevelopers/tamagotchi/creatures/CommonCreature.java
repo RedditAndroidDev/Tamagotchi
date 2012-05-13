@@ -1,11 +1,12 @@
 
 package com.redditandroiddevelopers.tamagotchi.creatures;
 
+import java.util.LinkedList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.actions.FadeTo;
+import com.badlogic.gdx.scenes.scene2d.OnActionCompleted;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveBy;
 import com.badlogic.gdx.scenes.scene2d.actions.Parallel;
 import com.badlogic.gdx.scenes.scene2d.actions.Repeat;
@@ -17,25 +18,22 @@ import com.badlogic.gdx.scenes.scene2d.interpolators.AccelerateInterpolator;
 import com.badlogic.gdx.scenes.scene2d.ui.Align;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Scaling;
-import com.redditandroiddevelopers.tamagotchi.Fifo;
 import com.redditandroiddevelopers.tamagotchi.model.Creature;
+import com.redditandroiddevelopers.tamagotchi.screens.MainGameScreen;
 
 /**
  * Class to handle methods common to all creatures.
  */
-public abstract class CommonCreature extends Image {
+public abstract class CommonCreature extends Image implements OnActionCompleted {
 
     private static final String TAG = "Tamagotchi:CommonCreature";
 
     public Creature creatureModel;
     public boolean textureIsFlipped = false;
 
-    /**
-     * Some objects/variables for creature actions.
-     */
-    private Action actionT;
-    private boolean latestActionDone;
-    private Fifo fifo = new Fifo();
+    // Some objects/variables for creature actions.
+    private Boolean latestActionDone = true;
+    private final LinkedList<Action> actionQueue = new LinkedList<Action>();
 
     /**
      * Creates a new CommonCreature.
@@ -53,38 +51,42 @@ public abstract class CommonCreature extends Image {
         // set origin for rotations in the center of the creature
         originX = width / 2;
         originY = height / 2;
-        actionT = new Parallel();
-
     }
 
     /**
-     * Function checking for creature actions, called in MainGameScreen Update()
+     * Function checking for creature actions, called in {@link MainGameScreen#update(float)}.
      */
     public void lifeCycle() {
-        if(actionT.isDone()) {
-            latestActionDone = true;
-        }
-        if (!fifo.isEmpty() && latestActionDone) {
-            latestActionDone = false;
-            Gdx.app.debug(TAG, "Action " + actionT  + " Done" );
-            actionT = (Action) fifo.show(0);
-            action((Action) fifo.get());
+        synchronized (latestActionDone) {
+            if (latestActionDone && !actionQueue.isEmpty()) {
+                latestActionDone = false;
+                action(actionQueue.poll());
+            }
         }
     }
 
     /**
      * Gets the specific creature parameters.
+     * This is delegated to concrete subclasses of this class.
      * 
-     * @return Creature
+     * @return Creature the creature model
      */
     protected abstract Creature getCreatureParameters();
 
-    @Override
-    public Actor hit(float x, float y) {
-        return super.hit(x, y);
+    /* Creature controller starts here */
+
+    private void offerAction(Action act) {
+        act.setCompletionListener(this);
+        actionQueue.offer(act);
     }
 
-    /* Creature controller starts here */
+    @Override
+    public void completed(Action action) {
+        Gdx.app.debug(TAG, "Action " + action + " done");
+        synchronized (latestActionDone) {
+            latestActionDone = true;
+        }
+    }
 
     // IMPORTANT: Animations are currently bugged. Will be fixed over time.
 
@@ -122,7 +124,8 @@ public abstract class CommonCreature extends Image {
                 textureIsFlipped = textureIsFlipped == true ? false : true;
             }
         }
-        fifo.add(parallel);
+
+        offerAction(parallel);
     }
 
     /**
@@ -143,8 +146,8 @@ public abstract class CommonCreature extends Image {
         AccelerateInterpolator gravity2 = AccelerateInterpolator.$(1.5f);
         Sequence jump = Sequence.$(MoveBy.$(0, y, duration).setInterpolator(gravity1),
                 MoveBy.$(0, -y, duration).setInterpolator(gravity2));
-        // action(jump);
-        fifo.add(jump);
+
+        offerAction(jump);
     }
 
     /**
@@ -156,7 +159,8 @@ public abstract class CommonCreature extends Image {
     public void roll(float x, float duration) {
         Parallel parallel = Parallel.$(MoveBy.$(x, 0, duration),
                 RotateBy.$(x > 0 ? -360f : 360f, duration));
-        fifo.add(parallel);
+
+        offerAction(parallel);
     }
 
     // showing speech bubbles
@@ -167,30 +171,35 @@ public abstract class CommonCreature extends Image {
      * @param textureRegionName
      */
     private void showBubble(String textureRegionName) {
+        // TODO: to be implemented
     }
 
     /**
      * Shows a speech bubble to indicate poop
      */
     public void showPoopBubble() {
+        // TODO: to be implemented
     }
 
     /**
      * Shows a speech bubble to indicate low health
      */
     public void showLowHealthBubble() {
+        // TODO: to be implemented
     }
 
     /**
      * Shows a speech bubble to indicate a general alert
      */
     public void showAlertBubble() {
+        // TODO: to be implemented
     }
 
     /**
      * Shows a speech bubble to indicate happiness
      */
     public void showHappyBubble() {
+        // TODO: to be implemented
     }
 
     // for state changes access creatureModel directly
