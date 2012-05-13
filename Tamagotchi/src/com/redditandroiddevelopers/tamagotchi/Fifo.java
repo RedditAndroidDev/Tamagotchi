@@ -1,74 +1,73 @@
 
 package com.redditandroiddevelopers.tamagotchi;
 
+import java.util.Arrays;
+
 public class Fifo {
-    private Object[] object;
+    private Object[] objects;
     private int size = 0;
 
     /**
-     * Fifo's creator, make space for one object on start
+     * Fifo's creator, make space for one objects on start
      */
     public Fifo() {
-        object = new Object[3];
+        objects = new Object[3];
     }
 
     /**
-     * Adds object to fifo
+     * Adds objects to fifo
      * 
      * @param ob
      */
     public void add(Object ob) {
-        if (object.length == size) {
-            Object[] temp = new Object[size + 3];
-            System.arraycopy(object, 0, temp, 0, size);
-            object = temp;
-            temp = null;
-        }
-
-        object[size] = ob;
-        size++;
+        ensureCapacity(size + 1);
+        objects[size++] = ob;
     }
 
     /*
-     * Return first object without removing it
+     * Return first objects without removing it
      */
     public Object show(int iterator) {
         if (size > 0 && iterator <=size && iterator >=0)
-            return object[iterator];
+            return objects[iterator];
         return null;
     }
 
     /**
-     * Remove first object from list
+     * Remove first objects from list
      */
     public void removeFirst() {
         if (size > 0) {
             size--;
-            System.arraycopy(object, 1, object, 0, object.length - 1);
+            System.arraycopy(objects, 1, objects, 0, objects.length - 1);
         }
     }
 
     /**
-     * Return and remove first object from list
+     * Return and remove first objects from list
      * 
      * @return
      */
     public Object get() {
         if (size > 0) {
-            Object temp;
-            temp = object[0];
-            size--;
-            System.arraycopy(object, 1, object, 0, object.length - 1);
+            //If size is half the array + 1 then resize it
+            int resize = (objects.length/2) + 1;
+            if(--size < resize)  {
+                objects = Arrays.copyOf(objects, Math.max(resize, size));
+            }
+            Object temp = objects[0];
+            System.arraycopy(objects, 1, objects, 0, objects.length - 1);
+            objects[size] = null; //For garbage collection
             return temp;
         }
         return null;
     }
 
     /**
-     * Remove all object from list
+     * Remove all objects from list
      */
     public void clear() {
-        object = new Object[1];
+        objects = new Object[1];
         size = 0;
     }
 
@@ -88,4 +87,20 @@ public class Fifo {
         return (size <= 0);
     }
 
+    /**
+     * Similar to Java ArrayList, ensures that the object
+     * has more than the minimum capacity
+     * @param minCapacity
+     */
+    public void ensureCapacity(int minCapacity) {
+        int oldCapacity = objects.length;
+        if (minCapacity > oldCapacity) {
+            Object[] oldData = objects;
+            int newCapacity = (oldCapacity * 3)/2 + 1;
+            if (newCapacity < minCapacity)
+                newCapacity = minCapacity;
+            // minCapacity is usually close to size, so this is a win:
+            objects = Arrays.copyOf(objects, newCapacity);
+        }
+    }
 }
