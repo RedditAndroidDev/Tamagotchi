@@ -8,7 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class FontHelper {
 
-    public static final String FONT_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.:;,{}\"´`'<>";
+    public static final String FONT_CHARACTERS =
+            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.:;,{}\"´`'<>";
 
     public static BitmapFont createBitmapFont(String fontFile, float size, Stage stage) {
         return TrueTypeFontFactory.createBitmapFont(

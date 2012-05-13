@@ -41,7 +41,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     private static final String TAG = "Tamagotchi:CreatureCreationScreen";
 
     // define possible states
-    private enum state {
+    private enum ScreenState {
         SCREEN_INIT,
         SCREEN1,
         SCREEN2,
@@ -49,7 +49,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         SCREEN4;
     }
 
-    private state currentState;
+    private ScreenState currentState;
 
     // define group names
     private static final String GROUP_CREATURES = "creatures";
@@ -68,7 +68,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     private static final String ACTOR_LABEL_SECOND_LINE = "labelSecondLine";
     private static final String ACTOR_LABEL_CREATURE_NAME = "creaturename";
     private static final String ACTOR_TEXTFIELD_NAME = "nameField";
-    final String[] interactButtonIDs = new String[] {
+    private final String[] interactButtonIDs = new String[] {
             "MainButtonAccept",
             "MainButtonRemove",
     };
@@ -76,7 +76,10 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     // define fonts
     private static final String FONT_ROBOTO_REGULAR = "fonts/Roboto-Regular.ttf";
 
+    private static final float DEFAULT_FADE_TIME = 0.5f;
+
     // number of creatures to create
+    // XXX: Temporary! TODO: Hook up to the database
     private static final int NUM_OF_CREATURES = 3;
 
     private final ArrayList<Image> creatureList;
@@ -90,22 +93,20 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     private static final int TOPBTN_REMOVE = 1;
     private static final int TOPBTN_NUM_BUTTONS = 2;
 
-    private final int centerX = Gdx.graphics.getWidth() / 2;
-    private final int centerY = Gdx.graphics.getHeight() / 2;
+    private Image[] topButtons;
 
     // font styles
     private LabelStyle labelStyle80;
     private LabelStyle labelStyle40;
     private LabelStyle labelStyle20;
 
-    private Image[] topButtons;
+    private final TextFieldStyle textFieldStyle1;
 
-    private static final float DEFAULT_FADE_TIME = 0.5f;
-
-    private final TextFieldStyle textFieldStyle1 = new TextFieldStyle();
+    private final int centerX = Gdx.graphics.getWidth() / 2;
+    private final int centerY = Gdx.graphics.getHeight() / 2;
 
     // load texture atlas
-    TextureAtlas textureAtlas;
+    private TextureAtlas textureAtlas;
 
     /**
      * Creates a new instance of the CreatureCreationScreen.
@@ -115,7 +116,14 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     public CreatureCreationScreen(TamagotchiGame game) {
         super(game);
         creatureList = new ArrayList<Image>();
-        gestureDetector = new GestureDetector(new SwipeHandler());
+        textFieldStyle1 = new TextFieldStyle();
+        gestureDetector = new GestureDetector(new GestureAdapter() {
+
+            @Override
+            public boolean pan(int x, int y, int deltaX, int deltaY) {
+                return swipe(x, y, deltaX, deltaY);
+            }
+        });
     }
 
     @Override
@@ -130,7 +138,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         leftMark = padding;
         rightMark = Gdx.graphics.getWidth() - padding;
         scaleFactor = 0.75f;
-        currentState = state.SCREEN_INIT;
+        currentState = ScreenState.SCREEN_INIT;
         textureAtlas = game.assets.getAsset(TextureAtlasAsset.CREATE_CREATURE);
         initializeInput();
         initializeFonts();
@@ -140,7 +148,8 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
 
     @Override
     protected void drawBackground() {
-        Gdx.gl.glClearColor(42f / 255, 42f / 255, 42f / 255, 1f);
+        final Color bgc = game.config.creatureCreationBackgroundColor;
+        Gdx.gl.glClearColor(bgc.r, bgc.g, bgc.b, bgc.a);
     }
 
     /**
@@ -406,14 +415,14 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     }
 
     private void transitionToScreen1() {
-        if (currentState == state.SCREEN1) {
+        if (currentState == ScreenState.SCREEN1) {
             return;
         }
         Gdx.app.debug(TAG, "Going to Screen1");
         fadeOutEverything();
 
         // set currentState to SCREEN 1
-        currentState = state.SCREEN1;
+        currentState = ScreenState.SCREEN1;
 
         initializeInput();
 
@@ -465,13 +474,13 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     }
 
     private void transitionToScreen2() {
-        if (currentState == state.SCREEN2) {
+        if (currentState == ScreenState.SCREEN2) {
             return;
         }
         Gdx.app.debug(TAG, "Going to Screen2");
 
         // set currentState to SCREEN 2
-        currentState = state.SCREEN2;
+        currentState = ScreenState.SCREEN2;
 
         // fade out top buttons
         // TODO: Fade out
@@ -523,24 +532,24 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     }
 
     private void transitionToScreen3() {
-        if (currentState == state.SCREEN3) {
+        if (currentState == ScreenState.SCREEN3) {
             return;
         }
         Gdx.app.debug(TAG, "Going to Screen3");
         // set currentState to SCREEN 3
-        currentState = state.SCREEN3;
+        currentState = ScreenState.SCREEN3;
 
         stage.findActor(ACTOR_LABEL_SUMMARY).action(FadeOut.$(DEFAULT_FADE_TIME));
     }
 
     private void transitionToScreen4() {
-        if (currentState == state.SCREEN4) {
+        if (currentState == ScreenState.SCREEN4) {
             return;
         }
         Gdx.app.debug(TAG, "Going to Screen4");
 
         // set currentState to SCREEN 4
-        currentState = state.SCREEN4;
+        currentState = ScreenState.SCREEN4;
 
         stage.findActor(ACTOR_TEXTFIELD_NAME).action(FadeOut.$(DEFAULT_FADE_TIME));
 
@@ -621,28 +630,28 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     }
 
     private void goToPreviousScreen() {
-        if (currentState == state.SCREEN2) {
+        if (currentState == ScreenState.SCREEN2) {
             transitionToScreen1();
         }
-        else if (currentState == state.SCREEN3) {
+        else if (currentState == ScreenState.SCREEN3) {
             transitionToScreen2();
         }
-        else if (currentState == state.SCREEN4) {
+        else if (currentState == ScreenState.SCREEN4) {
             transitionToScreen3();
         }
     }
 
     private void goToNextScreen() {
-        if (currentState == state.SCREEN1) {
+        if (currentState == ScreenState.SCREEN1) {
             transitionToScreen2();
         }
-        else if (currentState == state.SCREEN2) {
+        else if (currentState == ScreenState.SCREEN2) {
             transitionToScreen3();
         }
-        else if (currentState == state.SCREEN3) {
+        else if (currentState == ScreenState.SCREEN3) {
             transitionToScreen4();
         }
-        else if (currentState == state.SCREEN4) {
+        else if (currentState == ScreenState.SCREEN4) {
             initializeCreaturePositions();
             initializeInput();
             fadeOutEverything();
@@ -732,19 +741,9 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
     @Override
     public void update(float delta) {
         super.update(delta);
-        if (currentState == state.SCREEN1) {
+        if (currentState == ScreenState.SCREEN1) {
             moveCreaturesBackIntoBoundaries();
         }
     }
 
-    /**
-     * Basic GestureListener that handles the swiping motion.
-     */
-    class SwipeHandler extends GestureAdapter {
-
-        @Override
-        public boolean pan(int x, int y, int deltaX, int deltaY) {
-            return swipe(x, y, deltaX, deltaY);
-        }
-    }
 }
