@@ -1,9 +1,11 @@
 
 package com.redditandroiddevelopers.tamagotchi.creatures;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.FadeTo;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveBy;
 import com.badlogic.gdx.scenes.scene2d.actions.Parallel;
 import com.badlogic.gdx.scenes.scene2d.actions.Repeat;
@@ -32,6 +34,7 @@ public abstract class CommonCreature extends Image {
      * Some objects/variables for creature actions.
      */
     private Action actionT;
+    private boolean latestActionDone;
     private Fifo fifo = new Fifo();
 
     /**
@@ -58,7 +61,12 @@ public abstract class CommonCreature extends Image {
      * Function checking for creature actions, called in MainGameScreen Update()
      */
     public void lifeCycle() {
-        if (!fifo.isEmpty() && actionT.isDone()) {
+        if(actionT.isDone()) {
+            latestActionDone = true;
+        }
+        if (!fifo.isEmpty() && latestActionDone) {
+            latestActionDone = false;
+            Gdx.app.debug(TAG, "Action " + actionT  + " Done" );
             actionT = (Action) fifo.show(0);
             action((Action) fifo.get());
         }
@@ -98,7 +106,6 @@ public abstract class CommonCreature extends Image {
         int times = Math.round(duration / 0.2f);
 
         // chain wobbles together
-
         Repeat wobble = Repeat.$(scaling, times);
         Parallel parallel = Parallel.$(MoveBy.$(x, 0, duration), wobble);
 
