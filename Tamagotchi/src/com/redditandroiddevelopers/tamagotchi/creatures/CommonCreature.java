@@ -1,8 +1,6 @@
 
 package com.redditandroiddevelopers.tamagotchi.creatures;
 
-import java.util.LinkedList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -21,12 +19,16 @@ import com.badlogic.gdx.utils.Scaling;
 import com.redditandroiddevelopers.tamagotchi.model.Creature;
 import com.redditandroiddevelopers.tamagotchi.screens.MainGameScreen;
 
+import java.util.LinkedList;
+
 /**
  * Class to handle methods common to all creatures.
  */
 public abstract class CommonCreature extends Image implements OnActionCompleted {
 
     private static final String TAG = "Tamagotchi:CommonCreature";
+
+    private final float initialScaleY;
 
     public Creature creatureModel;
     public boolean textureIsFlipped = false;
@@ -51,10 +53,14 @@ public abstract class CommonCreature extends Image implements OnActionCompleted 
         // set origin for rotations in the center of the creature
         originX = width / 2;
         originY = height / 2;
+
+        // fixes bug #137: http://redmine.redditandroiddevelopers.com/issues/137
+        initialScaleY = 1f;
     }
 
     /**
-     * Function checking for creature actions, called in {@link MainGameScreen#update(float)}.
+     * Function checking for creature actions, called in
+     * {@link MainGameScreen#update(float)}.
      */
     public void lifeCycle() {
         synchronized (latestActionDone) {
@@ -88,8 +94,6 @@ public abstract class CommonCreature extends Image implements OnActionCompleted 
         }
     }
 
-    // IMPORTANT: Animations are currently bugged. Will be fixed over time.
-
     // movement
 
     /**
@@ -99,16 +103,18 @@ public abstract class CommonCreature extends Image implements OnActionCompleted 
      * @param duration how long the animation will be
      */
     public void moveBy(float x, float duration) {
-        // single wobble
+        // single wobble parameters
+        float wobbleTime = 0.1f;
+        float wobbleHeight = 0.05f;
 
-        Sequence scaling = Sequence.$(ScaleTo.$(scaleX, scaleY + 0.05f, 0.1f),
-                ScaleTo.$(scaleX, scaleY, 0.1f));
+        Sequence scaling = Sequence.$(ScaleTo.$(scaleX, initialScaleY + wobbleHeight, wobbleTime),
+                ScaleTo.$(scaleX, initialScaleY, wobbleTime));
 
         // calculates how often the animation should be played
-        int times = Math.round(duration / 0.2f);
+        int nrOfRepeats = Math.round(duration / (wobbleTime * 2));
 
         // chain wobbles together
-        Repeat wobble = Repeat.$(scaling, times);
+        Repeat wobble = Repeat.$(scaling, nrOfRepeats);
         Parallel parallel = Parallel.$(MoveBy.$(x, 0, duration), wobble);
 
         // make sure the creature is facing the right way
