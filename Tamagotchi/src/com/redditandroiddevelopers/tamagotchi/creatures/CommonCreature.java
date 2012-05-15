@@ -1,8 +1,6 @@
 
 package com.redditandroiddevelopers.tamagotchi.creatures;
 
-import java.util.LinkedList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -20,6 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Scaling;
 import com.redditandroiddevelopers.tamagotchi.model.Creature;
 import com.redditandroiddevelopers.tamagotchi.screens.MainGameScreen;
+
+import java.util.LinkedList;
 
 /**
  * Class to handle methods common to all creatures.
@@ -76,6 +76,7 @@ public abstract class CommonCreature extends Image implements OnActionCompleted 
     /* Creature controller starts here */
 
     private void offerAction(Action act) {
+        Gdx.app.debug(TAG, "Queueing action " + act);
         act.setCompletionListener(this);
         actionQueue.offer(act);
     }
