@@ -59,8 +59,10 @@ public abstract class CommonCreature extends Image implements OnActionCompleted 
     public void lifeCycle() {
         synchronized (latestActionDone) {
             if (latestActionDone && !actionQueue.isEmpty()) {
+                final Action act = actionQueue.poll();
                 latestActionDone = false;
-                action(actionQueue.poll());
+                Gdx.app.debug(TAG, "Polling action " + act + " for execution");
+                action(act);
             }
         }
     }
