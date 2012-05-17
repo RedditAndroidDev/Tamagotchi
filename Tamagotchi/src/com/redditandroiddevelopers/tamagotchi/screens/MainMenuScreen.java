@@ -19,6 +19,7 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
 
     private static final String TAG = "Tamagotchi:MainMenuScreen";
 
+    //Main menu buttons
     private Button btnPlay;
     private Button btnSelect;
     private Button btnMemories;
