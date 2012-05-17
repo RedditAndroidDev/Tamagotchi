@@ -16,7 +16,9 @@ import com.redditandroiddevelopers.tamagotchi.screens.CommonScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.CreatureCreationScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.MainGameScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.MainMenuScreen;
+import com.redditandroiddevelopers.tamagotchi.screens.MemoriesScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.PauseScreen;
+import com.redditandroiddevelopers.tamagotchi.screens.SettingsScreen;
 import com.redditandroiddevelopers.tamagotchi.screens.SplashScreen;
 
 import java.util.Stack;
@@ -65,8 +67,8 @@ public class TamagotchiGame extends Game {
                 new PauseScreen(this),
                 new CreatureCreationScreen(this), // TODO: implement
                                                   // PetSelectionScreen
-                new PauseScreen(this), // TODO: implement MemoriesScreen
-                new PauseScreen(this), // TODO: implement SettingsScreen
+                new MemoriesScreen(this), // TODO: implement MemoriesScreen
+                new SettingsScreen(this), // TODO: implement SettingsScreen
         };
 
         screenHistory = new Stack<CommonScreen>();
