@@ -90,6 +90,7 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
             game.updateState(TamagotchiGame.STATE_SELECT_PET);
         } else if (actor == btnMemories) {
             Gdx.app.debug(TAG, "Touch on Memories");
+            game.updateState(TamagotchiGame.STATE_MEMORIES);
         } else if (actor == btnSettings) {
             Gdx.app.debug(TAG, "Touch on Settings");
         } else {
