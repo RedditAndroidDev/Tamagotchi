@@ -18,8 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Scaling;
 import com.redditandroiddevelopers.tamagotchi.model.Creature;
 import com.redditandroiddevelopers.tamagotchi.screens.MainGameScreen;
-
-import java.util.LinkedList;
+import com.redditandroiddevelopers.tamagotchi.utils.NotImplementedException;
 
 import java.util.LinkedList;
 
@@ -183,6 +182,7 @@ public abstract class CommonCreature extends Image implements OnActionCompleted 
      */
     private void showBubble(String textureRegionName) {
         // TODO: to be implemented
+        throw new NotImplementedException();
     }
 
     /**
@@ -190,6 +190,7 @@ public abstract class CommonCreature extends Image implements OnActionCompleted 
      */
     public void showPoopBubble() {
         // TODO: to be implemented
+        throw new NotImplementedException();
     }
 
     /**
@@ -197,6 +198,7 @@ public abstract class CommonCreature extends Image implements OnActionCompleted 
      */
     public void showLowHealthBubble() {
         // TODO: to be implemented
+        throw new NotImplementedException();
     }
 
     /**
@@ -204,6 +206,7 @@ public abstract class CommonCreature extends Image implements OnActionCompleted 
      */
     public void showAlertBubble() {
         // TODO: to be implemented
+        throw new NotImplementedException();
     }
 
     /**
@@ -211,6 +214,7 @@ public abstract class CommonCreature extends Image implements OnActionCompleted 
      */
     public void showHappyBubble() {
         // TODO: to be implemented
+        throw new NotImplementedException();
     }
 
     // for state changes access creatureModel directly
