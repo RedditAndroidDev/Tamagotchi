@@ -19,6 +19,7 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
 
     private static final String TAG = "Tamagotchi:MainMenuScreen";
 
+    //Main menu buttons
     private Button btnPlay;
     private Button btnSelect;
     private Button btnMemories;
@@ -89,8 +90,10 @@ public class MainMenuScreen extends CommonScreen implements ClickListener {
             game.updateState(TamagotchiGame.STATE_SELECT_PET);
         } else if (actor == btnMemories) {
             Gdx.app.debug(TAG, "Touch on Memories");
+            game.updateState(TamagotchiGame.STATE_MEMORIES);
         } else if (actor == btnSettings) {
             Gdx.app.debug(TAG, "Touch on Settings");
+            game.updateState(TamagotchiGame.STATE_SETTINGS);
         } else {
             Gdx.app.error(TAG, "Unknown actor");
             assert false;

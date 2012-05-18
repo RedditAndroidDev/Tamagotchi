@@ -21,6 +21,8 @@ import com.redditandroiddevelopers.tamagotchi.screens.MainGameScreen;
 
 import java.util.LinkedList;
 
+import java.util.LinkedList;
+
 /**
  * Class to handle methods common to all creatures.
  */
@@ -65,8 +67,10 @@ public abstract class CommonCreature extends Image implements OnActionCompleted 
     public void lifeCycle() {
         synchronized (latestActionDone) {
             if (latestActionDone && !actionQueue.isEmpty()) {
+                final Action act = actionQueue.poll();
                 latestActionDone = false;
-                action(actionQueue.poll());
+                Gdx.app.debug(TAG, "Polling action " + act + " for execution");
+                action(act);
             }
         }
     }
@@ -82,6 +86,7 @@ public abstract class CommonCreature extends Image implements OnActionCompleted 
     /* Creature controller starts here */
 
     private void offerAction(Action act) {
+        Gdx.app.debug(TAG, "Queueing action " + act);
         act.setCompletionListener(this);
         actionQueue.offer(act);
     }
