@@ -308,7 +308,7 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         Image spotlight = (Image) stage.findActor(ACTOR_IMAGE_SPOTLIGHT);
         name.x = (spotlight.x + spotlight.width / 2) - name.width / 2;
         name.y = 50 - name.height;
-        name.visible = false;
+        name.visible = visible;
 
         stage.addActor(name);
         stage.addActor(summary);
@@ -515,13 +515,16 @@ public class CreatureCreationScreen extends CommonScreen implements ClickListene
         stage.findActor(ACTOR_LABEL_SECOND_LINE).action(FadeOut.$(DEFAULT_FADE_TIME));
 
         // fade in summary
-        stage.findActor(ACTOR_LABEL_SUMMARY).visible = true;
-        stage.findActor(ACTOR_LABEL_SUMMARY).color.a = 0f;
-        stage.findActor(ACTOR_LABEL_SUMMARY).action(FadeIn.$(DEFAULT_FADE_TIME));
+        Label summary = (Label) stage.findActor(ACTOR_LABEL_SUMMARY);
+        summary.color.a = 0f;
+        summary.visible = true;
+        summary.action(FadeIn.$(DEFAULT_FADE_TIME));
 
         // fade in and move creature name
         Label creatureName = (Label) stage.findActor(ACTOR_LABEL_CREATURE_NAME);
         creatureName.setText(getSelectedCreature().name);
+        creatureName.color.a = 0f;
+        creatureName.visible = true;
         creatureName.action(
                 Sequence.$(
                         Delay.$(MoveTo.$((spotlight.x + spotlight.width / 2) - creatureName.width
